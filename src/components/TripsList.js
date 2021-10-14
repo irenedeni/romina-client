@@ -77,14 +77,13 @@ const TripsList = () => {
         <h4>Trips list</h4>
         <ul>
           {trips &&
-          // console.log("trips", trips)
           trips.map((trip, index) => (
             <li 
               className={index === currentIndex ? "active" : ""}
               onClick={() => setActiveTrip(trip, index)}
               key={index}
             >
-              {trip.name}
+              {trip.name}, id: {trip.id}
             </li>
           ))
           }

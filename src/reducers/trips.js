@@ -1,5 +1,5 @@
 import {
-  CREATE_TRIP,
+  CREATE_TRIP_AND_DAYS,
   RETRIEVE_TRIPS,
   UPDATE_TRIP,
   DELETE_TRIP,
@@ -12,7 +12,7 @@ function tripReducer(trips = initialState, action) {
   const { type, payload } = action
 
 switch (type) {
-  case CREATE_TRIP:
+  case CREATE_TRIP_AND_DAYS:
     return [...trips, payload]
 
   case RETRIEVE_TRIPS:
