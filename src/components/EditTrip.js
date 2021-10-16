@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react"
 import { useDispatch } from "react-redux"
-import { Link } from "react-router-dom"
-
 import { updateTrip, deleteTrip } from "../actions/trips"
 import TripDataService from "../services/TripService"
 
-const Trip = (props) => {
+const EditTrip = (props) => {
   const initialTripState = {
     id: null,
     name: "",
@@ -78,27 +76,44 @@ const Trip = (props) => {
 
   return (
     <div>
-      
-      <div>
-
-      </div>
       {currentTrip ? (
         <div>
-          <h4>JUST THE TRIP (NO UPDATE)</h4>
-          {currentTrip.name}
-          <Link
-            to={"/trips/edit/" + currentTrip.id}>
-              <div style={{border: "1px solid black"}}>EDIT</div>
-              </Link>
-          {currentTrip.days?.map((day, index) => (
-          <div key={index}>
-            <div>NAME: {day.name}</div>  
-            <div>DATE: {day.date}</div>  
-          </div>
-          )
+          <h4>UPDATE Trip</h4>
+          <form>
+            <div>
+              <label>Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={currentTrip.name}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div>
+              <label>
+                <strong>Status:</strong>
+              </label>
+              {currentTrip.confirmed ? "Confirmed" : "Pending"}
+            </div>
+          </form>
+          {currentTrip.confirmed ? (
+            <button onClick={() => updateStatus(false)}>
+              Un-confirm
+            </button>
+          ) : (
+            <button onClick={() => updateStatus(true)}>
+              Confirm
+            </button>
           )}
           <button onClick={removeTrip}>
             Delete
+          </button>
+          <button
+            type="submit"
+            onClick={updateContent}
+          >
+            Update
           </button>
           <p>{message}</p>
         </div>
@@ -112,4 +127,4 @@ const Trip = (props) => {
   )
 }
 
-export default Trip
+export default EditTrip

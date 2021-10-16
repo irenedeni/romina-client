@@ -14,7 +14,7 @@ const create = data => {
 }
 
 const update = (id, data) => {
-  return http.put(`/trips/${id}`, data)
+  return http.put(`/trips/edit/${id}`, data)
 }
 
 const remove = id => {

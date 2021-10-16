@@ -64,7 +64,15 @@ const TripsList = () => {
     tripRange.push(sortedArray && sortedArray[sortedArray.length -1])
     return tripRange
   }
-  const tripRange = findTripRange(currentTrip?.days)
+
+  const calendarObject = {
+    sameDay: '[Today]',
+    nextDay: '[Tomorrow]',
+    nextWeek: '[Next] dddd',
+    lastDay: '[Yesterday]',
+    lastWeek: '[Last] dddd',
+    sameElse: 'dddd LL'
+  }
 
   return (
     <>
@@ -91,22 +99,28 @@ const TripsList = () => {
         <h4>Trips list</h4>
         <ul>
           {trips &&
-          trips.map((trip, index) => (
+          trips.map((trip, index) => {
+            const tripRange = findTripRange(trip?.days)
+          return (
+            <Link
+            to={"/trips/" + trip.id} key={index}>
             <li 
               className={index === currentIndex ? "active" : ""}
               onClick={() => setActiveTrip(trip, index)}
-              key={index}
+              
             >
-              {trip.name}, id: {trip.id}
+              NAME: {trip.name}, ID: {trip.id}, DAYS - From: {`${moment(tripRange[0].date).calendar(null, calendarObject)}`}{", "}
+              Until: {`${moment(tripRange[tripRange?.length - 1].date).calendar(null, calendarObject)}`} 
             </li>
-          ))
+            </Link>
+          )})
           }
         </ul>
         <button onClick={removeAllTrips}>
           Remove all
         </button>
       </div>
-      <div>
+      {/* <div>
         {currentTrip ? (
           <div>
             <h4>Trip</h4>
@@ -155,7 +169,7 @@ const TripsList = () => {
           </div>
         )
       }
-      </div>
+      </div> */}
     </>
   )
 }
