@@ -32,7 +32,7 @@ function App() {
           <Route exact path={["/", "/trips"]} component={TripsList} />
           <Route exact path={"/add"} component={AddTrip} />
           <Route path={"/trips/:id"} component={Trip} />
-          <Route path={"/trips/edit/:id"} component={EditTrip} />
+          <Route path={"/edit/:id"} component={EditTrip} />
         </Switch>
       </div>
     </Router>

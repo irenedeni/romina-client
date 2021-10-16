@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import moment from "moment"
+import styled from "styled-components"
+import { calendarObject } from "../lib/tripFunctions"
 import {
   retrieveTrips,
   findTripsByName,
@@ -36,6 +38,7 @@ const TripsList = () => {
   const setActiveTrip = (trip, index) => {
     setCurrentTrip(trip)
     setCurrentIndex(index)
+    console.log(currentTrip, currentIndex)
   }
 
   const removeAllTrips = () => {
@@ -63,15 +66,6 @@ const TripsList = () => {
     tripRange.push(sortedArray && sortedArray[0])
     tripRange.push(sortedArray && sortedArray[sortedArray.length -1])
     return tripRange
-  }
-
-  const calendarObject = {
-    sameDay: '[Today]',
-    nextDay: '[Tomorrow]',
-    nextWeek: '[Next] dddd',
-    lastDay: '[Yesterday]',
-    lastWeek: '[Last] dddd',
-    sameElse: 'dddd LL'
   }
 
   return (
@@ -102,17 +96,34 @@ const TripsList = () => {
           trips.map((trip, index) => {
             const tripRange = findTripRange(trip?.days)
           return (
-            <Link
-            to={"/trips/" + trip.id} key={index}>
+            
             <li 
+            key={index}
               className={index === currentIndex ? "active" : ""}
-              onClick={() => setActiveTrip(trip, index)}
-              
+              style={{marginBottom: '20px'}}
             >
-              NAME: {trip.name}, ID: {trip.id}, DAYS - From: {`${moment(tripRange[0].date).calendar(null, calendarObject)}`}{", "}
-              Until: {`${moment(tripRange[tripRange?.length - 1].date).calendar(null, calendarObject)}`} 
+              <TripName onClick={() => setActiveTrip(trip, index)} active={currentTrip && (index === currentIndex)}>
+              {trip.name.toUpperCase()}
+              </TripName>
+              <div>
+                From: {`${moment(tripRange[0].date).calendar(null, calendarObject)}`}{", "}
+              </div>
+              <div>
+                Until: {`${moment(tripRange[tripRange?.length - 1].date).calendar(null, calendarObject)}`} 
+              </div>
+              <TripButtonsDiv active={currentTrip && (index === currentIndex)}>
+                <Link to={"/trips/" + trip.id} >
+                  <div style={{width: 'max-content', border: '1px solid black', padding: '5px 10px', margin: '10px'}}>
+                    Open trip
+                  </div>
+                </Link>
+                <Link to={"/edit/" + trip.id}>
+                  <div style={{width: 'max-content', border: '1px solid black', padding: '5px 10px', margin: '10px'}}>
+                    edit trip
+                  </div>
+                </Link>
+              </TripButtonsDiv>
             </li>
-            </Link>
           )})
           }
         </ul>
@@ -120,58 +131,16 @@ const TripsList = () => {
           Remove all
         </button>
       </div>
-      {/* <div>
-        {currentTrip ? (
-          <div>
-            <h4>Trip</h4>
-            <div>
-              <label>
-                <strong>Name:</strong>
-              </label>{" "}
-              {currentTrip.name}
-            </div>
-            <div>
-              <label>
-                <strong>Dates:</strong>
-              </label>{" "}
-              From: {`${moment(tripRange[0].date).calendar(null, {
-                sameDay: '[Today]',
-                nextDay: '[Tomorrow]',
-                nextWeek: 'dddd',
-                lastDay: '[Yesterday]',
-                lastWeek: '[Last] dddd',
-                sameElse: 'LLLL'
-              })}`}{", "}
-              Until: {`${moment(tripRange[tripRange?.length - 1].date).calendar(null, {
-                sameDay: '[Today]',
-                nextDay: '[Tomorrow]',
-                nextWeek: 'dddd',
-                lastDay: '[Yesterday]',
-                lastWeek: '[Last] dddd',
-                sameElse: 'LLLL'
-              })}`} 
-            </div>
-            <div>
-              <label>
-                <strong>Status:</strong>
-              </label>{" "}
-              {currentTrip.confirmed ? "Confirmed" : "Pending"}
-            </div>
-            <Link
-            to={"/trips/" + currentTrip.id}>
-              Edit
-            </Link>
-          </div>
-        ) : (
-          <div>
-            <br />
-            <p>Select a trip</p>
-          </div>
-        )
-      }
-      </div> */}
     </>
   )
 }
+
+const TripName = styled.div`
+  font-weight: ${props => props.active && '700'};
+`
+
+const TripButtonsDiv = styled.div`
+  display: ${props => props.active ? 'flex' : 'none'};
+`
 
 export default TripsList

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { Link } from "react-router-dom"
+import moment from "moment"
 
+import { calendarObject } from "../lib/tripFunctions"
 import { updateTrip, deleteTrip } from "../actions/trips"
 import TripDataService from "../services/TripService"
 
@@ -31,40 +33,6 @@ const Trip = (props) => {
     getTrip(props.match.params.id)
   }, [props.match.params.id])
 
-  const handleInputChange = event => {
-    const { name, value } = event.target
-    setCurrentTrip({ ...currentTrip, [name]: value })
-  }
-
-  const updateStatus = status => {
-    const data = {
-      id: currentTrip.id,
-      name: currentTrip.name,
-      confirmed: status
-    }
-
-    dispatch(updateTrip(currentTrip.id, data))
-    .then(res => {
-      console.log(res)
-
-      setCurrentTrip({ ...currentTrip, confirmed: status })
-      setMessage("status updated successfully")
-    })
-    .catch(e => {
-      console.log(e)
-    })
-  }
-
-  const updateContent = () => {
-    dispatch(updateTrip(currentTrip.id, currentTrip))
-    .then(res => {
-      console.log(res)
-      setMessage("trip updated successfully")
-    })
-    .catch(e => {
-      console.log(e)
-    })
-  }
 
   const removeTrip = () => {
     dispatch(deleteTrip(currentTrip.id))
@@ -78,22 +46,19 @@ const Trip = (props) => {
 
   return (
     <div>
-      
       <div>
-
       </div>
       {currentTrip ? (
         <div>
-          <h4>JUST THE TRIP (NO UPDATE)</h4>
-          {currentTrip.name}
+          <h4>{currentTrip.name}</h4>
           <Link
-            to={"/trips/edit/" + currentTrip.id}>
-              <div style={{border: "1px solid black"}}>EDIT</div>
+            to={`/edit/${currentTrip.id}`}>
+              <div style={{width: 'max-content', border: '1px solid black', padding: '5px 10px', margin: '10px'}}>EDIT</div>
               </Link>
           {currentTrip.days?.map((day, index) => (
           <div key={index}>
-            <div>NAME: {day.name}</div>  
-            <div>DATE: {day.date}</div>  
+            {/* <div>NAME: {day.name}</div>   */}
+            <div>Day {`${index + 1}:`} {moment(day.date).calendar(calendarObject)}</div>  
           </div>
           )
           )}
