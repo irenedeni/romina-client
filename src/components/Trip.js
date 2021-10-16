@@ -7,9 +7,7 @@ const Trip = (props) => {
   const initialTripState = {
     id: null,
     name: "",
-    startDate: new Date(),
-    endDate: new Date(),
-    published: false
+    confirmed: false
   }
 
   const [currentTrip, setCurrentTrip] = useState(initialTripState)
@@ -21,7 +19,7 @@ const Trip = (props) => {
     TripDataService.get(id)
     .then(res => {
       setCurrentTrip(res.data)
-      console.log(res.data)
+      // console.log(res.data)
     })
     .catch(e => {
       console.log(e)
@@ -41,16 +39,14 @@ const Trip = (props) => {
     const data = {
       id: currentTrip.id,
       name: currentTrip.name,
-      startDate: currentTrip.startDate,
-      endDate: currentTrip.endDate,
-      published: status
+      confirmed: status
     }
 
     dispatch(updateTrip(currentTrip.id, data))
     .then(res => {
       console.log(res)
 
-      setCurrentTrip({ ...currentTrip, published: status })
+      setCurrentTrip({ ...currentTrip, confirmed: status })
       setMessage("status updated successfully")
     })
     .catch(e => {
@@ -96,39 +92,19 @@ const Trip = (props) => {
               />
             </div>
             <div>
-              <label>Start Date</label>
-              <input
-                type="date"
-                id="startDate"
-                name="startDate"
-                value={currentTrip.startDate}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div>
-              <label>End Date</label>
-              <input
-                type="date"
-                id="endDate"
-                name="endDate"
-                value={currentTrip.endDate}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div>
               <label>
                 <strong>Status:</strong>
               </label>
-              {currentTrip.published ? "Published" : "Pending"}
+              {currentTrip.confirmed ? "Confirmed" : "Pending"}
             </div>
           </form>
-          {currentTrip.published ? (
+          {currentTrip.confirmed ? (
             <button onClick={() => updateStatus(false)}>
-              Unpublish
+              Un-confirm
             </button>
           ) : (
             <button onClick={() => updateStatus(true)}>
-              Publish
+              Confirm
             </button>
           )}
           <button onClick={removeTrip}>

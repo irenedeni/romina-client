@@ -24,7 +24,6 @@ export const createTrip = (name, startDate, endDate) => async (dispatch) => {
 export const retrieveTrips = () => async (dispatch) => {
   try {
     const res = await TripDataService.getAll()
-    console.log("RES in retrieveTrips action", res)
     dispatch({
       type: RETRIEVE_TRIPS,
       payload: res.data

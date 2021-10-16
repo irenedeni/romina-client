@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
+import moment from "moment"
 import {
   retrieveTrips,
   findTripsByName,
@@ -9,6 +10,7 @@ import {
 
 
 const TripsList = () => {
+
   const [currentTrip, setCurrentTrip] = useState(null)
   const [currentIndex, setCurrentIndex] = useState(null)
   const [searchName, setSearchName] = useState("")
@@ -51,6 +53,18 @@ const TripsList = () => {
     refreshData()
     dispatch(findTripsByName(searchName))
   }
+
+  const findTripRange = (daysArray) => {
+    for (let i = 0; i < daysArray?.length; i++){
+      daysArray[i].date = new Date(daysArray[i].date)
+    }
+    const sortedArray = daysArray?.sort((a, b) => a.date - b.date)
+    let tripRange = []
+    tripRange.push(sortedArray && sortedArray[0])
+    tripRange.push(sortedArray && sortedArray[sortedArray.length -1])
+    return tripRange
+  }
+  const tripRange = findTripRange(currentTrip?.days)
 
   return (
     <>
@@ -104,21 +118,30 @@ const TripsList = () => {
             </div>
             <div>
               <label>
-                <strong>Start Date:</strong>
+                <strong>Dates:</strong>
               </label>{" "}
-              {currentTrip.startDate}
-            </div>
-            <div>
-              <label>
-                <strong>End Date:</strong>
-              </label>{" "}
-              {currentTrip.endDate}
+              From: {`${moment(tripRange[0].date).calendar(null, {
+                sameDay: '[Today]',
+                nextDay: '[Tomorrow]',
+                nextWeek: 'dddd',
+                lastDay: '[Yesterday]',
+                lastWeek: '[Last] dddd',
+                sameElse: 'LLLL'
+              })}`}{", "}
+              Until: {`${moment(tripRange[tripRange?.length - 1].date).calendar(null, {
+                sameDay: '[Today]',
+                nextDay: '[Tomorrow]',
+                nextWeek: 'dddd',
+                lastDay: '[Yesterday]',
+                lastWeek: '[Last] dddd',
+                sameElse: 'LLLL'
+              })}`} 
             </div>
             <div>
               <label>
                 <strong>Status:</strong>
               </label>{" "}
-              {currentTrip.published ? "Published" : "Pending"}
+              {currentTrip.confirmed ? "Confirmed" : "Pending"}
             </div>
             <Link
             to={"/trips/" + currentTrip.id}>
