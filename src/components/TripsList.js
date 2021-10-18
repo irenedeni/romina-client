@@ -117,7 +117,7 @@ const TripsList = () => {
                     Open trip
                   </div>
                 </Link>
-                <Link to={"/edit/" + trip.id}>
+                <Link to={"/edit/trips/" + trip.id}>
                   <div style={{width: 'max-content', border: '1px solid black', padding: '5px 10px', margin: '10px'}}>
                     edit trip
                   </div>

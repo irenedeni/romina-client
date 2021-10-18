@@ -52,13 +52,22 @@ const Trip = (props) => {
         <div>
           <h4>{currentTrip.name}</h4>
           <Link
-            to={`/edit/${currentTrip.id}`}>
+            to={`/edit/trips/${currentTrip.id}`}>
               <div style={{width: 'max-content', border: '1px solid black', padding: '5px 10px', margin: '10px'}}>EDIT</div>
               </Link>
           {currentTrip.days?.map((day, index) => (
           <div key={index}>
-            {/* <div>NAME: {day.name}</div>   */}
             <div>Day {`${index + 1}:`} {moment(day.date).calendar(calendarObject)}</div>  
+            {console.log(day)}
+            {day?.slots.length > 0 && day.slots.map((slot, index) => {
+              return (
+                <div key={index}>
+                  <p>TIMEFRAME: {slot.timeframe}</p>
+                  <p>LENGTH: {slot.stayType}</p>
+                  <p>CARER: {slot.carer?.name}</p>
+                </div>
+              )
+            })}
           </div>
           )
           )}

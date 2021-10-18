@@ -73,7 +73,6 @@ const EditTrip = (props) => {
       console.log(e)
     })
   }
-console.log('çurrent trip', currentTrip)
   return (
     <div>
       {currentTrip ? (
