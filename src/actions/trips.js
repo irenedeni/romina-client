@@ -1,5 +1,5 @@
 import { 
-  CREATE_TRIP,
+  CREATE_TRIP_AND_DAYS,
   RETRIEVE_TRIPS,
   UPDATE_TRIP,
   DELETE_ALL_TRIPS,
@@ -12,7 +12,7 @@ export const createTrip = (name, startDate, endDate) => async (dispatch) => {
   try {
     const res = await TripDataService.create({ name, startDate, endDate })
     dispatch({
-      type: CREATE_TRIP,
+      type: CREATE_TRIP_AND_DAYS,
       payload: res.data
     })
     return Promise.resolve(res.data)

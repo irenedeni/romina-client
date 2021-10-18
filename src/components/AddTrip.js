@@ -8,7 +8,7 @@ const AddTrip = () => {
     name: "",
     startDate: new Date(),
     endDate: new Date(),
-    published: false
+    confirmed: false
   }
 
   const [trip, setTrip] = useState(initialTripState)
@@ -32,7 +32,7 @@ const AddTrip = () => {
         name: data.name,
         startDate: data.startDate,
         endDate: data.endDate,
-        published: data.published ? data.published : false
+        confirmed: data.confirmed ? data.confirmed : false
       })
       setSubmitted(true)
 

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
+import moment from "moment"
+import styled from "styled-components"
+import { calendarObject } from "../lib/tripFunctions"
 import {
   retrieveTrips,
   findTripsByName,
@@ -9,6 +12,7 @@ import {
 
 
 const TripsList = () => {
+
   const [currentTrip, setCurrentTrip] = useState(null)
   const [currentIndex, setCurrentIndex] = useState(null)
   const [searchName, setSearchName] = useState("")
@@ -34,6 +38,7 @@ const TripsList = () => {
   const setActiveTrip = (trip, index) => {
     setCurrentTrip(trip)
     setCurrentIndex(index)
+    console.log(currentTrip, currentIndex)
   }
 
   const removeAllTrips = () => {
@@ -50,6 +55,17 @@ const TripsList = () => {
   const findByName = () => {
     refreshData()
     dispatch(findTripsByName(searchName))
+  }
+
+  const findTripRange = (daysArray) => {
+    for (let i = 0; i < daysArray?.length; i++){
+      daysArray[i].date = new Date(daysArray[i].date)
+    }
+    const sortedArray = daysArray?.sort((a, b) => a.date - b.date)
+    let tripRange = []
+    tripRange.push(sortedArray && sortedArray[0])
+    tripRange.push(sortedArray && sortedArray[sortedArray.length -1])
+    return tripRange
   }
 
   return (
@@ -77,65 +93,54 @@ const TripsList = () => {
         <h4>Trips list</h4>
         <ul>
           {trips &&
-          // console.log("trips", trips)
-          trips.map((trip, index) => (
+          trips.map((trip, index) => {
+            const tripRange = findTripRange(trip?.days)
+          return (
+            
             <li 
+            key={index}
               className={index === currentIndex ? "active" : ""}
-              onClick={() => setActiveTrip(trip, index)}
-              key={index}
+              style={{marginBottom: '20px'}}
             >
-              {trip.name}
+              <TripName onClick={() => setActiveTrip(trip, index)} active={currentTrip && (index === currentIndex)}>
+              {trip.name.toUpperCase()}
+              </TripName>
+              <div>
+                From: {`${moment(tripRange[0].date).calendar(null, calendarObject)}`}{", "}
+              </div>
+              <div>
+                Until: {`${moment(tripRange[tripRange?.length - 1].date).calendar(null, calendarObject)}`} 
+              </div>
+              <TripButtonsDiv active={currentTrip && (index === currentIndex)}>
+                <Link to={"/trips/" + trip.id} >
+                  <div style={{width: 'max-content', border: '1px solid black', padding: '5px 10px', margin: '10px'}}>
+                    Open trip
+                  </div>
+                </Link>
+                <Link to={"/edit/trips/" + trip.id}>
+                  <div style={{width: 'max-content', border: '1px solid black', padding: '5px 10px', margin: '10px'}}>
+                    edit trip
+                  </div>
+                </Link>
+              </TripButtonsDiv>
             </li>
-          ))
+          )})
           }
         </ul>
         <button onClick={removeAllTrips}>
           Remove all
         </button>
       </div>
-      <div>
-        {currentTrip ? (
-          <div>
-            <h4>Trip</h4>
-            <div>
-              <label>
-                <strong>Name:</strong>
-              </label>{" "}
-              {currentTrip.name}
-            </div>
-            <div>
-              <label>
-                <strong>Start Date:</strong>
-              </label>{" "}
-              {currentTrip.startDate}
-            </div>
-            <div>
-              <label>
-                <strong>End Date:</strong>
-              </label>{" "}
-              {currentTrip.endDate}
-            </div>
-            <div>
-              <label>
-                <strong>Status:</strong>
-              </label>{" "}
-              {currentTrip.published ? "Published" : "Pending"}
-            </div>
-            <Link
-            to={"/trips/" + currentTrip.id}>
-              Edit
-            </Link>
-          </div>
-        ) : (
-          <div>
-            <br />
-            <p>Select a trip</p>
-          </div>
-        )
-      }
-      </div>
     </>
   )
 }
+
+const TripName = styled.div`
+  font-weight: ${props => props.active && '700'};
+`
+
+const TripButtonsDiv = styled.div`
+  display: ${props => props.active ? 'flex' : 'none'};
+`
 
 export default TripsList

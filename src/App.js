@@ -3,6 +3,7 @@ import './App.css'
 import AddTrip from './components/AddTrip'
 import Trip from './components/Trip'
 import TripsList from './components/TripsList'
+import EditTrip from './components/EditTrip'
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
           <Route exact path={["/", "/trips"]} component={TripsList} />
           <Route exact path={"/add"} component={AddTrip} />
           <Route path={"/trips/:id"} component={Trip} />
+          <Route path={"/edit/trips/:id"} component={EditTrip} />
         </Switch>
       </div>
     </Router>

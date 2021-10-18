@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react"
 import { useDispatch } from "react-redux"
+import { Link } from "react-router-dom"
+import moment from "moment"
+
+import { calendarObject } from "../lib/tripFunctions"
 import { updateTrip, deleteTrip } from "../actions/trips"
 import TripDataService from "../services/TripService"
 
@@ -7,9 +11,7 @@ const Trip = (props) => {
   const initialTripState = {
     id: null,
     name: "",
-    startDate: new Date(),
-    endDate: new Date(),
-    published: false
+    confirmed: false
   }
 
   const [currentTrip, setCurrentTrip] = useState(initialTripState)
@@ -21,7 +23,6 @@ const Trip = (props) => {
     TripDataService.get(id)
     .then(res => {
       setCurrentTrip(res.data)
-      console.log(res.data)
     })
     .catch(e => {
       console.log(e)
@@ -32,42 +33,6 @@ const Trip = (props) => {
     getTrip(props.match.params.id)
   }, [props.match.params.id])
 
-  const handleInputChange = event => {
-    const { name, value } = event.target
-    setCurrentTrip({ ...currentTrip, [name]: value })
-  }
-
-  const updateStatus = status => {
-    const data = {
-      id: currentTrip.id,
-      name: currentTrip.name,
-      startDate: currentTrip.startDate,
-      endDate: currentTrip.endDate,
-      published: status
-    }
-
-    dispatch(updateTrip(currentTrip.id, data))
-    .then(res => {
-      console.log(res)
-
-      setCurrentTrip({ ...currentTrip, published: status })
-      setMessage("status updated successfully")
-    })
-    .catch(e => {
-      console.log(e)
-    })
-  }
-
-  const updateContent = () => {
-    dispatch(updateTrip(currentTrip.id, currentTrip))
-    .then(res => {
-      console.log(res)
-      setMessage("trip updated successfully")
-    })
-    .catch(e => {
-      console.log(e)
-    })
-  }
 
   const removeTrip = () => {
     dispatch(deleteTrip(currentTrip.id))
@@ -81,64 +46,33 @@ const Trip = (props) => {
 
   return (
     <div>
+      <div>
+      </div>
       {currentTrip ? (
         <div>
-          <h4>Trip</h4>
-          <form>
-            <div>
-              <label>Name</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={currentTrip.name}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div>
-              <label>Start Date</label>
-              <input
-                type="date"
-                id="startDate"
-                name="startDate"
-                value={currentTrip.startDate}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div>
-              <label>End Date</label>
-              <input
-                type="date"
-                id="endDate"
-                name="endDate"
-                value={currentTrip.endDate}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div>
-              <label>
-                <strong>Status:</strong>
-              </label>
-              {currentTrip.published ? "Published" : "Pending"}
-            </div>
-          </form>
-          {currentTrip.published ? (
-            <button onClick={() => updateStatus(false)}>
-              Unpublish
-            </button>
-          ) : (
-            <button onClick={() => updateStatus(true)}>
-              Publish
-            </button>
+          <h4>{currentTrip.name}</h4>
+          <Link
+            to={`/edit/trips/${currentTrip.id}`}>
+              <div style={{width: 'max-content', border: '1px solid black', padding: '5px 10px', margin: '10px'}}>EDIT</div>
+              </Link>
+          {currentTrip.days?.map((day, index) => (
+          <div key={index}>
+            <div>Day {`${index + 1}:`} {moment(day.date).calendar(calendarObject)}</div>  
+            {console.log(day)}
+            {day?.slots.length > 0 && day.slots.map((slot, index) => {
+              return (
+                <div key={index}>
+                  <p>TIMEFRAME: {slot.timeframe}</p>
+                  <p>LENGTH: {slot.stayType}</p>
+                  <p>CARER: {slot.carer?.name}</p>
+                </div>
+              )
+            })}
+          </div>
+          )
           )}
           <button onClick={removeTrip}>
             Delete
-          </button>
-          <button
-            type="submit"
-            onClick={updateContent}
-          >
-            Update
           </button>
           <p>{message}</p>
         </div>
