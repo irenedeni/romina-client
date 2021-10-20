@@ -1,32 +1,17 @@
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import './App.css'
-import AddTrip from './components/AddTrip'
-import Trip from './components/Trip'
-import TripsList from './components/TripsList'
-import EditTrip from './components/EditTrip'
-
+import AddTrip from './screens/AddTrip'
+import Trip from './screens/Trip'
+import TripsList from './screens/TripsList'
+import EditTrip from './screens/EditTrip'
+import Navigation from './components/Navigation'
+import { navElements } from './lib/navElements'
 
 function App() {
+  console.log(navElements)
   return (
     <Router>
-      <nav>
-        <a href="/trips">
-          Romina
-        </a>
-        <div>
-          <li>
-            <Link to={"/trips"}>
-              Trips
-            </Link>
-          </li>
-          <li>
-            <Link to={"/add"}>
-              Add Trip
-            </Link>
-          </li>
-        </div>
-      </nav>
-
+      <Navigation navElements={navElements} />
       <div>
         <Switch>
           <Route exact path={["/", "/trips"]} component={TripsList} />
@@ -40,4 +25,4 @@ function App() {
 }
 
 
-export default App;
+export default App

@@ -59,12 +59,23 @@ const Trip = (props) => {
           <div key={index}>
             <div>Day {`${index + 1}:`} {moment(day.date).calendar(calendarObject)}</div>  
             {console.log(day)}
-            {day?.slots.length > 0 && day.slots.map((slot, index) => {
+            {day.slots?.map((slot, index) => {
               return (
-                <div key={index}>
+                <div key={index} style={{border: "1px solid black", maxWidth: "max-content", padding: "5px 20px", margin: "10px 0px"}}>
+                  <b>SLOT</b>
                   <p>TIMEFRAME: {slot.timeframe}</p>
                   <p>LENGTH: {slot.stayType}</p>
                   <p>CARER: {slot.carer?.name}</p>
+                  <div>
+                    {slot.tasks?.map((task, index) => {
+                      return (
+                        <div key={index}>
+                          <p>Task #{index+1}</p>
+                          <p>{task.type}</p>
+                        </div>
+                      )
+                    })}
+                  </div>
                 </div>
               )
             })}

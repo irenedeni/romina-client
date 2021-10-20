@@ -8,9 +8,9 @@ import {
 
 import TripDataService from "../services/TripService"
 
-export const createTrip = (name, startDate, endDate) => async (dispatch) => {
+export const createTrip = (name, startDate, endDate, confirmed) => async (dispatch) => {
   try {
-    const res = await TripDataService.create({ name, startDate, endDate })
+    const res = await TripDataService.create({ name, startDate, endDate, confirmed })
     dispatch({
       type: CREATE_TRIP_AND_DAYS,
       payload: res.data
