@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react"
+import styled from "styled-components"
 import { useDispatch } from "react-redux"
 import { updateTrip, deleteTrip } from "../actions/trips"
 import TripDataService from "../services/TripService"
+import { Toggle, Input, Template, Form, Dropdown, Spacer, Button as StyledButton } from "../components"
+
 
 const EditTrip = (props) => {
   const initialTripState = {
@@ -29,9 +32,12 @@ const EditTrip = (props) => {
     getTrip(props.match.params.id)
   }, [props.match.params.id])
 
+
   const handleInputChange = event => {
-    const { name, value } = event.target
-    setCurrentTrip({ ...currentTrip, [name]: value })
+    const { name, value, checked } = event.target
+    if(event.target.type !== "checkbox"){
+      setCurrentTrip({ ...currentTrip, [name]: value })
+    } else setCurrentTrip({ ...currentTrip, [name]: checked })
   }
 
   const updateStatus = status => {
@@ -74,46 +80,38 @@ const EditTrip = (props) => {
     })
   }
   return (
-    <div>
+    <Template>
       {currentTrip ? (
         <div>
-          <h4>UPDATE Trip</h4>
-          <form>
-            <div>
-              <label>Name</label>
-              <input
+          <h2>UPDATE Trip</h2>
+          <Form>
+              <Input
                 type="text"
                 id="name"
                 name="name"
                 value={currentTrip.name}
                 onChange={handleInputChange}
               />
-            </div>
-            <div>
-              <label>
-                <strong>Status:</strong>
-              </label>
-              {currentTrip.confirmed ? "Confirmed" : "Pending"}
-            </div>
-          </form>
-          {currentTrip.confirmed ? (
-            <button onClick={() => updateStatus(false)}>
-              Un-confirm
-            </button>
-          ) : (
-            <button onClick={() => updateStatus(true)}>
-              Confirm
-            </button>
-          )}
-          <button onClick={removeTrip}>
-            Delete
-          </button>
-          <button
+              <Toggle 
+                id="confirmed" 
+                name="confirmed" 
+                value={currentTrip.confirmed} 
+                onChange={handleInputChange}
+              />
+          </Form>
+          {/* {currentTrip.confirmed && (
+            <Button text="Un-confirm" onClick={() => updateStatus(false)}/>
+          )  */}
+          {/* // (
+          //   <Button text="Confirm" onClick={() => updateStatus(true)}/>
+          // ) */}
+          {/* } */}
+          <Button
             type="submit"
+            text="Update"
             onClick={updateContent}
-          >
-            Update
-          </button>
+          />
+          <Button text="Delete" onClick={removeTrip}/>
           <p>{message}</p>
         </div>
       ) : (
@@ -122,8 +120,12 @@ const EditTrip = (props) => {
           <p>Select a trip</p>
         </div>
       )}
-    </div>
+    </Template>
   )
 }
+
+const Button = styled(StyledButton)`
+  margin: 0px 10px 10px 0px;
+`
 
 export default EditTrip

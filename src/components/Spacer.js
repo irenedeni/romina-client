@@ -1,15 +1,15 @@
 import React from "react"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 
 function Spacer(props) {
-
   return (
-    <StyledSpacer {...props} />
+    <StyledSpacer {...props}  />
   )
 }
 
 const StyledSpacer = styled.div`
- height: ${props => props.small ? "15px" : props.medium ? "35px" : props.large ? "50px" : "15px"};
+  display: flex;
+  height: ${props => props.small ? "15px" : props.medium ? "35px" : props.large ? "50px" : "20px"};
 `
 
 export default Spacer

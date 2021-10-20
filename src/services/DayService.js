@@ -1,16 +1,12 @@
 // axios imported as http
 import http from "../http-common"
 
-const getAll = () => {
-  return http.get("/trips")
-}
-
 const get = (id, tripId) => {
   return http.get(`/trips/${tripId}/days/${id}`)
 }
 
-const create = (data) => {
-  return http.post("/trips", data)
+const create = (id, data) => {
+  return http.post(`/trips/${id}/days`, data)
 }
 
 const update = (id, data) => {

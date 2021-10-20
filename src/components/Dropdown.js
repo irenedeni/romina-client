@@ -1,14 +1,21 @@
 import React, { useState } from "react"
 import styled, { css } from "styled-components"
 
-function Checkbox(props) {
-  console.log("props.value",props.value)
+function Dropdown(props) {
+  // let options = data.map(data => (
+  //   <option key={data.id} value={data.id}>
+  //     {data.name}
+  //   </option>
+  // ))
+
   return (
     <Container>
       <Label>{props.name[0].toUpperCase() + props.name.substring(1)}</Label>
-      <StyledCheckbox 
-        {...props}
-      />
+      {/* <select
+        name="se"
+      >
+
+      </select> */}
     </Container>
   )
 }
@@ -53,17 +60,17 @@ const StyledCheckbox = styled.input.attrs({
   box-sizing: border-box;
   text-align: center;
   transition: all 0.3s ease-in 0s;
-  background-color: #ff6428;
+  background-color: #444444;
   border-radius: 3px;
   left: 2%;
   content: "";
   ${props => props.value && css`
     left: 53%;
-    background-color: #05b55c;
+    background-color: #6adda2;
     content: "";
     color: #fff;
   `}    
 }
 `
 
-export default Checkbox
+export default Dropdown

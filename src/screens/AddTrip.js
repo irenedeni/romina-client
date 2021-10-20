@@ -1,10 +1,7 @@
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import { createTrip } from "../actions/trips"
-import Form from "../components/Form"
-import Input from "../components/Input"
-import Checkbox from "../components/Checkbox"
-import Template from "../components/Template"
+import { Toggle, Input, Template, Form, Button, Dropdown } from "../components"
 
 const AddTrip = () => {
 
@@ -82,18 +79,20 @@ console.log('trip', trip)
             required 
             onChange={handleInputChange}
           />
-          <Checkbox 
+          <Toggle 
             id="confirmed" 
             name="confirmed" 
             value={trip.confirmed} 
             onChange={handleInputChange}
           />
+          {/* <Dropdown 
+          /> */}
         </Form>
       </div>
     : 
       <div>
         <h4>New trip submitted successfully</h4>
-        <button onClick={newTrip}>Add more</button>
+        <Button onClick={newTrip} text="Add more" />
       </div>
   }
   </Template>

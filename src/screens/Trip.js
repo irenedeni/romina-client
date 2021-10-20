@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+import styled from "styled-components"
 import { useDispatch } from "react-redux"
 import { Link } from "react-router-dom"
 import moment from "moment"
@@ -6,6 +7,8 @@ import moment from "moment"
 import { calendarObject } from "../lib/tripFunctions"
 import { updateTrip, deleteTrip } from "../actions/trips"
 import TripDataService from "../services/TripService"
+import { Toggle, Input, Template, Form, Button as StyledButton, Dropdown } from "../components"
+
 
 const Trip = (props) => {
   const initialTripState = {
@@ -45,16 +48,12 @@ const Trip = (props) => {
   }
 
   return (
-    <div>
+    <Template>
       <div>
       </div>
       {currentTrip ? (
         <div>
-          <h4>{currentTrip.name}</h4>
-          <Link
-            to={`/edit/trips/${currentTrip.id}`}>
-              <div style={{width: 'max-content', border: '1px solid black', padding: '5px 10px', margin: '10px'}}>EDIT</div>
-              </Link>
+          <h2>{currentTrip.name}</h2>
           {currentTrip.days?.map((day, index) => (
           <div key={index}>
             <div>Day {`${index + 1}:`} {moment(day.date).calendar(calendarObject)}</div>  
@@ -82,9 +81,11 @@ const Trip = (props) => {
           </div>
           )
           )}
-          <button onClick={removeTrip}>
-            Delete
-          </button>
+            <Link
+              to={`/edit/trips/${currentTrip.id}`}>
+              <Button text="Edit" />
+            </Link>
+           <Button text="Delete trip" onClick={removeTrip}/>
           <p>{message}</p>
         </div>
       ) : (
@@ -93,8 +94,12 @@ const Trip = (props) => {
           <p>Select a trip</p>
         </div>
       )}
-    </div>
+    </Template>
   )
 }
+
+const Button = styled(StyledButton)`
+  margin: 20px 10px 20px 0px;
+`
 
 export default Trip

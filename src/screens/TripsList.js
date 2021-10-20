@@ -9,6 +9,7 @@ import {
   findTripsByName,
   deleteAllTrips
 } from "../actions/trips"
+import { Toggle, Input, Template, Form, Dropdown, Spacer, Button } from "../components"
 
 
 const TripsList = () => {
@@ -52,9 +53,13 @@ const TripsList = () => {
     })
   }
 
-  const findByName = () => {
+  const findByName = (e) => {
+    e.preventDefault()
     refreshData()
     dispatch(findTripsByName(searchName))
+    .then(res => {
+      console.log("res",res)
+    })
   }
 
   const findTripRange = (daysArray) => {
@@ -69,35 +74,29 @@ const TripsList = () => {
   }
 
   return (
-    <>
-      <div>
-        <form>
-          <div>
-            <input
-            type="text"
-            placeholder="search by trip name"
-            value={searchName}
-            onChange={onChangeSearchName}
-          />
-          </div>
-          <div>
-            <button
-              type="button"
-              onClick={findByName}>
-              Search
-            </button>
-          </div>
-        </form>
-      </div>
-      <div>
-        <h4>Trips list</h4>
-        <ul>
+    <Template direction="vertical">
+      <Form>
+        <Input
+          type="text"
+          placeholder="search by trip name"
+          value={searchName}
+          onChange={onChangeSearchName}
+        />
+        <Button
+          onClick={findByName} 
+          text="Search"
+          maxWidth
+        />
+      </Form>
+    <Spacer />
+      <ListContainer>
+        <h2>Trips list</h2>
+        <TripsContainer>
           {trips &&
           trips.map((trip, index) => {
             const tripRange = findTripRange(trip?.days)
           return (
-            
-            <li 
+            <TripContainer 
             key={index}
               className={index === currentIndex ? "active" : ""}
               style={{marginBottom: '20px'}}
@@ -112,35 +111,60 @@ const TripsList = () => {
                 Until: {`${moment(tripRange[tripRange?.length - 1].date).calendar(null, calendarObject)}`} 
               </div>
               <TripButtonsDiv active={currentTrip && (index === currentIndex)}>
-                <Link to={"/trips/" + trip.id} >
-                  <div style={{width: 'max-content', border: '1px solid black', padding: '5px 10px', margin: '10px'}}>
-                    Open trip
-                  </div>
+                <Link to={"/trips/" + trip.id}>
+                  <Button small text="open" style={{margin: "10px 10px 0px 0px"}}/>
                 </Link>
                 <Link to={"/edit/trips/" + trip.id}>
-                  <div style={{width: 'max-content', border: '1px solid black', padding: '5px 10px', margin: '10px'}}>
-                    edit trip
-                  </div>
+                  <Button small text="edit" style={{marginTop: "10px"}}/>
                 </Link>
               </TripButtonsDiv>
-            </li>
+            </TripContainer>
           )})
           }
-        </ul>
-        <button onClick={removeAllTrips}>
-          Remove all
-        </button>
-      </div>
-    </>
+        </TripsContainer>
+        <Spacer medium />
+        <Button onClick={removeAllTrips} text="REMOVE ALL"/>
+      </ListContainer>
+    </Template>
   )
 }
 
-const TripName = styled.div`
+const TripName = styled.h4`
   font-weight: ${props => props.active && '700'};
+  :hover {
+    cursor: pointer;
+    font-weight: 700;
+  }
+`
+
+const ListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`
+
+const TripsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+`
+
+const TripContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: #e9e6e6;
+  width: 250px;
 `
 
 const TripButtonsDiv = styled.div`
   display: ${props => props.active ? 'flex' : 'none'};
+  width: 100%;
 `
 
 export default TripsList

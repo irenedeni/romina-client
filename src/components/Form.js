@@ -9,11 +9,15 @@ function Form(props) {
     <Container onSubmit={props.onSubmit}>
       {props.children}
       <Spacer small/>
-      <Button  
-        type="submit" 
-        onClick={props.onClick} 
-        text="Submit"
-      />
+      {(props.onSubmit || props.onClick) &&
+        <Button  
+          type="submit" 
+          maxWidth
+          onClick={props.onClick} 
+          text={props.btnText || "Submit"}
+        />
+      }
+      
     </Container>
   )
 }
@@ -22,6 +26,7 @@ const Container = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 `
 
 export default Form

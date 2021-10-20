@@ -7,7 +7,9 @@ const label = props.name?.split(/(?=[A-Z])/).join(" ")
 
   return (
     <Container>
-      <Label>{label[0].toUpperCase() + label.substring(1)}</Label>
+      {label &&
+        <Label>{label[0].toUpperCase() + label.substring(1)}</Label>
+      }
       <StyledInput {...props}/>
     </Container>
   )
