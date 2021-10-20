@@ -39,7 +39,6 @@ const TripsList = () => {
   const setActiveTrip = (trip, index) => {
     setCurrentTrip(trip)
     setCurrentIndex(index)
-    console.log(currentTrip, currentIndex)
   }
 
   const removeAllTrips = () => {

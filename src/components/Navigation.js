@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 
 
 function Navigation(props) {
-console.log("props.navElements",props.navElements)
   return (
     <NavContainer>
       <ElementsContainer>

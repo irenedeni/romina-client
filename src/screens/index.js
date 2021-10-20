@@ -4,6 +4,7 @@ import AddTrip from "./AddTrip"
 import EditTrip from "./EditTrip"
 import Trip from "./Trip"
 import TripsList from "./TripsList"
+import AddSlot from "./AddSlot"
 
 export {
   Day,
@@ -11,5 +12,6 @@ export {
   AddTrip,
   EditTrip,
   Trip,
-  TripsList
+  TripsList,
+  AddSlot
 }

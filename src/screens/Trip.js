@@ -56,15 +56,18 @@ const Trip = (props) => {
           <h2>{currentTrip.name}</h2>
           {currentTrip.days?.map((day, index) => (
           <div key={index}>
-            <div>Day {`${index + 1}:`} {moment(day.date).calendar(calendarObject)}</div>  
-            {console.log(day)}
+            <div><b>Day {`${index + 1}:`} {moment(day.date).calendar(calendarObject)}</b></div>  
+            <Link to={`/days/${day.id}/slots`}>
+              <Button text="add slot" small/>
+            </Link>
             {day.slots?.map((slot, index) => {
               return (
-                <div key={index} style={{border: "1px solid black", maxWidth: "max-content", padding: "5px 20px", margin: "10px 0px"}}>
+                <SlotContainer key={index}>
                   <b>SLOT</b>
                   <p>TIMEFRAME: {slot.timeframe}</p>
                   <p>LENGTH: {slot.stayType}</p>
                   <p>CARER: {slot.carer?.name}</p>
+                  <Button small text="Add carer" />
                   <div>
                     {slot.tasks?.map((task, index) => {
                       return (
@@ -75,7 +78,7 @@ const Trip = (props) => {
                       )
                     })}
                   </div>
-                </div>
+                </SlotContainer>
               )
             })}
           </div>
@@ -91,7 +94,7 @@ const Trip = (props) => {
       ) : (
         <div>
           <br />
-          <p>Select a trip</p>
+          <p>The trip selected does not exist</p>
         </div>
       )}
     </Template>
@@ -100,6 +103,15 @@ const Trip = (props) => {
 
 const Button = styled(StyledButton)`
   margin: 20px 10px 20px 0px;
+`
+
+const SlotContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: #e9e6e6;
+  width: 250px;
 `
 
 export default Trip
