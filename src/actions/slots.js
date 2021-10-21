@@ -8,14 +8,11 @@ import SlotDataService from "../services/SlotService"
 
 export const createSlot = (dayId, data) => async (dispatch) => {
 
-const { timeframe, stayType, notes } = data
-console.log("dayId", dayId)
-console.log("timeframe", timeframe)
-console.log("stayType", stayType)
-console.log("notes", notes)
+const { timeframe, stayType, notes, carerId } = data
+console.log("carerId in action", carerId)
 
   try {
-    const res = await SlotDataService.create({ dayId, timeframe, stayType, notes })
+    const res = await SlotDataService.create({ dayId, timeframe, stayType, notes, carerId })
     dispatch({
       type: CREATE_SLOT,
       payload: res.data

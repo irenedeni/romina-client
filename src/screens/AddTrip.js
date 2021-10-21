@@ -47,7 +47,6 @@ const AddTrip = () => {
     setTrip(initialTripState)
     setSubmitted(false)
   }
-console.log('trip', trip)
 
   return (
     <Template>

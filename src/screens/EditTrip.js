@@ -40,24 +40,6 @@ const EditTrip = (props) => {
     } else setCurrentTrip({ ...currentTrip, [name]: checked })
   }
 
-  const updateStatus = status => {
-    const data = {
-      id: currentTrip.id,
-      name: currentTrip.name,
-      confirmed: status
-    }
-
-    dispatch(updateTrip(currentTrip.id, data))
-    .then(res => {
-      console.log(res)
-
-      setCurrentTrip({ ...currentTrip, confirmed: status })
-      setMessage("status updated successfully")
-    })
-    .catch(e => {
-      console.log(e)
-    })
-  }
 
   const updateContent = () => {
     dispatch(updateTrip(currentTrip.id, currentTrip))

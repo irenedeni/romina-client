@@ -9,3 +9,4 @@ export const UPDATE_SLOT = "UPDATE_SLOT"
 export const DELETE_SLOT = "DELETE_SLOT"
 
 export const CREATE_CARER = "CREATE_CARER"
+export const RETRIEVE_CARERS = "RETRIEVE_CARERS"

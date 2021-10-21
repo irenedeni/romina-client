@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import moment from "moment"
 import styled from "styled-components"
-import { calendarObject } from "../lib/tripFunctions"
+import { calendarObject } from "../lib/functionsAndObjects"
 import {
   retrieveTrips,
   findTripsByName,

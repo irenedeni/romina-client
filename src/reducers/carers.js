@@ -1,5 +1,6 @@
 import {
   CREATE_CARER,
+  RETRIEVE_CARERS
 } from "../actions/types"
 
 const initialState = []
@@ -11,8 +12,8 @@ switch (type) {
   case CREATE_CARER:
     return [...carers, payload]
 
-  // case RETRIEVE_TRIPS:
-  //   return payload
+  case RETRIEVE_CARERS:
+    return payload
 
   // case UPDATE_TRIP:
   //   return trips.map((trip) => {

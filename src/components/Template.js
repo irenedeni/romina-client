@@ -15,7 +15,13 @@ const TemplateContainer = styled.div`
   flex-direction: ${props => props.direction === "vertical" ? "column" : "row"};
   justify-content: center;
   align-items: center;
-  margin: 60px auto;
+  margin: 60px 140px;
+  @media(max-width: 1000px){
+    margin: 60px 50px;
+  };
+  @media(max-width: 600px){
+    margin: 60px 30px;
+  }
 `
 
 export default Template

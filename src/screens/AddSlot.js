@@ -1,7 +1,9 @@
-import React, { useState } from "react"
-import { useDispatch } from "react-redux"
+import React, { useState, useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { createSlot } from "../actions/slots"
+import { retrieveCarers } from "../actions/carers"
 import { Toggle, Input, Template, Form, Button, Dropdown } from "../components"
+import { fromCarerNameToId } from "../lib/functionsAndObjects"
 
 const AddSlot = (props) => {
 
@@ -10,14 +12,22 @@ const AddSlot = (props) => {
     timeframe: "",
     stayType: "",
     notes: "",
-    carerId: null,
+    carer: "",
     dayId: props.match.params.id
   }
   const [slot, setSlot] = useState(initialSlotState)
 
   const [submitted, setSubmitted] = useState()
 
+  const carers = useSelector(state => state.carers)
+
+
   const dispatch = useDispatch()
+
+  useEffect(()=> {
+    dispatch(retrieveCarers())
+  }, [dispatch])
+
 
   const handleInputChange = event => {
     event.preventDefault()
@@ -26,13 +36,15 @@ const AddSlot = (props) => {
   }
 
   const saveSlot = () => {
-    const { dayId, timeframe, stayType, notes, carerId } = slot
+    const { dayId, timeframe, stayType, notes, carer } = slot
+    console.log("romCarerNameToId(carer, carers)", fromCarerNameToId(carer, carers))
     const data = {
       timeframe: timeframe,
       stayType: stayType,
       notes: notes,
-      carerId: carerId ? carerId : null,
+      carerId: carer ? fromCarerNameToId(carer, carers) : null,
     }
+    console.log("data", data)
 
     dispatch(createSlot(dayId, data))
     .then(data => {
@@ -56,7 +68,6 @@ const AddSlot = (props) => {
     setSlot(initialSlotState)
     setSubmitted(false)
   }
-console.log('SLOT', slot)
 
   return (
     <Template>
@@ -87,6 +98,13 @@ console.log('SLOT', slot)
             value={slot.notes}  
             onChange={handleInputChange}
           />
+          <Input 
+            type="text" 
+            id="carer" 
+            name="carer" 
+            value={slot.carerId}  
+            onChange={handleInputChange}
+          /> 
           
         </Form>
       </div>
