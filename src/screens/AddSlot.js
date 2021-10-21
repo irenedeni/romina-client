@@ -10,7 +10,7 @@ const AddSlot = (props) => {
     timeframe: "",
     stayType: "",
     notes: "",
-    // carerId: null,
+    carerId: null,
     dayId: props.match.params.id
   }
   const [slot, setSlot] = useState(initialSlotState)
@@ -26,12 +26,12 @@ const AddSlot = (props) => {
   }
 
   const saveSlot = () => {
-    const { dayId, timeframe, stayType, notes } = slot
+    const { dayId, timeframe, stayType, notes, carerId } = slot
     const data = {
       timeframe: timeframe,
       stayType: stayType,
       notes: notes,
-      // carerId: carerId,
+      carerId: carerId ? carerId : null,
     }
 
     dispatch(createSlot(dayId, data))
@@ -42,7 +42,7 @@ const AddSlot = (props) => {
         timeframe: data.timeframe,
         stayType: data.stayType,
         notes: data.notes,
-        // carerId: data.carerId ? data.carerId : null,
+        carerId: data.carerId ? data.carerId : null,
         dayId: data.dayId
       })
     })

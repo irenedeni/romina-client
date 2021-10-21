@@ -6,6 +6,10 @@ const create = (data) => {
   return http.post(`/days/${data.dayId}/slots`, data)
 }
 
+const update = (id, data) => {
+  return http.put(`/days/${data.dayId}/slots/${id}`, data)
+}
+
 // const get = (id, dayId, tripId) => {
 //   return http.get(`/trips/${tripId}/days/${dayId}/slots/${id}`)
 // }
@@ -15,9 +19,7 @@ const create = (data) => {
 //   return http.put(`/trips/${tripId}/days/${dayId}/slots/${slotId}/tasks/${id}`, data)
 // }
 
-// const update = (id, dayId, tripId, data) => {
-//   return http.put(`/trips/${tripId}/days/${dayId}/slots/${id}`, data)
-// }
+
 
 // const remove = (id, dayId, tripId, data) => {
 //   return http.delete(`/trips/${tripId}/days/${dayId}/${id}`, data)
@@ -31,7 +33,7 @@ const create = (data) => {
 const SlotService = {
   // addTask,
   create,
-  // update,
+  update,
   // remove,
   // removeAll,
   // get

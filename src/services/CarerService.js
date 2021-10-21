@@ -29,7 +29,7 @@ const findByName = name => {
   return http.get(`/carers?name=${name}`)
 }
 
-const TripService = {
+const CarerService = {
   getAll,
   get,
   create,

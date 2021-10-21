@@ -10,5 +10,9 @@ export const navElements = [
   {
     href: "/add_trip",
     name: "Add Trip"
+  },
+  {
+    href: "/add_carer",
+    name: "Add Carer"
   }
 ]

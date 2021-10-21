@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import './App.css'
-import { AddTrip, Trip, TripsList, EditTrip, AddSlot } from "./screens"
+import { AddTrip, Trip, TripsList, EditTrip, AddSlot, AddCarer } from "./screens"
 import { Navigation } from "./components"
 import { navElements } from './lib/navElements'
 
@@ -15,6 +15,7 @@ function App() {
           <Route path={"/trips/:id"} component={Trip} />
           <Route path={"/edit/trips/:id"} component={EditTrip} />
           <Route path={"/days/:id/slots"} component={AddSlot} />
+          <Route path={"/add_carer"} component={AddCarer} />
         </Switch>
       </div>
     </Router>
