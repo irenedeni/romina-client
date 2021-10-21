@@ -37,18 +37,15 @@ const AddSlot = (props) => {
 
   const saveSlot = () => {
     const { dayId, timeframe, stayType, notes, carer } = slot
-    console.log("romCarerNameToId(carer, carers)", fromCarerNameToId(carer, carers))
     const data = {
       timeframe: timeframe,
       stayType: stayType,
       notes: notes,
       carerId: carer ? fromCarerNameToId(carer, carers) : null,
     }
-    console.log("data", data)
 
     dispatch(createSlot(dayId, data))
     .then(data => {
-      console.log("DATA!", data)
       setSlot({
         id: data.id,
         timeframe: data.timeframe,
@@ -105,7 +102,6 @@ const AddSlot = (props) => {
             value={slot.carerId}  
             onChange={handleInputChange}
           /> 
-          
         </Form>
       </div>
     : 

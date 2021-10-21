@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react"
 import styled from "styled-components"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { updateSlot, deleteSlot } from "../actions/slots"
+import { retrieveCarers } from "../actions/carers"
 import SlotDataService from "../services/SlotService"
 import { Toggle, Input, Template, Form, Dropdown, Spacer, Button as StyledButton } from "../components"
+import { fromCarerNameToId } from "../lib/functionsAndObjects"
 
 
 const EditSlot = (props) => {
@@ -12,17 +14,22 @@ const EditSlot = (props) => {
     timeframe: "",
     stayType: "",
     notes: "",
-    carerId: null,
+    carer: {},
   }
 
   const [currentSlot, setCurrentSlot] = useState(initialSlotState)
   const [message, setMessage] = useState("")
+
+  const carers = useSelector(state => state.carers)
+  console.log("carers", carers)
+
 
   const dispatch = useDispatch()
 
   const getSlot = id => {
     SlotDataService.get(id)
     .then(res => {
+      console.log("res data", res.data)
       setCurrentSlot(res.data)
     })
     .catch(e => {
@@ -34,6 +41,9 @@ const EditSlot = (props) => {
     getSlot(props.match.params.id)
   }, [props.match.params.id])
 
+  useEffect(()=> {
+    dispatch(retrieveCarers())
+  }, [dispatch])
 
   const handleInputChange = event => {
     const { name, value } = event.target
@@ -41,6 +51,9 @@ const EditSlot = (props) => {
   }
 
   const updateContent = () => {
+    console.log("currentSlot", currentSlot)
+    const updatedCarer = fromCarerNameToId(currentSlot.carer, carers)
+    currentSlot.carerId = updatedCarer.id
     dispatch(updateSlot(currentSlot.id, currentSlot))
     .then(res => {
       console.log(res)
@@ -60,6 +73,9 @@ const EditSlot = (props) => {
       console.log(e)
     })
   }
+  console.log("current slot", currentSlot)
+
+  
   return (
     <Template>
       {currentSlot ? (
@@ -89,9 +105,9 @@ const EditSlot = (props) => {
               />
               <Input
                 type="text"
-                id="carerId"
-                name="carerId"
-                value={currentSlot.carerId}
+                id="carer"
+                name="carer"
+                value={currentSlot.carer?.name}
                 onChange={handleInputChange}
               />
               
