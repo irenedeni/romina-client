@@ -78,6 +78,9 @@ const Trip = (props) => {
                       )
                     })}
                   </div>
+                  <Link to={`/edit/slots/${slot.id}`}>
+                    <Button small text="Edit slot" />
+                  </Link>
                 </SlotContainer>
               )
             })}

@@ -1,6 +1,7 @@
 import { 
   CREATE_SLOT,
-  UPDATE_SLOT
+  UPDATE_SLOT,
+  DELETE_SLOT
 } from "./types"
 
 import SlotDataService from "../services/SlotService"
@@ -38,6 +39,18 @@ export const updateSlot = (id, data) => async (dispatch) => {
   }
 }
 
+export const deleteSlot = (id) => async (dispatch) => {
+  try {
+    await SlotDataService.remove(id)
+    dispatch({
+      type: DELETE_SLOT,
+      payload: { id }
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 // export const retrieveSlots = () => async (dispatch) => {
 //   try {
 //     const res = await SlotDataService.getAll()
@@ -52,17 +65,7 @@ export const updateSlot = (id, data) => async (dispatch) => {
 
 
 
-// export const deleteSlot = (id) => async (dispatch) => {
-//   try {
-//     await SlotDataService.remove(id)
-//     dispatch({
-//       type: DELETE_SLOT,
-//       payload: { id }
-//     })
-//   } catch (err) {
-//     console.log(err)
-//   }
-// }
+
 
 // export const deleteAllSlots = () => async (dispatch) => {
 //   try {

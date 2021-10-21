@@ -5,13 +5,15 @@ import EditTrip from "./EditTrip"
 import Trip from "./Trip"
 import TripsList from "./TripsList"
 import AddSlot from "./AddSlot"
+import EditSlot from "./EditSlot"
 
 export {
   Day,
-  AddCarer,
   AddTrip,
   EditTrip,
   Trip,
   TripsList,
-  AddSlot
+  AddSlot,
+  AddCarer,
+  EditSlot
 }

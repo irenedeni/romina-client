@@ -2,7 +2,6 @@ import http from "../http-common"
 
 
 const create = (data) => {
-  console.log("ddata",  data)
   return http.post(`/days/${data.dayId}/slots`, data)
 }
 
@@ -10,9 +9,9 @@ const update = (id, data) => {
   return http.put(`/days/${data.dayId}/slots/${id}`, data)
 }
 
-// const get = (id, dayId, tripId) => {
-//   return http.get(`/trips/${tripId}/days/${dayId}/slots/${id}`)
-// }
+const get = (id, dayId, tripId) => {
+  return http.get(`/days/${dayId}/slots/${id}`)
+}
 
 
 // const addTask = (id, dayId, tripId, slotId, data) => {
@@ -20,10 +19,10 @@ const update = (id, data) => {
 // }
 
 
+const remove = (id, data) => {
+  return http.delete(`/days/${data.dayId}/slots/${id}`)
+}
 
-// const remove = (id, dayId, tripId, data) => {
-//   return http.delete(`/trips/${tripId}/days/${dayId}/${id}`, data)
-// }
 
 // const removeAll = (dayId, tripId) => {
 //   return http.delete(`/trips/${tripId}/days/${dayId}/slots`)
@@ -34,9 +33,9 @@ const SlotService = {
   // addTask,
   create,
   update,
-  // remove,
+  remove,
   // removeAll,
-  // get
+  get
 }
 
 export default SlotService

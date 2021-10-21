@@ -1,6 +1,7 @@
 import {
   CREATE_SLOT,
-  UPDATE_SLOT
+  UPDATE_SLOT,
+  DELETE_SLOT
 } from "../actions/types"
 
 const initialState = []
@@ -26,9 +27,8 @@ switch (type) {
         return slot
       }
     })
-
-  // case DELETE_TRIP:
-  //   return trips.filter(({ id }) => id !== payload.id)
+    case DELETE_SLOT:
+    return slots.filter(({ id }) => id !== payload.id)
 
   // case DELETE_ALL_TRIPS:
   //   return []
