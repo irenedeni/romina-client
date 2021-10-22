@@ -1,38 +1,23 @@
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import './App.css'
-import AddTrip from './components/AddTrip'
-import Trip from './components/Trip'
-import TripsList from './components/TripsList'
-import EditTrip from './components/EditTrip'
-
+import { AddTrip, Trip, TripsList, EditTrip, AddSlot, AddCarer, EditSlot, AddTask } from "./screens"
+import { Navigation } from "./components"
+import { navElements } from './lib/navElements'
 
 function App() {
   return (
     <Router>
-      <nav>
-        <a href="/trips">
-          Romina
-        </a>
-        <div>
-          <li>
-            <Link to={"/trips"}>
-              Trips
-            </Link>
-          </li>
-          <li>
-            <Link to={"/add"}>
-              Add Trip
-            </Link>
-          </li>
-        </div>
-      </nav>
-
+      <Navigation navElements={navElements} />
       <div>
         <Switch>
           <Route exact path={["/", "/trips"]} component={TripsList} />
-          <Route exact path={"/add"} component={AddTrip} />
+          <Route exact path={"/add_trip"} component={AddTrip} />
           <Route path={"/trips/:id"} component={Trip} />
           <Route path={"/edit/trips/:id"} component={EditTrip} />
+          <Route path={"/days/:id/slots"} component={AddSlot} />
+          <Route path={"/add_carer"} component={AddCarer} />
+          <Route path={"/edit/slots/:id"} component={EditSlot} />
+          <Route path={"/add_task"} component={AddTask} />
         </Switch>
       </div>
     </Router>
@@ -40,4 +25,4 @@ function App() {
 }
 
 
-export default App;
+export default App

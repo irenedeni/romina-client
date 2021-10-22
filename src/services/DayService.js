@@ -1,35 +1,31 @@
-// axios imported as http
 import http from "../http-common"
 
-const getAll = () => {
-  return http.get("/trips")
+const getAll = (tripId) => {
+  return http.get(`/trips/${tripId}/days/`)
 }
 
 const get = (id, tripId) => {
   return http.get(`/trips/${tripId}/days/${id}`)
 }
 
-const create = (data) => {
-  return http.post("/trips", data)
+const create = (id, data) => {
+  return http.post(`/trips/${id}/days`, data)
 }
 
-const update = (id, data) => {
-  return http.put(`/carers/${id}`, data)
+const update = (id, tripId, data) => {
+  return http.put(`/trips/${tripId}/days/${id}`, data)
 }
 
-const remove = id => {
-  return http.delete(`/carers/${id}`)
+const remove = (id, tripId, data) => {
+  return http.delete(`/trips/${tripId}/days/${id}`, data)
 }
 
-const removeAll = () => {
-  return http.delete("/carers")
+const removeAll = (tripId) => {
+  return http.delete(`/trips/${tripId}/days`)
 }
 
-const findByName = name => {
-  return http.get(`/carers?name=${name}`)
-}
 
-const TripService = {
+const DayService = {
   getAll,
   get,
   create,

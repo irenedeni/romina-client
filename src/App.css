@@ -1,4 +1,22 @@
-.list {
+body {
+  margin: 0px;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  margin: 5px auto;
+}
+
+
+/* .list {
   text-align: left;
   max-width: 750px;
   margin: auto;
@@ -12,4 +30,4 @@
 .edit-form {
   max-width: 300px;
   margin: auto;
-}
+} */
