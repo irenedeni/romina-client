@@ -9,14 +9,14 @@ const update = (id, data) => {
   return http.put(`/days/${data.dayId}/slots/${id}`, data)
 }
 
-const get = (id, dayId, tripId) => {
+const get = (id, dayId) => {
   return http.get(`/days/${dayId}/slots/${id}`)
 }
 
 
-// const addTask = (id, dayId, tripId, slotId, data) => {
-//   return http.put(`/trips/${tripId}/days/${dayId}/slots/${slotId}/tasks/${id}`, data)
-// }
+const addTask = (id, slotId) => {
+  return http.put(`/slots/${slotId}/tasks/${id}`)
+}
 
 
 const remove = (id, data) => {
@@ -30,7 +30,7 @@ const remove = (id, data) => {
 
 
 const SlotService = {
-  // addTask,
+  addTask,
   create,
   update,
   remove,

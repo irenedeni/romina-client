@@ -10,3 +10,5 @@ export const DELETE_SLOT = "DELETE_SLOT"
 
 export const CREATE_CARER = "CREATE_CARER"
 export const RETRIEVE_CARERS = "RETRIEVE_CARERS"
+
+export const CREATE_TASK = "CREATE_TASK"

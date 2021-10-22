@@ -48,6 +48,19 @@ export const deleteSlot = (id) => async (dispatch) => {
   }
 }
 
+export const addTaskToSlot = (slotId, taskId) => async (dyspatch) => {
+  // try {
+  //   const res = await SlotDataService.addTask(slotId, taskId)
+  //   dispatch({
+  //     type: ADD_TASK_TO_SLOT,
+  //     payload: { slotId, taskId }
+  //   })
+  //   return Promise.resolve(res.data)
+  // } catch (err) {
+  //   return Promise.reject(err)
+  // }
+}
+
 // export const retrieveSlots = () => async (dispatch) => {
 //   try {
 //     const res = await SlotDataService.getAll()

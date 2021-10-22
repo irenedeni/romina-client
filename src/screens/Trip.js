@@ -18,7 +18,6 @@ const Trip = (props) => {
   }
 
   const [currentTrip, setCurrentTrip] = useState(initialTripState)
-  const [message, setMessage] = useState("")
 
   const dispatch = useDispatch()
 
@@ -46,18 +45,18 @@ const Trip = (props) => {
       console.log(e)
     })
   }
-
+console.log("currentTrip", currentTrip)
   return (
     <Template>
-      {currentTrip ? (
+      {currentTrip?.id ? (
         <PageContainer>
-          <h2>{currentTrip.name.toUpperCase()}</h2>
+          <h1>{currentTrip.name.toUpperCase()}</h1>
           <TripContainer>
           {currentTrip.days?.map((day, index) => (
           <DayContainer key={index}>
-            <b>Day {`${index + 1}:`} {moment(day.date).calendar(calendarObject)}</b>  
+            <h3>Day {`${index + 1}:`} {moment(day.date).calendar(calendarObject)}</h3>  
             <Link to={`/days/${day.id}/slots`}>
-              <Button text="add slot" small/>
+              <Button text="Add slot"/>
             </Link>
             {day.slots?.map((slot, index) => {
               return (
@@ -68,24 +67,31 @@ const Trip = (props) => {
                   <p>CARER: 
                   {!slot.carer?.name ?
                     <span> <Link to="/add_carer">
-                        <Button small text="Add carer" />
-                      </Link>
+                      <Button outlined small text="Add carer" />
+                    </Link>
                     </span>
                     : <span><b> {slot.carer.name}</b></span>
                   }
                   </p>
-                  <div>
-                    {slot.tasks?.map((task, index) => {
-                      return (
-                        <div key={index}>
-                          <p>Task #{index+1}</p>
-                          <p>{task.type}</p>
-                        </div>
-                      )
-                    })}
-                  </div>
+                  TASKS:
+                  <TasksAndBtnContainer>
+                    {slot.tasks?.length > 0 &&
+                      <TasksContainer>
+                      {slot.tasks?.map((task, index) => {
+                        return (
+                          <Task key={index}>
+                            {index + 1}) {task.type}
+                          </Task>
+                        )
+                      })}
+                    </TasksContainer>
+                    }
+                    <Link to="/add_task">
+                      <Button small text="Add task" />
+                    </Link>
+                  </TasksAndBtnContainer>
                   <Link to={`/edit/slots/${slot.id}`}>
-                    <Button small text="Edit slot" />
+                    <Button text="Edit slot"/>
                   </Link>
                 </SlotContainer>
               )
@@ -96,16 +102,14 @@ const Trip = (props) => {
           </TripContainer>
             <Link
               to={`/edit/trips/${currentTrip.id}`}>
-              <Button text="Edit" />
+              <Button text="Edit trip" />
             </Link>
            <Button text="Delete trip" onClick={removeTrip}/>
-          <p>{message}</p>
         </PageContainer>
       ) : (
-        <PageContainer>
-          <br />
+        <NotFoundContainer>
           <p>The trip selected does not exist</p>
-        </PageContainer>
+        </NotFoundContainer>
       )}
     </Template>
   )
@@ -121,8 +125,10 @@ const PageContainer = styled.div`
 const TripContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  padding: 10px 20px;
+  padding: 20px;
   background-color: #EAEAEA;
+  margin: 20px 0px;
+  justify-content: center;
 `
 
 const DayContainer = styled.div`
@@ -134,16 +140,45 @@ const DayContainer = styled.div`
 `
 
 const Button = styled(StyledButton)`
-  margin: 20px 10px 20px 0px;
+  margin: 10px 10px 10px 0px;
 `
 
 const SlotContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 15px;
-  margin: 5px;
   background-color: #e9e6e6;
   width: 200px;
+  margin: 0px 5px 10px 0px;
+`
+
+const TasksAndBtnContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background-color: #D8D8D8;
+  margin: 10px 0px;
+
+`
+
+const TasksContainer = styled.div`
+  display: flex;
+  color: #fff;
+`
+
+const NotFoundContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  font-weight: 700;
+`
+
+const Task = styled.div`
+  background-color: #fff;
+  border-radius: 2px;
+  color: #333;
+  font-size: 10px;
+  line-height: 11px;
+  padding: 3px 5px;
 `
 
 export default Trip
