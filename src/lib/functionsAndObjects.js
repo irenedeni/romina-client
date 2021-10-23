@@ -15,3 +15,11 @@ export function fromCarerNameToId(name, carersArray) {
   })
   return carer
 }
+
+export function orderSlotsByTimeframe (slotsArray){
+  if(slotsArray.length > 0){
+    const timeframePriority = ["general/unknown", "morning", "afternoon", "evening", "overnight"]
+    slotsArray.sort((a, b) => timeframePriority.indexOf(a.timeframe) - timeframePriority.indexOf(b.timeframe))
+    return slotsArray    
+  }
+}

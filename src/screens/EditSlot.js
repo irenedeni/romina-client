@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { updateSlot, deleteSlot } from "../actions/slots"
 import { retrieveCarers } from "../actions/carers"
 import SlotDataService from "../services/SlotService"
-import { Toggle, Input, Template, Form, Dropdown, Spacer, Button as StyledButton } from "../components"
+import { Input, Template, Form, Dropdown, Spacer, Button as StyledButton } from "../components"
 import { fromCarerNameToId } from "../lib/functionsAndObjects"
 
 
@@ -78,43 +78,35 @@ console.log("currentSlot", currentSlot)
         <div>
           <h2>UPDATE Slot</h2>
           <Form>
-              <Input
-                type="text"
-                id="timeframe"
-                name="timeframe"
-                value={currentSlot.timeframe}
-                onChange={handleInputChange}
-              />
-              <Input
-                type="text"
-                id="stayType"
-                name="stayType"
-                value={currentSlot.stayType}
-                onChange={handleInputChange}
-              />
-              <Input
-                type="text"
-                id="notes"
-                name="notes"
-                value={currentSlot.notes}
-                onChange={handleInputChange}
-              />
-              <Input
-                type="text"
-                id="carer"
-                name="carer"
-                value={currentSlot.carer?.name}
-                onChange={handleInputChange}
-              />
-              
+            <Input
+              type="text"
+              id="timeframe"
+              name="timeframe"
+              value={currentSlot.timeframe}
+              onChange={handleInputChange}
+            />
+            <Input
+              type="text"
+              id="stayType"
+              name="stayType"
+              value={currentSlot.stayType}
+              onChange={handleInputChange}
+            />
+            <Input
+              type="text"
+              id="notes"
+              name="notes"
+              value={currentSlot.notes}
+              onChange={handleInputChange}
+            />
+            <Dropdown
+              data={carers}
+              name="carer"
+              id="carer"
+              onChange={handleInputChange}
+              value={currentSlot.carer?.name}
+            />
           </Form>
-          {/* {currentSlot.confirmed && (
-            <Button text="Un-confirm" onClick={() => updateStatus(false)}/>
-          )  */}
-          {/* // (
-          //   <Button text="Confirm" onClick={() => updateStatus(true)}/>
-          // ) */}
-          {/* } */}
           <Button
             type="submit"
             text="Update"

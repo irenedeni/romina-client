@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { createSlot } from "../actions/slots"
 import { retrieveCarers } from "../actions/carers"
-import { Toggle, Input, Template, Form, Button, Dropdown } from "../components"
+import { Input, Template, Form, Button, Dropdown } from "../components"
 import { fromCarerNameToId } from "../lib/functionsAndObjects"
 
 const AddSlot = (props) => {
@@ -39,7 +39,6 @@ const AddSlot = (props) => {
     console.log("carer", carer)
 
     const carerObj = fromCarerNameToId(carer, carers)
-    console.log("carerObj", carerObj)
     const carerId = carerObj?.id
 
     const data = {
@@ -100,13 +99,6 @@ const AddSlot = (props) => {
             value={slot.notes}  
             onChange={handleInputChange}
           />
-          {/* <Input 
-            type="text" 
-            id="carer" 
-            name="carer" 
-            value={slot.carerId}  
-            onChange={handleInputChange}
-          />  */}
           <Dropdown
             data={carers}
             name="carer"

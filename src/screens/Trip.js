@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import moment from "moment"
 
-import { calendarObject } from "../lib/functionsAndObjects"
+import { calendarObject, orderSlotsByTimeframe } from "../lib/functionsAndObjects"
 import { updateTrip, deleteTrip } from "../actions/trips"
 import { retrieveTasks } from "../actions/tasks"
 import TripDataService from "../services/TripService"
-import { Toggle, Input, Template, Form, Button as StyledButton, Dropdown } from "../components"
+import { Template, Button as StyledButton } from "../components"
 
 
 const Trip = (props) => {
@@ -59,7 +59,6 @@ const Trip = (props) => {
   }
   
 console.log("currentTrip", currentTrip)
-console.log("tasks", tasks)
 
   return (
     <Template>
@@ -67,13 +66,14 @@ console.log("tasks", tasks)
         <PageContainer>
           <h1>{currentTrip.name.toUpperCase()}</h1>
           <TripContainer>
-          {currentTrip.days?.map((day, index) => (
+          {currentTrip.days?.map((day, index) => {
+          return (
           <DayContainer key={index}>
             <h3>Day {`${index + 1}:`} {moment(day.date).calendar(calendarObject)}</h3>  
             <Link to={`/days/${day.id}/slots`}>
               <Button text="Add slot"/>
             </Link>
-            {day.slots?.map((slot, index) => {
+            {day.slots.length > 0 && orderSlotsByTimeframe(day.slots).map((slot, index) => {
               return (
                 <SlotContainer key={index}>
                   <b>SLOT</b>
@@ -81,7 +81,7 @@ console.log("tasks", tasks)
                   <p>LENGTH: {slot.stayType}</p>
                   <p>CARER: 
                   {!slot.carer?.name ?
-                    <span> <Link to="/add_carer">
+                    <span> <Link to={`/edit/slots/${slot.id}`}>
                       <Button outlined small text="Add carer" />
                     </Link>
                     </span>
@@ -103,21 +103,24 @@ console.log("tasks", tasks)
                     }
                     <Button small text="Add task" />
                   </TasksAndBtnContainer>
-                  <Link to={`/edit/slots/${slot.id}`}>
-                    <Button text="Edit slot"/>
-                  </Link>
+                  <SlotButtonsContainer>
+                    <Link to={`/edit/slots/${slot.id}`}>
+                      <Button text="Edit slot" small/>
+                    </Link>
+                    <Button text="Delete slot" color="#6c6c6c" outlined small/>
+                  </SlotButtonsContainer>
                 </SlotContainer>
               )
             })}
           </DayContainer>
-          )
+          )}
           )}
           </TripContainer>
             <Link
               to={`/edit/trips/${currentTrip.id}`}>
               <Button text="Edit trip" />
             </Link>
-           <Button text="Delete trip" onClick={removeTrip}/>
+              <Button text="Delete trip" onClick={removeTrip}/>
         </PageContainer>
       ) : (
         <NotFoundContainer>
@@ -138,7 +141,7 @@ const PageContainer = styled.div`
 const TripContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  padding: 20px;
+  padding: 10px;
   background-color: #EAEAEA;
   margin: 20px 0px;
   justify-content: center;
@@ -147,13 +150,14 @@ const TripContainer = styled.div`
 const DayContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   margin: 10px;
   padding: 20px;
   background-color: #D8D8D8;
 `
 
 const Button = styled(StyledButton)`
-  margin: 10px 10px 10px 0px;
+  margin: ${props => props.small ? "5px 5px 5px 0px" : "10px 10px 10px 0px"};
 `
 
 const SlotContainer = styled.div`
@@ -162,7 +166,12 @@ const SlotContainer = styled.div`
   padding: 15px;
   background-color: #e9e6e6;
   width: 200px;
-  margin: 0px 5px 10px 0px;
+  margin: 10px 0px;
+`
+
+const SlotButtonsContainer = styled.div`
+  display: flex;
+  width: 100%;
 `
 
 const TasksAndBtnContainer = styled.div`
@@ -171,7 +180,6 @@ const TasksAndBtnContainer = styled.div`
   padding: 10px;
   background-color: #D8D8D8;
   margin: 10px 0px;
-
 `
 
 const TasksContainer = styled.div`
