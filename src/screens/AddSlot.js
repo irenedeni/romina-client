@@ -21,7 +21,6 @@ const AddSlot = (props) => {
 
   const carers = useSelector(state => state.carers)
 
-
   const dispatch = useDispatch()
 
   useEffect(()=> {
@@ -37,11 +36,17 @@ const AddSlot = (props) => {
 
   const saveSlot = () => {
     const { dayId, timeframe, stayType, notes, carer } = slot
+    console.log("carer", carer)
+
+    const carerObj = fromCarerNameToId(carer, carers)
+    console.log("carerObj", carerObj)
+    const carerId = carerObj?.id
+
     const data = {
       timeframe: timeframe,
       stayType: stayType,
       notes: notes,
-      carerId: carer ? fromCarerNameToId(carer, carers) : null,
+      carerId: carer ? carerId : null,
     }
 
     dispatch(createSlot(dayId, data))
@@ -65,7 +70,7 @@ const AddSlot = (props) => {
     setSlot(initialSlotState)
     setSubmitted(false)
   }
-
+  console.log("slot", slot)
   return (
     <Template>
     {!submitted ? 
@@ -95,13 +100,20 @@ const AddSlot = (props) => {
             value={slot.notes}  
             onChange={handleInputChange}
           />
-          <Input 
+          {/* <Input 
             type="text" 
             id="carer" 
             name="carer" 
             value={slot.carerId}  
             onChange={handleInputChange}
-          /> 
+          />  */}
+          <Dropdown
+            data={carers}
+            name="carer"
+            id="carer"
+            onChange={handleInputChange}
+            value={slot.carer.name}
+          />
         </Form>
       </div>
     : 

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react"
 import styled from "styled-components"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import moment from "moment"
 
 import { calendarObject } from "../lib/functionsAndObjects"
 import { updateTrip, deleteTrip } from "../actions/trips"
+import { retrieveTasks } from "../actions/tasks"
 import TripDataService from "../services/TripService"
 import { Toggle, Input, Template, Form, Button as StyledButton, Dropdown } from "../components"
 
@@ -18,6 +19,8 @@ const Trip = (props) => {
   }
 
   const [currentTrip, setCurrentTrip] = useState(initialTripState)
+
+  const tasks = useSelector(state => state.tasks)
 
   const dispatch = useDispatch()
 
@@ -35,6 +38,10 @@ const Trip = (props) => {
     getTrip(props.match.params.id)
   }, [props.match.params.id])
 
+  useEffect(()=> {
+    dispatch(retrieveTasks())
+  }, [dispatch])
+
 
   const removeTrip = () => {
     dispatch(deleteTrip(currentTrip.id))
@@ -45,7 +52,15 @@ const Trip = (props) => {
       console.log(e)
     })
   }
+
+  const addTripToSlot = (taskType) => {
+    const taskToAdd = tasks.find(task => task.type == taskType)
+    console.log("taskToAdd", taskToAdd)
+  }
+  
 console.log("currentTrip", currentTrip)
+console.log("tasks", tasks)
+
   return (
     <Template>
       {currentTrip?.id ? (
@@ -86,9 +101,7 @@ console.log("currentTrip", currentTrip)
                       })}
                     </TasksContainer>
                     }
-                    <Link to="/add_task">
-                      <Button small text="Add task" />
-                    </Link>
+                    <Button small text="Add task" />
                   </TasksAndBtnContainer>
                   <Link to={`/edit/slots/${slot.id}`}>
                     <Button text="Edit slot"/>

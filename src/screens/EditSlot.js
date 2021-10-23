@@ -14,14 +14,13 @@ const EditSlot = (props) => {
     timeframe: "",
     stayType: "",
     notes: "",
-    carer: {},
+    carer: "",
   }
 
   const [currentSlot, setCurrentSlot] = useState(initialSlotState)
   const [message, setMessage] = useState("")
 
   const carers = useSelector(state => state.carers)
-  console.log("carers", carers)
 
 
   const dispatch = useDispatch()
@@ -29,7 +28,6 @@ const EditSlot = (props) => {
   const getSlot = id => {
     SlotDataService.get(id)
     .then(res => {
-      console.log("res data", res.data)
       setCurrentSlot(res.data)
     })
     .catch(e => {
@@ -49,9 +47,8 @@ const EditSlot = (props) => {
     const { name, value } = event.target
       setCurrentSlot({ ...currentSlot, [name]: value })
   }
-
+console.log("currentSlot", currentSlot)
   const updateContent = () => {
-    console.log("currentSlot", currentSlot)
     const updatedCarer = fromCarerNameToId(currentSlot.carer, carers)
     currentSlot.carerId = updatedCarer.id
     dispatch(updateSlot(currentSlot.id, currentSlot))
@@ -73,7 +70,6 @@ const EditSlot = (props) => {
       console.log(e)
     })
   }
-  console.log("current slot", currentSlot)
 
   
   return (
