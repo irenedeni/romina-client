@@ -7,9 +7,38 @@ export const calendarObject = {
   sameElse: 'dddd DD MMMM'
 }
 
+export const timeframes = [
+  {
+    name: "morning",
+  },
+  {
+    name: "afternoon",
+  },
+  {
+    name: "evening",
+  },
+  {
+    name: "overnight",
+  },
+  {
+    name: "general/unknown",
+  },
+]
+
+export const stayTypes = [
+  {
+    name: "quick check",
+  },
+  {
+    name: "extended stay",
+  }
+]
+
 export function fromCarerNameToId(name, carersArray) {
+  console.log("name, carersArray", name, carersArray)
   const carer = carersArray.find(carer => {
     if(carer.name == name){
+      console.log("THIS CARER", carer)
       return carer.id
     }
   })

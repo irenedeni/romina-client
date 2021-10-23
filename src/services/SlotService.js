@@ -20,7 +20,7 @@ const addTask = (id, slotId) => {
 
 
 const remove = (id, data) => {
-  return http.delete(`/days/${data.dayId}/slots/${id}`)
+  return http.delete(`/slots/${id}`)
 }
 
 

@@ -7,6 +7,7 @@ import moment from "moment"
 import { calendarObject, orderSlotsByTimeframe } from "../lib/functionsAndObjects"
 import { updateTrip, deleteTrip } from "../actions/trips"
 import { retrieveTasks } from "../actions/tasks"
+import { deleteSlot } from "../actions/slots"
 import TripDataService from "../services/TripService"
 import { Template, Button as StyledButton } from "../components"
 
@@ -24,6 +25,18 @@ const Trip = (props) => {
 
   const dispatch = useDispatch()
 
+  const removeSlot = (id) => {
+    dispatch(deleteSlot(id))
+    .then((res)=> {
+      console.log("res", res)
+      setCurrentTrip(currentTrip)
+      console.log("slot deleted successfully")
+    })
+    .catch(e => {
+      console.log(e)
+    })
+  }
+
   const getTrip = id => {
     TripDataService.get(id)
     .then(res => {
@@ -36,7 +49,7 @@ const Trip = (props) => {
 
   useEffect(() => {
     getTrip(props.match.params.id)
-  }, [props.match.params.id])
+  }, [removeSlot])
 
   useEffect(()=> {
     dispatch(retrieveTasks())
@@ -53,13 +66,12 @@ const Trip = (props) => {
     })
   }
 
+
   const addTripToSlot = (taskType) => {
     const taskToAdd = tasks.find(task => task.type == taskType)
     console.log("taskToAdd", taskToAdd)
   }
   
-console.log("currentTrip", currentTrip)
-
   return (
     <Template>
       {currentTrip?.id ? (
@@ -77,8 +89,8 @@ console.log("currentTrip", currentTrip)
               return (
                 <SlotContainer key={index}>
                   <b>SLOT</b>
-                  <p>TIMEFRAME: {slot.timeframe}</p>
-                  <p>LENGTH: {slot.stayType}</p>
+                  <p>TIMEFRAME: <b>{slot.timeframe}</b></p>
+                  <p>LENGTH: <b>{slot.stayType}</b></p>
                   <p>CARER: 
                   {!slot.carer?.name ?
                     <span> <Link to={`/edit/slots/${slot.id}`}>
@@ -88,6 +100,9 @@ console.log("currentTrip", currentTrip)
                     : <span><b> {slot.carer.name}</b></span>
                   }
                   </p>
+                  {slot.notes &&
+                   <p>NOTES: <b>{slot.notes}</b></p>
+                  }
                   TASKS:
                   <TasksAndBtnContainer>
                     {slot.tasks?.length > 0 &&
@@ -107,7 +122,7 @@ console.log("currentTrip", currentTrip)
                     <Link to={`/edit/slots/${slot.id}`}>
                       <Button text="Edit slot" small/>
                     </Link>
-                    <Button text="Delete slot" color="#6c6c6c" outlined small/>
+                    <Button text="Delete slot" color="#6c6c6c" outlined small onClick={()=>removeSlot(slot.id)}/>
                   </SlotButtonsContainer>
                 </SlotContainer>
               )
@@ -154,6 +169,8 @@ const DayContainer = styled.div`
   margin: 10px;
   padding: 20px;
   background-color: #D8D8D8;
+  width: 250px;
+  max-width: 250px;
 `
 
 const Button = styled(StyledButton)`

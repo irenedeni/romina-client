@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux"
 import { createTask } from "../actions/tasks"
 import { Toggle, Input, Template, Form, Button, Dropdown } from "../components"
 
-const AddTask = () => {
+const AddTask = (props) => {
 
   const initialTaskState = {
     id: null,
@@ -60,6 +60,7 @@ const AddTask = () => {
       <div>
         <h4>New task submitted successfully</h4>
         <Button onClick={newTask} text="Add more" />
+        <Button onClick={() => props.history.goBack()} text="Go back"/>
       </div>
   }
   </Template>

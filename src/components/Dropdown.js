@@ -2,9 +2,7 @@ import React from "react"
 import styled, { css } from "styled-components"
 
 function Dropdown(props) {
-
   const label = props.name?.split(/(?=[A-Z])/).join(" ")
-  // console.log("props.data", props.data)
   let options = props.data?.map((data, index) => {
     return (
     <option key={index} value={data.name}>
@@ -21,7 +19,7 @@ function Dropdown(props) {
         value={props.value}
       >
         <Option>
-          Select carer
+          Select {label.toLowerCase()}
         </Option>
         {options}
       </Select>

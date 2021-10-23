@@ -1,9 +1,11 @@
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
+import { Link } from 'react-router-dom'
+
 import { createTrip } from "../actions/trips"
 import { Toggle, Input, Template, Form, Button, Dropdown } from "../components"
 
-const AddTrip = () => {
+const AddTrip = (props) => {
 
   const initialTripState = {
     id: null,
@@ -27,9 +29,10 @@ const AddTrip = () => {
 
   const saveTrip = () => {
     const { name, startDate, endDate, confirmed } = trip
+
     dispatch(createTrip(name, startDate, endDate, confirmed))
     .then(data => {
-      setTrip({
+       setTrip({
         id: data.id,
         name: data.name,
         startDate: data.startDate,
@@ -84,14 +87,15 @@ const AddTrip = () => {
             value={trip.confirmed} 
             onChange={handleInputChange}
           />
-          {/* <Dropdown 
-          /> */}
         </Form>
       </div>
     : 
       <div>
         <h4>New trip submitted successfully</h4>
         <Button onClick={newTrip} text="Add more" />
+        <Link to={`/trips`}>
+          <Button text="All trips"/>
+        </Link>
       </div>
   }
   </Template>

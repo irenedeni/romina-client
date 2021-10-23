@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { createSlot } from "../actions/slots"
 import { retrieveCarers } from "../actions/carers"
 import { Input, Template, Form, Button, Dropdown } from "../components"
-import { fromCarerNameToId } from "../lib/functionsAndObjects"
+import { fromCarerNameToId, timeframes, stayTypes } from "../lib/functionsAndObjects"
 
 const AddSlot = (props) => {
 
@@ -36,7 +36,6 @@ const AddSlot = (props) => {
 
   const saveSlot = () => {
     const { dayId, timeframe, stayType, notes, carer } = slot
-    console.log("carer", carer)
 
     const carerObj = fromCarerNameToId(carer, carers)
     const carerId = carerObj?.id
@@ -76,20 +75,19 @@ const AddSlot = (props) => {
       <div>
         <h1>Add new slot</h1>
         <Form onClick={saveSlot}>
-          <Input 
-            type="text" 
+          <Dropdown
             id="timeframe" 
             name="timeframe" 
             value={slot.timeframe} 
+            data={timeframes}
             required 
             onChange={handleInputChange}
           />
-          <Input 
-            type="text" 
+          <Dropdown
             id="stayType" 
             name="stayType" 
             value={slot.stayType} 
-            required 
+            data={stayTypes}
             onChange={handleInputChange}
           />
           <Input 
@@ -112,6 +110,7 @@ const AddSlot = (props) => {
       <div>
         <h4>New slot submitted successfully</h4>
         <Button onClick={newSlot} text="Add more" />
+        <Button onClick={() => props.history.goBack()} text="Go back"/>
       </div>
   }
   </Template>

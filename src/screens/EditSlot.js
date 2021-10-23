@@ -5,7 +5,7 @@ import { updateSlot, deleteSlot } from "../actions/slots"
 import { retrieveCarers } from "../actions/carers"
 import SlotDataService from "../services/SlotService"
 import { Input, Template, Form, Dropdown, Spacer, Button as StyledButton } from "../components"
-import { fromCarerNameToId } from "../lib/functionsAndObjects"
+import { fromCarerNameToId, timeframes, stayTypes } from "../lib/functionsAndObjects"
 
 
 const EditSlot = (props) => {
@@ -47,14 +47,15 @@ const EditSlot = (props) => {
     const { name, value } = event.target
       setCurrentSlot({ ...currentSlot, [name]: value })
   }
-console.log("currentSlot", currentSlot)
   const updateContent = () => {
-    const updatedCarer = fromCarerNameToId(currentSlot.carer, carers)
+    const carerName = currentSlot.carer?.name || currentSlot.carer
+    const updatedCarer = fromCarerNameToId(carerName, carers)
     currentSlot.carerId = updatedCarer.id
     dispatch(updateSlot(currentSlot.id, currentSlot))
     .then(res => {
       console.log(res)
       setMessage("slot updated successfully")
+      props.history.goBack()
     })
     .catch(e => {
       console.log(e)
@@ -64,7 +65,7 @@ console.log("currentSlot", currentSlot)
   const removeSlot = () => {
     dispatch(deleteSlot(currentSlot.id))
     .then(()=> {
-      props.history.push("/slots")
+      props.history.goBack()
     })
     .catch(e => {
       console.log(e)
@@ -78,25 +79,26 @@ console.log("currentSlot", currentSlot)
         <div>
           <h2>UPDATE Slot</h2>
           <Form>
-            <Input
-              type="text"
-              id="timeframe"
-              name="timeframe"
-              value={currentSlot.timeframe}
+            <Dropdown
+              id="timeframe" 
+              name="timeframe" 
+              value={currentSlot.timeframe} 
+              data={timeframes}
+              required 
               onChange={handleInputChange}
             />
-            <Input
-              type="text"
-              id="stayType"
-              name="stayType"
-              value={currentSlot.stayType}
+            <Dropdown
+              id="stayType" 
+              name="stayType" 
+              value={currentSlot.stayType} 
+              data={stayTypes}
               onChange={handleInputChange}
             />
-            <Input
-              type="text"
-              id="notes"
-              name="notes"
-              value={currentSlot.notes}
+            <Input 
+              type="text" 
+              id="notes" 
+              name="notes" 
+              value={currentSlot.notes}  
               onChange={handleInputChange}
             />
             <Dropdown

@@ -46,6 +46,7 @@ const EditTrip = (props) => {
     .then(res => {
       console.log(res)
       setMessage("trip updated successfully")
+      props.history.goBack()
     })
     .catch(e => {
       console.log(e)
@@ -81,13 +82,6 @@ const EditTrip = (props) => {
                 onChange={handleInputChange}
               />
           </Form>
-          {/* {currentTrip.confirmed && (
-            <Button text="Un-confirm" onClick={() => updateStatus(false)}/>
-          )  */}
-          {/* // (
-          //   <Button text="Confirm" onClick={() => updateStatus(true)}/>
-          // ) */}
-          {/* } */}
           <Button
             type="submit"
             text="Update"
