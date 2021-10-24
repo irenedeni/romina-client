@@ -1,9 +1,8 @@
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import { Link } from 'react-router-dom'
-
 import { createTrip } from "../actions/trips"
-import { Toggle, Input, Template, Form, Button, Dropdown } from "../components"
+import { Toggle, Input, Template, Form, Button } from "../components"
 
 const AddTrip = (props) => {
 

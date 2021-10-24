@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 import moment from "moment"
 
 import { calendarObject, orderSlotsByTimeframe } from "../lib/functionsAndObjects"
-import { updateTrip, deleteTrip } from "../actions/trips"
+import { deleteTrip } from "../actions/trips"
 import { retrieveTasks } from "../actions/tasks"
 import { deleteSlot } from "../actions/slots"
 import TripDataService from "../services/TripService"
@@ -49,7 +49,7 @@ const Trip = (props) => {
 
   useEffect(() => {
     getTrip(props.match.params.id)
-  }, [removeSlot])
+  }, [props.match.params.id])
 
   useEffect(()=> {
     dispatch(retrieveTasks())
@@ -66,11 +66,11 @@ const Trip = (props) => {
     })
   }
 
-
   const addTripToSlot = (taskType) => {
-    const taskToAdd = tasks.find(task => task.type == taskType)
+    const taskToAdd = tasks.find(task => task.type === taskType)
     console.log("taskToAdd", taskToAdd)
   }
+  
   
   return (
     <Template>

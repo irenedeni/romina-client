@@ -31,7 +31,7 @@ const StyledInput = styled.input`
   appearance: none;
   border: none; 
   background-color: #e9e6e6;
-  padding: ${props => props.type == "text" ? "10px 15px" : "7px 15px"};
+  padding: ${props => props.type === "text" ? "10px 15px" : "7px 15px"};
   border-radius: 5px;
 `
 

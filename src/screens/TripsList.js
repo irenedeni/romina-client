@@ -9,7 +9,7 @@ import {
   findTripsByName,
   deleteAllTrips
 } from "../actions/trips"
-import { Toggle, Input, Template, Form, Dropdown, Spacer, Button } from "../components"
+import { Input, Template, Form, Spacer, Button } from "../components"
 
 
 const TripsList = () => {
@@ -90,6 +90,9 @@ const TripsList = () => {
     <Spacer />
       <ListContainer>
         <h2>Trips list</h2>
+        <Link to="/add_trip">
+          <AddButton text="ADD TRIP"/>
+        </Link>
         <TripsContainer>
           {trips &&
           trips.map((trip, index) => {
@@ -147,7 +150,7 @@ const ListContainer = styled.div`
 const TripsContainer = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   width: 100%;
   flex-wrap: wrap;
 `
@@ -164,6 +167,10 @@ const TripContainer = styled.div`
 const TripButtonsDiv = styled.div`
   display: ${props => props.active ? 'flex' : 'none'};
   width: 100%;
+`
+
+const AddButton = styled(Button)`
+  margin: 15px;
 `
 
 export default TripsList

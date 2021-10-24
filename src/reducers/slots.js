@@ -18,7 +18,7 @@ switch (type) {
 
   case UPDATE_SLOT:
     return slots.map((slot) => {
-      if(slot.id === slot.id){
+      if(slot.id === payload.id){
         return {
           ...slot,
           ...payload

@@ -1,8 +1,9 @@
 import {
   CREATE_TASK,
-  // UPDATE_TASK,
-  // DELETE_TASK,
-  RETRIEVE_TASKS
+  UPDATE_TASK,
+  DELETE_TASK,
+  RETRIEVE_TASKS,
+  DELETE_ALL_TASKS
 } from "../actions/types"
 
 const initialState = []
@@ -17,22 +18,22 @@ switch (type) {
   case RETRIEVE_TASKS:
     return payload
 
-  // case UPDATE_TASK:
-  //   return tasks.map((task) => {
-  //     if(task.id === task.id){
-  //       return {
-  //         ...task,
-  //         ...payload
-  //       }
-  //     } else {
-  //       return task
-  //     }
-  //   })
-    // case DELETE_TASK:
-    // return tasks.filter(({ id }) => id !== payload.id)
+  case UPDATE_TASK:
+    return tasks.map((task) => {
+      if(task.id === payload.id){
+        return {
+          ...task,
+          ...payload
+        }
+      } else {
+        return task
+      }
+    })
+    case DELETE_TASK:
+    return tasks.filter(({ id }) => id !== payload.id)
 
-  // case DELETE_ALL_TRIPS:
-  //   return []
+  case DELETE_ALL_TASKS:
+    return []
   
   default:
     return tasks

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { updateSlot, deleteSlot } from "../actions/slots"
 import { retrieveCarers } from "../actions/carers"
 import SlotDataService from "../services/SlotService"
-import { Input, Template, Form, Dropdown, Spacer, Button as StyledButton } from "../components"
+import { Input, Template, Form, Dropdown, Button as StyledButton } from "../components"
 import { fromCarerNameToId, timeframes, stayTypes } from "../lib/functionsAndObjects"
 
 

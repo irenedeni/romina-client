@@ -8,12 +8,8 @@ export const navElements = [
     name: "Trips"
   },
   {
-    href: "/add_trip",
-    name: "Add Trip"
-  },
-  {
-    href: "/add_carer",
-    name: "Add Carer"
+    href: "/carers",
+    name: "Carers"
   },
   {
     href: "/add_task",

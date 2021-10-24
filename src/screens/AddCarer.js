@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import { createCarer } from "../actions/carers"
-import { Toggle, Input, Template, Form, Button, Dropdown } from "../components"
+import { Toggle, Input, Template, Form, Button } from "../components"
 
 const AddCarer = () => {
 

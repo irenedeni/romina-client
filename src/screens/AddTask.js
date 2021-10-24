@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import { createTask } from "../actions/tasks"
-import { Toggle, Input, Template, Form, Button, Dropdown } from "../components"
+import { Input, Template, Form, Button } from "../components"
 
 const AddTask = (props) => {
 
