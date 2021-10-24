@@ -33,6 +33,7 @@ const AddTask = (props) => {
       console.log(e)
     })
     setSubmitted(true)
+    setTimeout(()=>props.history.push("/tasks"), 3000)
   }
 
   const newTask = () => {
@@ -59,7 +60,9 @@ const AddTask = (props) => {
     : 
       <div>
         <h4>New task submitted successfully</h4>
+
         <Button onClick={newTask} text="Add more" />
+        <p>Add more or wait to be redirected to the general tasks page</p>
         <Button onClick={() => props.history.goBack()} text="Go back"/>
       </div>
   }

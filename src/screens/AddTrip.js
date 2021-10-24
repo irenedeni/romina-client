@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux"
 import { Link } from 'react-router-dom'
 import { createTrip } from "../actions/trips"
 import { Toggle, Input, Template, Form, Button } from "../components"
+import TripDataService from "../services/TripService"
 
 const AddTrip = (props) => {
 
@@ -14,6 +15,7 @@ const AddTrip = (props) => {
     confirmed: false
   }
   const [trip, setTrip] = useState(initialTripState)
+
 
   const [submitted, setSubmitted] = useState()
 
@@ -28,7 +30,6 @@ const AddTrip = (props) => {
 
   const saveTrip = () => {
     const { name, startDate, endDate, confirmed } = trip
-
     dispatch(createTrip(name, startDate, endDate, confirmed))
     .then(data => {
        setTrip({

@@ -72,30 +72,9 @@ const EditTask = (props) => {
           <Form>
               <Input
                 type="text"
-                id="name"
-                name="name"
-                value={currentTask.name}
-                onChange={handleInputChange}
-              />
-              <Input
-                type="text"
-                id="email"
-                name="email"
-                value={currentTask.email}
-                onChange={handleInputChange}
-              />
-              <Input
-                type="text"
-                id="phone"
-                name="phone"
-                value={currentTask.phone}
-                onChange={handleInputChange}
-              />
-              
-              <Toggle 
-                id="professional" 
-                name="professional" 
-                value={currentTask.professional} 
+                id="type"
+                name="type"
+                value={currentTask.type}
                 onChange={handleInputChange}
               />
           </Form>

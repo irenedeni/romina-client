@@ -10,10 +10,32 @@ const getAll = (data) => {
 }
 
 
+const get = id => {
+  return http.get(`/tasks/${id}`)
+}
+
+
+const update = (id, data) => {
+  return http.put(`/tasks/${id}`, data)
+}
+
+const remove = id => {
+  return http.delete(`/tasks/${id}`)
+}
+
+const removeAll = () => {
+  return http.delete("/tasks")
+}
+
+
 
 const TaskService = {
   create,
-  getAll
+  getAll,
+  get,
+  update,
+  remove,
+  removeAll
 }
 
 export default TaskService

@@ -5,12 +5,13 @@ import styled from "styled-components"
 import {
   retrieveCarers,
   findCarersByName,
-  deleteAllCarers
+  deleteAllCarers,
+  deleteCarer
 } from "../actions/carers"
 import { Input, Template, Form, Spacer, Button } from "../components"
 
 
-const CarersList = () => {
+const CarersList = (props) => {
 
   const [currentCarer, setCurrentCarer] = useState(null)
   const [currentIndex, setCurrentIndex] = useState(null)
@@ -56,6 +57,17 @@ const CarersList = () => {
     dispatch(findCarersByName(searchName))
     .then(res => {
       console.log("res",res)
+    })
+  }
+
+  const removeCarer = (id) => {
+    dispatch(deleteCarer(id))
+    .then(res => {
+      console.log(res)
+      refreshData()
+    })
+    .catch(e => {
+      console.log(e)
     })
   }
 
@@ -112,7 +124,7 @@ const CarersList = () => {
                 <Link to={"/edit/carers/" + carer.id}>
                   <CardButton small text="edit" style={{marginTop: "10px"}}/>
                 </Link>
-                <CardButton small text="delete" style={{marginTop: "10px"}}/>
+                <CardButton small text="delete" style={{marginTop: "10px"}} onClick={() => removeCarer(carer.id)}/>
               </CarerButtonsDiv>
             </CarerContainer>
           )})

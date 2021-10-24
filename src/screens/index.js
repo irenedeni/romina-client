@@ -9,6 +9,8 @@ import EditSlot from "./EditSlot"
 import AddTask from "./AddTask"
 import CarersList from "./CarersList"
 import EditCarer from "./EditCarer"
+import TasksList from "./TasksList"
+import EditTask from "./EditTask"
 
 export {
   Day,
@@ -21,5 +23,7 @@ export {
   EditSlot,
   AddTask,
   CarersList,
-  EditCarer
+  EditCarer,
+  TasksList,
+  EditTask
 }

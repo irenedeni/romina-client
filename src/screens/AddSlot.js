@@ -90,19 +90,19 @@ const AddSlot = (props) => {
             data={stayTypes}
             onChange={handleInputChange}
           />
-          <Input 
-            type="text" 
-            id="notes" 
-            name="notes" 
-            value={slot.notes}  
-            onChange={handleInputChange}
-          />
           <Dropdown
             data={carers}
             name="carer"
             id="carer"
             onChange={handleInputChange}
             value={slot.carer.name}
+          />
+          <Input 
+            type="text" 
+            id="notes" 
+            name="notes" 
+            value={slot.notes}  
+            onChange={handleInputChange}
           />
         </Form>
       </div>
