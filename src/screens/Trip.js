@@ -7,9 +7,9 @@ import moment from "moment"
 import { calendarObject, orderSlotsByTimeframe } from "../lib/functionsAndObjects"
 import { deleteTrip } from "../actions/trips"
 import { retrieveTasks } from "../actions/tasks"
-import { deleteSlot } from "../actions/slots"
+import { deleteSlot, addTaskToSlot } from "../actions/slots"
 import TripDataService from "../services/TripService"
-import { Template, Button as StyledButton } from "../components"
+import { Template, Button as StyledButton, Dropdown, Form } from "../components"
 
 
 const Trip = (props) => {
@@ -19,7 +19,14 @@ const Trip = (props) => {
     confirmed: false
   }
 
+  const initialTaskState = {
+    id: null,
+    type: "",
+    slotId: null,
+  }
+
   const [currentTrip, setCurrentTrip] = useState(initialTripState)
+  const [taskToAdd, setTaskToAdd] = useState(initialTaskState)
 
   const tasks = useSelector(state => state.tasks)
 
@@ -66,12 +73,49 @@ const Trip = (props) => {
     })
   }
 
-  const addTripToSlot = (taskType) => {
-    const taskToAdd = tasks.find(task => task.type === taskType)
-    console.log("taskToAdd", taskToAdd)
+  const refreshData = () => {
+    setTaskToAdd(initialTaskState)
+  }
+
+  const updateContent = (id) => {
+    const slotId = id
+    console.log("taskToAdd ID", taskToAdd.id)
+    console.log("slot ID", slotId)
+    dispatch(addTaskToSlot(taskToAdd.id, slotId))
+    .then(res => {
+      console.log(res)
+      refreshData()
+      
+    })
+    .catch(e => {
+      console.log(e)
+    })
+  }
+
+
+  const handleInputChange = event => {
+    const { name, value } = event.target
+    tasks.find(task => {
+      if(task.type === value){
+        const id = task.id
+        taskToAdd.id = id
+        return (
+          setTaskToAdd({ ...taskToAdd, [name]: value })
+        )
+      }
+      
+    })
+  }
+
+  const openTaskForm = (id) => {
+    !taskToAdd.slotId ?
+    setTaskToAdd({ ...taskToAdd, slotId: id })
+    :
+    setTaskToAdd({ ...taskToAdd, slotId: null })
   }
   
-  
+  console.log("currentTrip", currentTrip)
+  console.log("taskToAdd", taskToAdd)
   return (
     <Template>
       {currentTrip?.id ? (
@@ -85,7 +129,7 @@ const Trip = (props) => {
             <Link to={`/days/${day.id}/slots`}>
               <Button text="Add slot"/>
             </Link>
-            {day.slots.length > 0 && orderSlotsByTimeframe(day.slots).map((slot, index) => {
+            {day.slots?.length > 0 && orderSlotsByTimeframe(day.slots).map((slot, index) => {
               return (
                 <SlotContainer key={index}>
                   <b>SLOT</b>
@@ -116,7 +160,18 @@ const Trip = (props) => {
                       })}
                     </TasksContainer>
                     }
-                    <Button small text="Add task" />
+                    <Button small text="Add task" onClick={()=>openTaskForm(slot.id)}/>
+                    {(taskToAdd.slotId === slot.id) &&
+                      <Form onClick={() => updateContent(slot.id)}>
+                        <Dropdown
+                          id="taskToAdd"
+                          name="type" 
+                          value={taskToAdd.type} 
+                          data={tasks}
+                          onChange={handleInputChange}
+                        />
+                      </Form>
+                    }
                   </TasksAndBtnContainer>
                   <SlotButtonsContainer>
                     <Link to={`/edit/slots/${slot.id}`}>

@@ -4,20 +4,17 @@ import styled from "styled-components"
 function Dropdown(props) {
   const label = props.name?.split(/(?=[A-Z])/).join(" ")
   let options = props.data?.map((data, index) => {
+    const name = data.name ? data.name : data.type
     return (
-    <option key={index} value={data.name}>
-      {data.name[0].toUpperCase() + data.name.substring(1)}
+    <option key={index} value={name}>
+      {name[0].toUpperCase() + name.substring(1)}
     </option>
     )
   })
   return (
     <Container>
       <Label>{label[0].toUpperCase() + label.substring(1)}</Label>
-      <Select
-        name={props.name}
-        onChange={props.onChange}
-        value={props.value}
-      >
+      <Select {...props}>
         <Option>
           Select {label.toLowerCase()}
         </Option>
@@ -30,7 +27,7 @@ function Dropdown(props) {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 300px;
+  width: 100%;
   margin: 10px auto;
 `
 

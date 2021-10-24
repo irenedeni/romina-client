@@ -14,7 +14,7 @@ const get = (id, dayId) => {
 }
 
 
-const addTask = (id, slotId) => {
+const addTaskToSlot = (id, slotId) => {
   return http.put(`/slots/${slotId}/tasks/${id}`)
 }
 
@@ -30,7 +30,7 @@ const remove = (id, data) => {
 
 
 const SlotService = {
-  addTask,
+  addTaskToSlot,
   create,
   update,
   remove,
