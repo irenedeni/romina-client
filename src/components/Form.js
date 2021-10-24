@@ -12,7 +12,7 @@ function Form(props) {
       {(props.onSubmit || props.onClick) &&
         <Button  
           type="submit" 
-          maxWidth
+          // maxWidth
           onClick={props.onClick} 
           text={props.btnText || "Submit"}
         />

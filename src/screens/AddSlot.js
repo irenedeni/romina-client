@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { createSlot } from "../actions/slots"
 import { retrieveCarers } from "../actions/carers"
-import { Toggle, Input, Template, Form, Button, Dropdown } from "../components"
-import { fromCarerNameToId } from "../lib/functionsAndObjects"
+import { Input, Template, Form, Button, Dropdown } from "../components"
+import { fromCarerNameToId, timeframes, stayTypes } from "../lib/functionsAndObjects"
 
 const AddSlot = (props) => {
 
@@ -21,7 +21,6 @@ const AddSlot = (props) => {
 
   const carers = useSelector(state => state.carers)
 
-
   const dispatch = useDispatch()
 
   useEffect(()=> {
@@ -37,11 +36,15 @@ const AddSlot = (props) => {
 
   const saveSlot = () => {
     const { dayId, timeframe, stayType, notes, carer } = slot
+
+    const carerObj = fromCarerNameToId(carer, carers)
+    const carerId = carerObj?.id
+
     const data = {
       timeframe: timeframe,
       stayType: stayType,
       notes: notes,
-      carerId: carer ? fromCarerNameToId(carer, carers) : null,
+      carerId: carer ? carerId : null,
     }
 
     dispatch(createSlot(dayId, data))
@@ -65,28 +68,34 @@ const AddSlot = (props) => {
     setSlot(initialSlotState)
     setSubmitted(false)
   }
-
+  console.log("slot", slot)
   return (
     <Template>
     {!submitted ? 
       <div>
         <h1>Add new slot</h1>
         <Form onClick={saveSlot}>
-          <Input 
-            type="text" 
+          <Dropdown
             id="timeframe" 
             name="timeframe" 
             value={slot.timeframe} 
+            data={timeframes}
             required 
             onChange={handleInputChange}
           />
-          <Input 
-            type="text" 
+          <Dropdown
             id="stayType" 
             name="stayType" 
             value={slot.stayType} 
-            required 
+            data={stayTypes}
             onChange={handleInputChange}
+          />
+          <Dropdown
+            data={carers}
+            name="carer"
+            id="carer"
+            onChange={handleInputChange}
+            value={slot.carer.name}
           />
           <Input 
             type="text" 
@@ -95,19 +104,13 @@ const AddSlot = (props) => {
             value={slot.notes}  
             onChange={handleInputChange}
           />
-          <Input 
-            type="text" 
-            id="carer" 
-            name="carer" 
-            value={slot.carerId}  
-            onChange={handleInputChange}
-          /> 
         </Form>
       </div>
     : 
       <div>
         <h4>New slot submitted successfully</h4>
         <Button onClick={newSlot} text="Add more" />
+        <Button onClick={() => props.history.goBack()} text="Go back"/>
       </div>
   }
   </Template>

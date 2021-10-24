@@ -1,8 +1,7 @@
-import React, { useState } from "react"
+import React from "react"
 import styled, { css } from "styled-components"
 
 function Toggle(props) {
-  console.log("props.value",props.value)
   return (
     <Container>
       <Label>{props.name[0].toUpperCase() + props.name.substring(1)}</Label>

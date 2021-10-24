@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react"
 import styled from "styled-components"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import moment from "moment"
 
-import { calendarObject } from "../lib/functionsAndObjects"
-import { updateTrip, deleteTrip } from "../actions/trips"
+import { calendarObject, orderSlotsByTimeframe } from "../lib/functionsAndObjects"
+import { deleteTrip } from "../actions/trips"
+import { retrieveTasks } from "../actions/tasks"
+import { deleteSlot, addTaskToSlot } from "../actions/slots"
 import TripDataService from "../services/TripService"
-import { Toggle, Input, Template, Form, Button as StyledButton, Dropdown } from "../components"
+import { Template, Button as StyledButton, Dropdown, Form } from "../components"
 
 
 const Trip = (props) => {
@@ -17,9 +19,30 @@ const Trip = (props) => {
     confirmed: false
   }
 
+  const initialTaskState = {
+    id: null,
+    type: "",
+    slotId: null,
+  }
+
   const [currentTrip, setCurrentTrip] = useState(initialTripState)
+  const [taskToAdd, setTaskToAdd] = useState(initialTaskState)
+
+  const tasks = useSelector(state => state.tasks)
 
   const dispatch = useDispatch()
+
+  const removeSlot = (id) => {
+    dispatch(deleteSlot(id))
+    .then((res)=> {
+      console.log("res", res)
+      setCurrentTrip(currentTrip)
+      console.log("slot deleted successfully")
+    })
+    .catch(e => {
+      console.log(e)
+    })
+  }
 
   const getTrip = id => {
     TripDataService.get(id)
@@ -35,6 +58,10 @@ const Trip = (props) => {
     getTrip(props.match.params.id)
   }, [props.match.params.id])
 
+  useEffect(()=> {
+    dispatch(retrieveTasks())
+  }, [dispatch])
+
 
   const removeTrip = () => {
     dispatch(deleteTrip(currentTrip.id))
@@ -45,34 +72,81 @@ const Trip = (props) => {
       console.log(e)
     })
   }
-console.log("currentTrip", currentTrip)
+
+  const refreshData = () => {
+    setTaskToAdd(initialTaskState)
+  }
+
+  const updateContent = (id) => {
+    const slotId = id
+    console.log("taskToAdd ID", taskToAdd.id)
+    console.log("slot ID", slotId)
+    dispatch(addTaskToSlot(taskToAdd.id, slotId))
+    .then(res => {
+      console.log(res)
+      refreshData()
+      
+    })
+    .catch(e => {
+      console.log(e)
+    })
+  }
+
+
+  const handleInputChange = event => {
+    const { name, value } = event.target
+    tasks.find(task => {
+      if(task.type === value){
+        const id = task.id
+        taskToAdd.id = id
+        return (
+          setTaskToAdd({ ...taskToAdd, [name]: value })
+        )
+      }
+      
+    })
+  }
+
+  const openTaskForm = (id) => {
+    !taskToAdd.slotId ?
+    setTaskToAdd({ ...taskToAdd, slotId: id })
+    :
+    setTaskToAdd({ ...taskToAdd, slotId: null })
+  }
+  
+  console.log("currentTrip", currentTrip)
+  console.log("taskToAdd", taskToAdd)
   return (
     <Template>
       {currentTrip?.id ? (
         <PageContainer>
           <h1>{currentTrip.name.toUpperCase()}</h1>
           <TripContainer>
-          {currentTrip.days?.map((day, index) => (
+          {currentTrip.days?.map((day, index) => {
+          return (
           <DayContainer key={index}>
             <h3>Day {`${index + 1}:`} {moment(day.date).calendar(calendarObject)}</h3>  
             <Link to={`/days/${day.id}/slots`}>
               <Button text="Add slot"/>
             </Link>
-            {day.slots?.map((slot, index) => {
+            {day.slots?.length > 0 && orderSlotsByTimeframe(day.slots).map((slot, index) => {
               return (
                 <SlotContainer key={index}>
                   <b>SLOT</b>
-                  <p>TIMEFRAME: {slot.timeframe}</p>
-                  <p>LENGTH: {slot.stayType}</p>
+                  <p>TIMEFRAME: <b>{slot.timeframe}</b></p>
+                  <p>LENGTH: <b>{slot.stayType}</b></p>
                   <p>CARER: 
                   {!slot.carer?.name ?
-                    <span> <Link to="/add_carer">
+                    <span> <Link to={`/edit/slots/${slot.id}`}>
                       <Button outlined small text="Add carer" />
                     </Link>
                     </span>
                     : <span><b> {slot.carer.name}</b></span>
                   }
                   </p>
+                  {slot.notes &&
+                   <p>NOTES: <b>{slot.notes}</b></p>
+                  }
                   TASKS:
                   <TasksAndBtnContainer>
                     {slot.tasks?.length > 0 &&
@@ -86,25 +160,37 @@ console.log("currentTrip", currentTrip)
                       })}
                     </TasksContainer>
                     }
-                    <Link to="/add_task">
-                      <Button small text="Add task" />
-                    </Link>
+                    <Button small text="Add task" onClick={()=>openTaskForm(slot.id)}/>
+                    {(taskToAdd.slotId === slot.id) &&
+                      <Form onClick={() => updateContent(slot.id)}>
+                        <Dropdown
+                          id="taskToAdd"
+                          name="type" 
+                          value={taskToAdd.type} 
+                          data={tasks}
+                          onChange={handleInputChange}
+                        />
+                      </Form>
+                    }
                   </TasksAndBtnContainer>
-                  <Link to={`/edit/slots/${slot.id}`}>
-                    <Button text="Edit slot"/>
-                  </Link>
+                  <SlotButtonsContainer>
+                    <Link to={`/edit/slots/${slot.id}`}>
+                      <Button text="Edit slot" small/>
+                    </Link>
+                    <Button text="Delete slot" color="#6c6c6c" outlined small onClick={()=>removeSlot(slot.id)}/>
+                  </SlotButtonsContainer>
                 </SlotContainer>
               )
             })}
           </DayContainer>
-          )
+          )}
           )}
           </TripContainer>
             <Link
               to={`/edit/trips/${currentTrip.id}`}>
               <Button text="Edit trip" />
             </Link>
-           <Button text="Delete trip" onClick={removeTrip}/>
+              <Button text="Delete trip" onClick={removeTrip}/>
         </PageContainer>
       ) : (
         <NotFoundContainer>
@@ -125,7 +211,7 @@ const PageContainer = styled.div`
 const TripContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  padding: 20px;
+  padding: 10px;
   background-color: #EAEAEA;
   margin: 20px 0px;
   justify-content: center;
@@ -134,13 +220,16 @@ const TripContainer = styled.div`
 const DayContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   margin: 10px;
   padding: 20px;
   background-color: #D8D8D8;
+  width: 250px;
+  max-width: 250px;
 `
 
 const Button = styled(StyledButton)`
-  margin: 10px 10px 10px 0px;
+  margin: ${props => props.small ? "5px 5px 5px 0px" : "10px 10px 10px 0px"};
 `
 
 const SlotContainer = styled.div`
@@ -149,7 +238,12 @@ const SlotContainer = styled.div`
   padding: 15px;
   background-color: #e9e6e6;
   width: 200px;
-  margin: 0px 5px 10px 0px;
+  margin: 10px 0px;
+`
+
+const SlotButtonsContainer = styled.div`
+  display: flex;
+  width: 100%;
 `
 
 const TasksAndBtnContainer = styled.div`
@@ -158,7 +252,6 @@ const TasksAndBtnContainer = styled.div`
   padding: 10px;
   background-color: #D8D8D8;
   margin: 10px 0px;
-
 `
 
 const TasksContainer = styled.div`

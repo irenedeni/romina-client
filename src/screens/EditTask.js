@@ -1,27 +1,29 @@
 import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import { useDispatch } from "react-redux"
-import { updateTrip, deleteTrip } from "../actions/trips"
-import TripDataService from "../services/TripService"
+import { updateTask, deleteTask } from "../actions/tasks"
+import TaskDataService from "../services/TaskService"
 import { Toggle, Input, Template, Form, Button as StyledButton } from "../components"
 
 
-const EditTrip = (props) => {
-  const initialTripState = {
+const EditTask = (props) => {
+  const initialTaskState = {
     id: null,
     name: "",
     confirmed: false
   }
 
-  const [currentTrip, setCurrentTrip] = useState(initialTripState)
+  const [currentTask, setCurrentTask] = useState(initialTaskState)
   const [message, setMessage] = useState("")
+
+  console.log("currentTask", currentTask)
 
   const dispatch = useDispatch()
 
-  const getTrip = id => {
-    TripDataService.get(id)
+  const getTask = id => {
+    TaskDataService.get(id)
     .then(res => {
-      setCurrentTrip(res.data)
+      setCurrentTask(res.data)
     })
     .catch(e => {
       console.log(e)
@@ -29,23 +31,23 @@ const EditTrip = (props) => {
   }
 
   useEffect(() => {
-    getTrip(props.match.params.id)
+    getTask(props.match.params.id)
   }, [props.match.params.id])
 
 
   const handleInputChange = event => {
     const { name, value, checked } = event.target
     if(event.target.type !== "checkbox"){
-      setCurrentTrip({ ...currentTrip, [name]: value })
-    } else setCurrentTrip({ ...currentTrip, [name]: checked })
+      setCurrentTask({ ...currentTask, [name]: value })
+    } else setCurrentTask({ ...currentTask, [name]: checked })
   }
 
 
   const updateContent = () => {
-    dispatch(updateTrip(currentTrip.id, currentTrip))
+    dispatch(updateTask(currentTask.id, currentTask))
     .then(res => {
       console.log(res)
-      setMessage("trip updated successfully")
+      setMessage("task updated successfully")
       props.history.goBack()
     })
     .catch(e => {
@@ -53,10 +55,10 @@ const EditTrip = (props) => {
     })
   }
 
-  const removeTrip = () => {
-    dispatch(deleteTrip(currentTrip.id))
+  const removeTask = () => {
+    dispatch(deleteTask(currentTask.id))
     .then(()=> {
-      props.history.push("/trips")
+      props.history.push("/tasks")
     })
     .catch(e => {
       console.log(e)
@@ -64,21 +66,15 @@ const EditTrip = (props) => {
   }
   return (
     <Template>
-      {currentTrip ? (
+      {currentTask ? (
         <div>
-          <h2>UPDATE Trip</h2>
+          <h2>UPDATE Task</h2>
           <Form>
               <Input
                 type="text"
-                id="name"
-                name="name"
-                value={currentTrip.name}
-                onChange={handleInputChange}
-              />
-              <Toggle 
-                id="confirmed" 
-                name="confirmed" 
-                value={currentTrip.confirmed} 
+                id="type"
+                name="type"
+                value={currentTask.type}
                 onChange={handleInputChange}
               />
           </Form>
@@ -87,13 +83,13 @@ const EditTrip = (props) => {
             text="Update"
             onClick={updateContent}
           />
-          <Button text="Delete" onClick={removeTrip}/>
+          <Button text="Delete" onClick={removeTask}/>
           <p>{message}</p>
         </div>
       ) : (
         <div>
           <br />
-          <p>Select a trip</p>
+          <p>Select a task</p>
         </div>
       )}
     </Template>
@@ -104,4 +100,4 @@ const Button = styled(StyledButton)`
   margin: 0px 10px 10px 0px;
 `
 
-export default EditTrip
+export default EditTask

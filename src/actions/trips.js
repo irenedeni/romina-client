@@ -15,6 +15,7 @@ export const createTrip = (name, startDate, endDate, confirmed) => async (dispat
       type: CREATE_TRIP_AND_DAYS,
       payload: res.data
     })
+    console.log(".HEY CIAOO!!!")
     return Promise.resolve(res.data)
   } catch(err){
     return Promise.reject(err)
@@ -72,6 +73,7 @@ export const deleteAllTrips = () => async (dispatch) => {
 }
 
 export const findTripsByName = (name) => async (dispatch) => {
+  console.log("name", name)
   try {
     const res = await TripDataService.findByName(name)
     dispatch({

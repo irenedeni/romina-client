@@ -1,7 +1,8 @@
 import {
   CREATE_SLOT,
   UPDATE_SLOT,
-  DELETE_SLOT
+  DELETE_SLOT,
+  ADD_TASK_TO_SLOT
 } from "../actions/types"
 
 const initialState = []
@@ -12,13 +13,10 @@ function slotReducer(slots = initialState, action) {
 switch (type) {
   case CREATE_SLOT:
     return [...slots, payload]
-
-  // case RETRIEVE_TRIPS:
-  //   return payload
-
+    
   case UPDATE_SLOT:
     return slots.map((slot) => {
-      if(slot.id === slot.id){
+      if(slot.id === payload.id){
         return {
           ...slot,
           ...payload
@@ -27,6 +25,18 @@ switch (type) {
         return slot
       }
     })
+    case ADD_TASK_TO_SLOT:
+    return slots.map((slot) => {
+      if(slot.id === payload.slotId){
+        return {
+          ...slot,
+          ...payload
+        }
+      } else {
+        return slot
+      }
+    })
+    
     case DELETE_SLOT:
     return slots.filter(({ id }) => id !== payload.id)
 

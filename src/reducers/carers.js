@@ -1,6 +1,9 @@
 import {
   CREATE_CARER,
-  RETRIEVE_CARERS
+  RETRIEVE_CARERS,
+  UPDATE_CARER,
+  DELETE_CARER,
+  DELETE_ALL_CARERS
 } from "../actions/types"
 
 const initialState = []
@@ -15,23 +18,23 @@ switch (type) {
   case RETRIEVE_CARERS:
     return payload
 
-  // case UPDATE_TRIP:
-  //   return trips.map((trip) => {
-  //     if(trip.id === payload.id){
-  //       return {
-  //         ...trip,
-  //         ...payload
-  //       }
-  //     } else {
-  //       return trip
-  //     }
-  //   })
+  case UPDATE_CARER:
+    return carers.map((carer) => {
+      if(carer.id === payload.id){
+        return {
+          ...carer,
+          ...payload
+        }
+      } else {
+        return carer
+      }
+    })
 
-  // case DELETE_TRIP:
-  //   return trips.filter(({ id }) => id !== payload.id)
+  case DELETE_CARER:
+    return carers.filter(({ id }) => id !== payload.id)
 
-  // case DELETE_ALL_TRIPS:
-  //   return []
+  case DELETE_ALL_CARERS:
+    return []
   
   default:
     return carers

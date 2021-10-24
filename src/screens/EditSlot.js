@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { updateSlot, deleteSlot } from "../actions/slots"
 import { retrieveCarers } from "../actions/carers"
 import SlotDataService from "../services/SlotService"
-import { Toggle, Input, Template, Form, Dropdown, Spacer, Button as StyledButton } from "../components"
-import { fromCarerNameToId } from "../lib/functionsAndObjects"
+import { Input, Template, Form, Dropdown, Button as StyledButton } from "../components"
+import { fromCarerNameToId, timeframes, stayTypes } from "../lib/functionsAndObjects"
 
 
 const EditSlot = (props) => {
@@ -14,14 +14,13 @@ const EditSlot = (props) => {
     timeframe: "",
     stayType: "",
     notes: "",
-    carer: {},
+    carer: "",
   }
 
   const [currentSlot, setCurrentSlot] = useState(initialSlotState)
   const [message, setMessage] = useState("")
 
   const carers = useSelector(state => state.carers)
-  console.log("carers", carers)
 
 
   const dispatch = useDispatch()
@@ -29,7 +28,6 @@ const EditSlot = (props) => {
   const getSlot = id => {
     SlotDataService.get(id)
     .then(res => {
-      console.log("res data", res.data)
       setCurrentSlot(res.data)
     })
     .catch(e => {
@@ -49,15 +47,15 @@ const EditSlot = (props) => {
     const { name, value } = event.target
       setCurrentSlot({ ...currentSlot, [name]: value })
   }
-
   const updateContent = () => {
-    console.log("currentSlot", currentSlot)
-    const updatedCarer = fromCarerNameToId(currentSlot.carer, carers)
+    const carerName = currentSlot.carer?.name || currentSlot.carer
+    const updatedCarer = fromCarerNameToId(carerName, carers)
     currentSlot.carerId = updatedCarer.id
     dispatch(updateSlot(currentSlot.id, currentSlot))
     .then(res => {
       console.log(res)
       setMessage("slot updated successfully")
+      props.history.goBack()
     })
     .catch(e => {
       console.log(e)
@@ -67,13 +65,12 @@ const EditSlot = (props) => {
   const removeSlot = () => {
     dispatch(deleteSlot(currentSlot.id))
     .then(()=> {
-      props.history.push("/slots")
+      props.history.goBack()
     })
     .catch(e => {
       console.log(e)
     })
   }
-  console.log("current slot", currentSlot)
 
   
   return (
@@ -82,43 +79,36 @@ const EditSlot = (props) => {
         <div>
           <h2>UPDATE Slot</h2>
           <Form>
-              <Input
-                type="text"
-                id="timeframe"
-                name="timeframe"
-                value={currentSlot.timeframe}
-                onChange={handleInputChange}
-              />
-              <Input
-                type="text"
-                id="stayType"
-                name="stayType"
-                value={currentSlot.stayType}
-                onChange={handleInputChange}
-              />
-              <Input
-                type="text"
-                id="notes"
-                name="notes"
-                value={currentSlot.notes}
-                onChange={handleInputChange}
-              />
-              <Input
-                type="text"
-                id="carer"
-                name="carer"
-                value={currentSlot.carer?.name}
-                onChange={handleInputChange}
-              />
-              
+            <Dropdown
+              id="timeframe" 
+              name="timeframe" 
+              value={currentSlot.timeframe} 
+              data={timeframes}
+              required 
+              onChange={handleInputChange}
+            />
+            <Dropdown
+              id="stayType" 
+              name="stayType" 
+              value={currentSlot.stayType} 
+              data={stayTypes}
+              onChange={handleInputChange}
+            />
+            <Input 
+              type="text" 
+              id="notes" 
+              name="notes" 
+              value={currentSlot.notes}  
+              onChange={handleInputChange}
+            />
+            <Dropdown
+              data={carers}
+              name="carer"
+              id="carer"
+              onChange={handleInputChange}
+              value={currentSlot.carer?.name}
+            />
           </Form>
-          {/* {currentSlot.confirmed && (
-            <Button text="Un-confirm" onClick={() => updateStatus(false)}/>
-          )  */}
-          {/* // (
-          //   <Button text="Confirm" onClick={() => updateStatus(true)}/>
-          // ) */}
-          {/* } */}
           <Button
             type="submit"
             text="Update"

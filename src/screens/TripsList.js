@@ -7,9 +7,10 @@ import { calendarObject } from "../lib/functionsAndObjects"
 import {
   retrieveTrips,
   findTripsByName,
-  deleteAllTrips
+  deleteAllTrips,
+  deleteTrip
 } from "../actions/trips"
-import { Toggle, Input, Template, Form, Dropdown, Spacer, Button } from "../components"
+import { Input, Template, Form, Spacer, Button } from "../components"
 
 
 const TripsList = () => {
@@ -72,6 +73,18 @@ const TripsList = () => {
     return tripRange
   }
 
+
+  const removeTrip = (id) => {
+    dispatch(deleteTrip(id))
+    .then(res => {
+      console.log(res)
+      refreshData()
+    })
+    .catch(e => {
+      console.log(e)
+    })
+  }
+
   return (
     <Template direction="vertical">
       <Form>
@@ -90,32 +103,40 @@ const TripsList = () => {
     <Spacer />
       <ListContainer>
         <h2>Trips list</h2>
+        <Link to="/add_trip" >
+          <AddButton text="ADD TRIP"/>
+        </Link>
         <TripsContainer>
           {trips &&
           trips.map((trip, index) => {
             const tripRange = findTripRange(trip?.days)
           return (
             <TripContainer 
-            key={index}
+              key={index}
               className={index === currentIndex ? "active" : ""}
               style={{marginBottom: '20px'}}
             >
-              <TripName onClick={() => setActiveTrip(trip, index)} active={currentTrip && (index === currentIndex)}>
-              {trip.name.toUpperCase()}
-              </TripName>
+              <Link to={"/trips/" + trip.id} style={{textDecoration: "none"}}>
+                <TripName 
+                  // onClick={() => setActiveTrip(trip, index)} 
+                  active={currentTrip && (index === currentIndex)}
+                >
+                  {trip.name.toUpperCase()}
+                </TripName>
+              </Link>
               <div>
                 From: {`${moment(tripRange[0].date).calendar(null, calendarObject)}`}{", "}
               </div>
               <div>
                 Until: {`${moment(tripRange[tripRange?.length - 1].date).calendar(null, calendarObject)}`} 
               </div>
-              <TripButtonsDiv active={currentTrip && (index === currentIndex)}>
-                <Link to={"/trips/" + trip.id}>
-                  <Button small text="open" style={{margin: "10px 10px 0px 0px"}}/>
-                </Link>
+              <TripButtonsDiv 
+                // active={currentTrip && (index === currentIndex)}
+              >
                 <Link to={"/edit/trips/" + trip.id}>
-                  <Button small text="edit" style={{marginTop: "10px"}}/>
+                  <Button small text="edit" style={{margin: "10px 10px 0px 0px"}}/>
                 </Link>
+                <Button small text="delete" style={{margin: "10px 10px 0px 0px"}} onClick={() => removeTrip(trip.id)}/>
               </TripButtonsDiv>
             </TripContainer>
           )})
@@ -129,7 +150,8 @@ const TripsList = () => {
 }
 
 const TripName = styled.h4`
-  font-weight: ${props => props.active && '700'};
+  font-weight: ${props => !props.active && '500'};
+  text-decoration: none;
   :hover {
     cursor: pointer;
     font-weight: 700;
@@ -147,7 +169,7 @@ const ListContainer = styled.div`
 const TripsContainer = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   width: 100%;
   flex-wrap: wrap;
 `
@@ -162,8 +184,12 @@ const TripContainer = styled.div`
 `
 
 const TripButtonsDiv = styled.div`
-  display: ${props => props.active ? 'flex' : 'none'};
+  display: flex;
   width: 100%;
+`
+
+const AddButton = styled(Button)`
+  margin: 15px;
 `
 
 export default TripsList

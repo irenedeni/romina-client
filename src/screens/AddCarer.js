@@ -1,9 +1,9 @@
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import { createCarer } from "../actions/carers"
-import { Toggle, Input, Template, Form, Button, Dropdown } from "../components"
+import { Toggle, Input, Template, Form, Button } from "../components"
 
-const AddCarer = () => {
+const AddCarer = (props) => {
 
   const initialCarerState = {
     id: null,
@@ -25,9 +25,9 @@ const AddCarer = () => {
     } else setCarer({ ...carer, [name]: checked })
   }
 
+
   const saveCarer = () => {
     const { name, email, phone, professional } = carer
-    console.log("carer", carer)
     dispatch(createCarer(name, email, phone, professional))
     .then(data => {
       setCarer({
@@ -42,13 +42,13 @@ const AddCarer = () => {
       console.log(e)
     })
     setSubmitted(true)
+    setTimeout(()=>props.history.push("/carers"), 3000)
   }
 
   const newCarer = () => {
     setCarer(initialCarerState)
     setSubmitted(false)
   }
-console.log('carer', carer)
 
   return (
     <Template>
@@ -84,13 +84,12 @@ console.log('carer', carer)
             value={carer.professional} 
             onChange={handleInputChange}
           />
-          {/* <Dropdown 
-          /> */}
         </Form>
       </div>
     : 
       <div>
         <h4>New carer submitted successfully</h4>
+        <p>Add more or wait to be redirected to the general carers page</p>
         <Button onClick={newCarer} text="Add more" />
       </div>
   }

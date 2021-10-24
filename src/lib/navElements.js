@@ -8,15 +8,11 @@ export const navElements = [
     name: "Trips"
   },
   {
-    href: "/add_trip",
-    name: "Add Trip"
+    href: "/carers",
+    name: "Carers"
   },
   {
-    href: "/add_carer",
-    name: "Add Carer"
-  },
-  {
-    href: "/add_task",
-    name: "Add task"
+    href: "/tasks",
+    name: "Tasks"
   }
 ]

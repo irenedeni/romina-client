@@ -1,7 +1,8 @@
 import { 
   CREATE_SLOT,
   UPDATE_SLOT,
-  DELETE_SLOT
+  DELETE_SLOT,
+  ADD_TASK_TO_SLOT
 } from "./types"
 
 import SlotDataService from "../services/SlotService"
@@ -9,7 +10,6 @@ import SlotDataService from "../services/SlotService"
 export const createSlot = (dayId, data) => async (dispatch) => {
 
 const { timeframe, stayType, notes, carerId } = data
-console.log("carerId in action", carerId)
 
   try {
     const res = await SlotDataService.create({ dayId, timeframe, stayType, notes, carerId })
@@ -48,17 +48,17 @@ export const deleteSlot = (id) => async (dispatch) => {
   }
 }
 
-export const addTaskToSlot = (slotId, taskId) => async (dyspatch) => {
-  // try {
-  //   const res = await SlotDataService.addTask(slotId, taskId)
-  //   dispatch({
-  //     type: ADD_TASK_TO_SLOT,
-  //     payload: { slotId, taskId }
-  //   })
-  //   return Promise.resolve(res.data)
-  // } catch (err) {
-  //   return Promise.reject(err)
-  // }
+export const addTaskToSlot = (slotId, taskId) => async (dispatch) => {
+  try {
+    const res = await SlotDataService.addTaskToSlot(slotId, taskId)
+    dispatch({
+      type: ADD_TASK_TO_SLOT,
+      payload: { slotId, taskId }
+    })
+    return Promise.resolve(res.data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
 }
 
 // export const retrieveSlots = () => async (dispatch) => {

@@ -1,76 +1,74 @@
-import React, { useState } from "react"
-import styled, { css } from "styled-components"
+import React from "react"
+import styled from "styled-components"
 
 function Dropdown(props) {
-  // let options = data.map(data => (
-  //   <option key={data.id} value={data.id}>
-  //     {data.name}
-  //   </option>
-  // ))
-
+  const label = props.name?.split(/(?=[A-Z])/).join(" ")
+  let options = props.data?.map((data, index) => {
+    const name = data.name ? data.name : data.type
+    return (
+    <option key={index} value={name}>
+      {name[0].toUpperCase() + name.substring(1)}
+    </option>
+    )
+  })
   return (
     <Container>
-      <Label>{props.name[0].toUpperCase() + props.name.substring(1)}</Label>
-      {/* <select
-        name="se"
-      >
-
-      </select> */}
+      <Label>{label[0].toUpperCase() + label.substring(1)}</Label>
+      <Select {...props}>
+        <Option>
+          Select {label.toLowerCase()}
+        </Option>
+        {options}
+      </Select>
     </Container>
   )
 }
 
 const Container = styled.div`
   display: flex;
-  align-items: center;
-  width: 300px;
+  flex-direction: column;
+  width: 100%;
   margin: 10px auto;
+`
+
+const Select = styled.select`
+  font-family: "Quicksand", sans-serif;
+  font-weight: 300;
+  flex:1;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: none; 
+  background-color: #e9e6e6;
+  background-image:
+    linear-gradient(45deg, transparent 50%, gray 50%),
+    linear-gradient(135deg, gray 50%, transparent 50%),
+    linear-gradient(to right, #ccc, #ccc);
+  background-position:
+    calc(100% - 20px) calc(1em + 2px),
+    calc(100% - 15px) calc(1em + 2px),
+    calc(100% - 2.9em) 0.1em;
+  background-size:
+    5px 5px,
+    5px 5px,
+    1px 2.6em;
+  background-repeat: no-repeat;
 `
 
 const Label = styled.label`
   display: flex;
-  flex-direction: column;
-  margin: 0px 8px 3px 0px;
+  margin-bottom: 3px;
   font-weight: 400;
 `
 
-const StyledCheckbox = styled.input.attrs({ 
-  type: 'checkbox'
-})`
-  position: relative;
-  background: #fff;
-  font-family: "Quicksand", sans-serif;
-  width: 60px;
-  height: 30px;
-  -webkit-appearance: initial;
-  border-radius: 3px;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  outline: none;
-  font-size: 12px;
-  cursor: pointer;
-  border: 1px solid #ddd;
-  :after {
-  position: absolute;
-  top: 5%;
-  color: #fff;
-  display: block;
-  line-height: 32px;
-  width: 45%;
-  height: 90%;
-  box-sizing: border-box;
-  text-align: center;
-  transition: all 0.3s ease-in 0s;
-  background-color: #444444;
-  border-radius: 3px;
-  left: 2%;
-  content: "";
-  ${props => props.value && css`
-    left: 53%;
-    background-color: #6adda2;
-    content: "";
-    color: #fff;
-  `}    
-}
+const Option = styled.option`
 `
 
 export default Dropdown
