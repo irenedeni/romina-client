@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from "react-redux"
 import { updateSlot, deleteSlot } from "../actions/slots"
 import { retrieveCarers } from "../actions/carers"
 import SlotDataService from "../services/SlotService"
-import { Input, Template, Form, Dropdown, Button as StyledButton } from "../components"
+import { Input, Template, Form, Dropdown, Button as StyledButton, Modal } from "../components"
 import { fromCarerNameToId, timeframes, stayTypes } from "../lib/functionsAndObjects"
+import useModal from "../hooks/useModal"
 
 
 const EditSlot = (props) => {
@@ -19,6 +20,7 @@ const EditSlot = (props) => {
 
   const [currentSlot, setCurrentSlot] = useState(initialSlotState)
   const [message, setMessage] = useState("")
+  const { show, toggleVisibility } = useModal()
 
   const carers = useSelector(state => state.carers)
 
@@ -72,7 +74,7 @@ const EditSlot = (props) => {
     })
   }
 
-  
+  console.log("SHOW", show)
   return (
     <Template>
       {currentSlot ? (
@@ -114,7 +116,11 @@ const EditSlot = (props) => {
             text="Update"
             onClick={updateContent}
           />
-          <Button text="Delete" onClick={removeSlot}/>
+          <Button text="Delete" onClick={toggleVisibility}/>
+          <Modal display={show} hide={toggleVisibility}>
+            <p>Are you sure you want to remove this slot?</p>
+            <StyledButton text="YES" onClick={removeSlot} />
+          </Modal>
           <p>{message}</p>
         </div>
       ) : (
