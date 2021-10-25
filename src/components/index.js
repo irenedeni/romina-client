@@ -6,6 +6,8 @@ import Navigation from "./Navigation"
 import Spacer from "./Spacer"
 import Template from "./Template"
 import Form from "./Form"
+import Modal from "./Modal"
+
 
 export { 
   Toggle, 
@@ -15,6 +17,7 @@ export {
   Navigation,
   Spacer,
   Template,
-  Form
+  Form,
+  Modal
 }
   

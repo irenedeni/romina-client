@@ -12,6 +12,7 @@ function Template(props) {
 
 const TemplateContainer = styled.div`
   display: flex;
+  position: relative;
   flex-direction: ${props => props.direction === "vertical" ? "column" : "row"};
   justify-content: center;
   align-items: center;
