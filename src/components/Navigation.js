@@ -21,8 +21,8 @@ function Navigation(props) {
 
 const NavContainer = styled.nav`
   display: flex;
-  background-color: #e9e6e6;
   margin-bottom: 50px;
+  appearance: none;
 `
 
 const ElementsContainer = styled.div`

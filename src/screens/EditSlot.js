@@ -74,7 +74,6 @@ const EditSlot = (props) => {
     })
   }
 
-  console.log("SHOW", show)
   return (
     <Template>
       {currentSlot ? (

@@ -24,13 +24,14 @@ const Label = styled.label`
   flex-direction: column;
   margin: 0px 8px 3px 0px;
   font-weight: 400;
+  color: ${({ theme }) => theme.textOverlay};
 `
 
 const StyledToggle = styled.input.attrs({ 
   type: 'checkbox'
 })`
   position: relative;
-  background: #fff;
+  background-color: ${({ theme }) => theme.surface4};
   font-family: "Quicksand", sans-serif;
   width: 60px;
   height: 30px;
@@ -52,13 +53,13 @@ const StyledToggle = styled.input.attrs({
   box-sizing: border-box;
   text-align: center;
   transition: all 0.3s ease-in 0s;
-  background-color: #8f8f8f;
+  background-color: ${({ theme }) => theme.surface3};
   border-radius: 3px;
   left: 2%;
   content: "";
   ${props => props.value && css`
     left: 53%;
-    background-color: #6adda2;
+    background-color: ${({ theme }) => theme.secondary};
     content: "";
     color: #fff;
   `}    

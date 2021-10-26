@@ -30,15 +30,21 @@ const StyledInput = styled.input`
   -webkit-appearance: none;
   appearance: none;
   border: none; 
-  background-color: #e9e6e6;
+  background-color: ${({ theme }) => theme.surface4};
   padding: ${props => props.type === "text" ? "10px 15px" : "7px 15px"};
   border-radius: 5px;
+  :focus{
+    border: 2px solid ${({ theme }) => theme.primary};
+    outline: none;
+  }
+
 `
 
 const Label = styled.label`
   display: flex;
   margin-bottom: 3px;
   font-weight: 400;
+  color: ${({ theme }) => theme.textOverlay};
 `
 
 

@@ -85,6 +85,7 @@ const CarersList = (props) => {
           onClick={findByName} 
           text="Search"
           maxWidth
+          color={({theme}) => theme.secondary}
         />
       </Form>
     <Spacer />
@@ -122,9 +123,9 @@ const CarersList = (props) => {
               }
               <CarerButtonsDiv active>
                 <Link to={"/edit/carers/" + carer.id}>
-                  <CardButton small text="edit" style={{marginTop: "10px"}}/>
+                  <CardButton small text="edit"/>
                 </Link>
-                <CardButton small text="delete" style={{marginTop: "10px"}} onClick={() => removeCarer(carer.id)}/>
+                <CardButton small text="delete" outlined onClick={() => removeCarer(carer.id)}/>
               </CarerButtonsDiv>
             </CarerContainer>
           )})
@@ -146,6 +147,7 @@ const CarerName = styled.h4`
 `
 const CardButton = styled(Button)`
   margin-right: 10px;
+  margin-top: 10px;
 `
 
 const ListContainer = styled.div`
@@ -170,7 +172,7 @@ const CarerContainer = styled.div`
   padding: 10px 20px 15px 20px;
   margin: 10px;
   justify-content: space-between;
-  background-color: #e9e6e6;
+  background-color: ${({ theme }) => theme.surface1};
   width: 250px;
 `
 

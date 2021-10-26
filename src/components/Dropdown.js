@@ -66,6 +66,7 @@ const Label = styled.label`
   display: flex;
   margin-bottom: 3px;
   font-weight: 400;
+  color: ${({ theme }) => theme.textOverlay};
 `
 
 const Option = styled.option`

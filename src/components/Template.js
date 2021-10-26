@@ -1,8 +1,9 @@
 import React from "react"
 import styled from "styled-components"
 
-function Template(props) {
 
+function Template(props) {
+console.log("props.theme",   ({ theme }) => theme.bg)
   return (
     <TemplateContainer direction={props.direction}>
       {props.children}
@@ -13,6 +14,7 @@ function Template(props) {
 const TemplateContainer = styled.div`
   display: flex;
   position: relative;
+  background-color: ${({ theme }) => theme.bg};
   flex-direction: ${props => props.direction === "vertical" ? "column" : "row"};
   justify-content: center;
   align-items: center;

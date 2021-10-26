@@ -126,7 +126,7 @@ const TaskContainer = styled.div`
   padding: 10px 20px 15px 20px;
   margin: 10px;
   justify-content: space-between;
-  background-color: #e9e6e6;
+  background-color: ${({ theme }) => theme.surface1 };
   width: 250px;
 `
 

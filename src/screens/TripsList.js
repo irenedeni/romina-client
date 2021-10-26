@@ -97,6 +97,7 @@ const TripsList = () => {
         <Button
           onClick={findByName} 
           text="Search"
+          color={({theme}) => theme.secondary}
           maxWidth
         />
       </Form>
@@ -179,8 +180,14 @@ const TripContainer = styled.div`
   flex-direction: column;
   padding: 10px 20px;
   margin: 10px;
-  background-color: #e9e6e6;
+  color: ${({ theme }) => theme.text};
+  background-color: ${({ theme }) => theme.surface1};
+  border-radius: ${({ theme }) => theme.smallRadius};
   width: 250px;
+  :hover {
+    box-shadow: ${({ theme }) => theme.shadow1};
+    cursor: pointer;
+  }
 `
 
 const TripButtonsDiv = styled.div`
