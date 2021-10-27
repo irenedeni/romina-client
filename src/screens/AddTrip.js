@@ -3,9 +3,8 @@ import { useDispatch } from "react-redux"
 import { Link } from 'react-router-dom'
 import { createTrip } from "../actions/trips"
 import { Toggle, Input, Template, Form, Button } from "../components"
-import TripDataService from "../services/TripService"
 
-const AddTrip = (props) => {
+const AddTrip = () => {
 
   const initialTripState = {
     id: null,
@@ -20,6 +19,12 @@ const AddTrip = (props) => {
   const [submitted, setSubmitted] = useState()
 
   const dispatch = useDispatch()
+
+  const selectionRange = {
+    startDate: new Date(),
+    endDate: new Date(),
+    key: 'selection',
+  }
 
   const handleInputChange = event => {
     const { name, value, checked } = event.target
@@ -56,7 +61,7 @@ const AddTrip = (props) => {
     {!submitted ? 
       <div>
         <h1>Add new trip</h1>
-        <Form onClick={saveTrip}>
+        <Form onClick={() => saveTrip}>
           <Input 
             type="text" 
             id="name" 
@@ -76,7 +81,7 @@ const AddTrip = (props) => {
           <Input 
             type="date" 
             id="endDate" 
-            name="endDate" 
+            name="endDate"
             value={trip.endDate} 
             required 
             onChange={handleInputChange}

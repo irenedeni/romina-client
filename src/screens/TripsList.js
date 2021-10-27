@@ -17,7 +17,6 @@ const TripsList = () => {
 
   const [currentTrip, setCurrentTrip] = useState(null)
   const [currentIndex, setCurrentIndex] = useState(null)
-  const [searchName, setSearchName] = useState("")
 
   const trips = useSelector(state => state.trips)
 
@@ -27,19 +26,9 @@ const TripsList = () => {
     dispatch(retrieveTrips())
   }, [dispatch])
 
-  const onChangeSearchName = e => {
-    const searchName = e.target.value
-    setSearchName(searchName)
-  }
-
   const refreshData = () => {
     setCurrentTrip(null)
     setCurrentIndex(-1)
-  }
-
-  const setActiveTrip = (trip, index) => {
-    setCurrentTrip(trip)
-    setCurrentIndex(index)
   }
 
   const removeAllTrips = () => {
@@ -50,15 +39,6 @@ const TripsList = () => {
     })
     .catch(e => {
       console.log(e)
-    })
-  }
-
-  const findByName = (e) => {
-    e.preventDefault()
-    refreshData()
-    dispatch(findTripsByName(searchName))
-    .then(res => {
-      console.log("res",res)
     })
   }
 
@@ -87,26 +67,13 @@ const TripsList = () => {
 
   return (
     <Template direction="vertical">
-      <Form>
-        <Input
-          type="text"
-          placeholder="search by trip name"
-          value={searchName}
-          onChange={onChangeSearchName}
-        />
-        <Button
-          onClick={findByName} 
-          text="Search"
-          color={({theme}) => theme.secondary}
-          maxWidth
-        />
-      </Form>
-    <Spacer />
       <ListContainer>
-        <h2>Trips list</h2>
-        <Link to="/add_trip" >
-          <AddButton text="ADD TRIP"/>
-        </Link>
+        <TitleContainer>
+          <H1>Trips list</H1>
+          <Link to="/add_trip" >
+            <AddButton text="+"/>
+          </Link>
+        </TitleContainer>
         <TripsContainer>
           {trips &&
           trips.map((trip, index) => {
@@ -151,11 +118,11 @@ const TripsList = () => {
 }
 
 const TripName = styled.h4`
-  font-weight: ${props => !props.active && '500'};
+  font-weight: 700;
   text-decoration: none;
+  margin-bottom: 15px;
   :hover {
     cursor: pointer;
-    font-weight: 700;
   }
 `
 
@@ -178,7 +145,9 @@ const TripsContainer = styled.div`
 const TripContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 10px 20px;
+  align-items: center;
+  padding: 15px 20px;
+  justify-content: center;
   margin: 10px;
   color: ${({ theme }) => theme.text};
   background-color: ${({ theme }) => theme.surface1};
@@ -193,10 +162,25 @@ const TripContainer = styled.div`
 const TripButtonsDiv = styled.div`
   display: flex;
   width: 100%;
+  justify-content: center;
+  margin-top: 10px;
 `
 
 const AddButton = styled(Button)`
-  margin: 15px;
+  margin: 15px 15px 15px 30px;
+  padding: 8px 14px;
+  width: min-content;
+  border-radius: ${({ theme }) => theme.largeRadius};
+`
+
+const H1 = styled.h1``
+
+const TitleContainer = styled.div`
+  display: flex;
+  width: 300px;
+  max-width: 100%;
+  align-items: center;
+  justify-content: center;
 `
 
 export default TripsList

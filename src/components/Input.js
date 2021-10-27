@@ -29,20 +29,22 @@ const StyledInput = styled.input`
   flex: 1;
   -webkit-appearance: none;
   appearance: none;
-  border: none; 
   background-color: ${({ theme }) => theme.surface4};
   padding: ${props => props.type === "text" ? "10px 15px" : "7px 15px"};
   border-radius: 5px;
-  :focus{
-    border: 2px solid ${({ theme }) => theme.primary};
+  border: 1px solid ${(props) => props.highlight ? (({theme}) => theme.secondary ) : (({theme}) => theme.textOverlay)};
+  color: ${({ theme }) => theme.textOverlay};
+  background-color: ${({ theme }) => theme.surface1};
+  :focus, :visited, :active, :target, :focus-visible{
     outline: none;
-  }
-
+    font-weight: 500;
+    color: ${({ theme }) => theme.textOverlay};
+  };
 `
 
 const Label = styled.label`
   display: flex;
-  margin-bottom: 3px;
+  margin-bottom: 5px;
   font-weight: 400;
   color: ${({ theme }) => theme.textOverlay};
 `

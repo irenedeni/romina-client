@@ -6,13 +6,12 @@ import Spacer from "../components/Spacer"
 function Form(props) {
 
   return (
-    <Container onSubmit={props.onSubmit}>
+    <Container {...props}>
       {props.children}
       <Spacer small/>
       {(props.onSubmit || props.onClick) &&
         <Button  
           type="submit" 
-          // maxWidth
           onClick={props.onClick} 
           text={props.btnText || "Submit"}
         />
@@ -24,7 +23,7 @@ function Form(props) {
 
 const Container = styled.form`
   display: flex;
-  flex-direction: column;
+  flex-direction: ${props => !props.horizontal ? "column" : "row"};
   justify-content: center;
   align-items: center;
   margin-top: 20px;
