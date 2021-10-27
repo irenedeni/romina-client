@@ -7,36 +7,6 @@ import { Search } from "./index"
 
 
 function Navigation(props) {
-  const [currentTrip, setCurrentTrip] = useState(null)
-  const [currentIndex, setCurrentIndex] = useState(null)
-  const [searchName, setSearchName] = useState("")
-
-  const trips = useSelector(state => state.trips)
-
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(retrieveTrips())
-  }, [dispatch])
-
-  const onChangeSearchName = e => {
-    const searchName = e.target.value
-    setSearchName(searchName)
-  }
-
-  const refreshData = () => {
-    setCurrentTrip(null)
-    setCurrentIndex(-1)
-  }
-
-  // const findByName = (e) => {
-  //   e.preventDefault()
-  //   refreshData()
-  //   dispatch(findTripsByName(searchName))
-  //   .then(res => {
-  //     console.log("res",res)
-  //   })
-  // }
 
   return (
     <NavContainer>
@@ -81,14 +51,6 @@ const NavElement = styled.div`
   margin: 20px;
 `
 
-const FormContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  width: 100%;
-  margin-right: 20px;
-  margin-top: -20px;
-`
 
 export default Navigation
 

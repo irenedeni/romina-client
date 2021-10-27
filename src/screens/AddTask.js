@@ -46,7 +46,7 @@ const AddTask = (props) => {
     {!submitted ? 
       <div>
         <h1>Add new task</h1>
-        <Form onClick={saveTask}>
+        <Form>
           <Input 
             type="text" 
             id="type" 
@@ -54,6 +54,10 @@ const AddTask = (props) => {
             value={task.type} 
             required 
             onChange={handleInputChange}
+          />
+          <Button
+            onClick={saveTask} 
+            text="Submit"
           />
         </Form>
       </div>

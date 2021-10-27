@@ -8,6 +8,7 @@ import Template from "./Template"
 import Form from "./Form"
 import Modal from "./Modal"
 import Search from "./Search"
+import TripCard from "./TripCard"
 
 export { 
   Toggle, 
@@ -19,6 +20,7 @@ export {
   Template,
   Form,
   Modal,
-  Search
+  Search,
+  TripCard
 }
   

@@ -162,13 +162,17 @@ const Trip = (props) => {
                     }
                     <Button small text="Add task" onClick={()=>openTaskForm(slot.id)}/>
                     {(taskToAdd.slotId === slot.id) &&
-                      <Form onClick={() => updateContent(slot.id)}>
+                      <Form>
                         <Dropdown
                           id="taskToAdd"
                           name="type" 
                           value={taskToAdd.type} 
                           data={tasks}
                           onChange={handleInputChange}
+                        />
+                         <Button
+                          onClick={updateContent(slot.id)} 
+                          text="Submit"
                         />
                       </Form>
                     }

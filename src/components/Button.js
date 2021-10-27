@@ -26,6 +26,7 @@ const StyledButton = styled.button`
   :hover {
     box-shadow: ${({ theme }) => theme.shadow1};
     font-weight: 500;
+    border-width: 1px solid ${props => !props.color ? ({ theme }) => theme.primary : props.color};
     background-color: ${props => props.outlined ? "transparent" : props.color ? props.color : ({ theme }) => theme.primary};
   }
 `

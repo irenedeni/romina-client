@@ -45,22 +45,25 @@ function Search(props) {
     } else return false
   }
 
-  console.log("searchLocation", searchLocation)
+  const searchText = (pathname) => {
+    return pathname.split("/")[1].slice(0, -1)
+  }
 
   return (
     <FormContainer searchLocation={searchLocation(pathname)}>
       <Form horizontal>
         <Input
           highlight
+          autoWidth
           type="text"
-          placeholder="search by trip name"
+          placeholder={`search by ${searchText(pathname)} name`}
           value={searchName}
           onChange={onChangeSearchName}
         />
         <Button
           onClick={findByName} 
           text="Search"
-          color={({theme}) => theme.secondary}
+          color={({theme}) => `${theme.secondary}`}
           style={{marginLeft: "20px"}}
         />
       </Form>
@@ -71,9 +74,9 @@ function Search(props) {
     display: ${props => props.searchLocation ? "flex" : "none"};
     align-items: center;
     justify-content: flex-end;
-    width: 100%;
-    margin-right: 20px;
-    margin-top: -20px;
+    width: 350px;
+    max-width: 350px;
+    margin: -20px 20px 0px 20px;
   `
 
   export default Search

@@ -6,11 +6,11 @@ function Input(props) {
 const label = props.name?.split(/(?=[A-Z])/).join(" ")
 
   return (
-    <Container>
+    <Container {...props}>
       {label &&
         <Label>{label[0].toUpperCase() + label.substring(1)}</Label>
       }
-      <StyledInput {...props}/>
+      <StyledInput {...props} small={props.small}/>
     </Container>
   )
 }
@@ -18,7 +18,7 @@ const label = props.name?.split(/(?=[A-Z])/).join(" ")
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 300px;
+  width: ${props => !props.autoWidth && "300px"};
   margin: 10px auto;
 `
 
@@ -29,8 +29,7 @@ const StyledInput = styled.input`
   flex: 1;
   -webkit-appearance: none;
   appearance: none;
-  background-color: ${({ theme }) => theme.surface4};
-  padding: ${props => props.type === "text" ? "10px 15px" : "7px 15px"};
+  padding: ${props => props.small ? "6px 15px" : props.type === "text" ? "10px 15px" :  "7px 15px"};
   border-radius: 5px;
   border: 1px solid ${(props) => props.highlight ? (({theme}) => theme.secondary ) : (({theme}) => theme.textOverlay)};
   color: ${({ theme }) => theme.textOverlay};
@@ -38,14 +37,14 @@ const StyledInput = styled.input`
   :focus, :visited, :active, :target, :focus-visible{
     outline: none;
     font-weight: 500;
-    color: ${({ theme }) => theme.textOverlay};
+    border-width: 2px;
   };
 `
 
 const Label = styled.label`
   display: flex;
   margin-bottom: 5px;
-  font-weight: 400;
+  font-weight: 300;
   color: ${({ theme }) => theme.textOverlay};
 `
 

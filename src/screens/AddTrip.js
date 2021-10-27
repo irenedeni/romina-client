@@ -20,12 +20,6 @@ const AddTrip = () => {
 
   const dispatch = useDispatch()
 
-  const selectionRange = {
-    startDate: new Date(),
-    endDate: new Date(),
-    key: 'selection',
-  }
-
   const handleInputChange = event => {
     const { name, value, checked } = event.target
     if(event.target.type !== "checkbox"){
@@ -35,6 +29,8 @@ const AddTrip = () => {
 
   const saveTrip = () => {
     const { name, startDate, endDate, confirmed } = trip
+
+    console.log("TRIP", trip)
     dispatch(createTrip(name, startDate, endDate, confirmed))
     .then(data => {
        setTrip({
@@ -61,7 +57,7 @@ const AddTrip = () => {
     {!submitted ? 
       <div>
         <h1>Add new trip</h1>
-        <Form onClick={() => saveTrip}>
+        <Form >
           <Input 
             type="text" 
             id="name" 
@@ -91,6 +87,10 @@ const AddTrip = () => {
             name="confirmed" 
             value={trip.confirmed} 
             onChange={handleInputChange}
+          />
+          <Button
+            onClick={saveTrip} 
+            text="Submit"
           />
         </Form>
       </div>

@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import styled from "styled-components"
 import { useDispatch } from "react-redux"
 import { createCarer } from "../actions/carers"
 import { Toggle, Input, Template, Form, Button } from "../components"
@@ -54,8 +55,8 @@ const AddCarer = (props) => {
     <Template>
     {!submitted ? 
       <div>
-        <h1>Add new carer</h1>
-        <Form onClick={saveCarer}>
+        <H1>Add new carer</H1>
+        <Form>
           <Input 
             type="text" 
             id="name" 
@@ -84,6 +85,10 @@ const AddCarer = (props) => {
             value={carer.professional} 
             onChange={handleInputChange}
           />
+          <Button
+            onClick={saveCarer} 
+            text="Submit"
+          />
         </Form>
       </div>
     : 
@@ -96,5 +101,8 @@ const AddCarer = (props) => {
   </Template>
   )
 }
+
+const H1 = styled.h1``
+
 
 export default AddCarer

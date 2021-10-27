@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { useDispatch } from "react-redux"
 import { updateTask, deleteTask } from "../actions/tasks"
 import TaskDataService from "../services/TaskService"
-import { Toggle, Input, Template, Form, Button as StyledButton } from "../components"
+import { Input, Template, Form, Button as StyledButton } from "../components"
 
 
 const EditTask = (props) => {
@@ -70,13 +70,13 @@ const EditTask = (props) => {
         <div>
           <h2>UPDATE Task</h2>
           <Form>
-              <Input
-                type="text"
-                id="type"
-                name="type"
-                value={currentTask.type}
-                onChange={handleInputChange}
-              />
+            <Input
+              type="text"
+              id="type"
+              name="type"
+              value={currentTask.type}
+              onChange={handleInputChange}
+            />
           </Form>
           <Button
             type="submit"

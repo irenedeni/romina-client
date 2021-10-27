@@ -74,23 +74,8 @@ const CarersList = (props) => {
 
   return (
     <Template direction="vertical">
-      <Form>
-        <Input
-          type="text"
-          placeholder="search by carer name"
-          value={searchName}
-          onChange={onChangeSearchName}
-        />
-        <Button
-          onClick={findByName} 
-          text="Search"
-          maxWidth
-          color={({theme}) => theme.secondary}
-        />
-      </Form>
-    <Spacer />
       <ListContainer>
-        <h2>Carers list</h2>
+        <h1>Carers list</h1>
         <Link to="/add_carer">
           <AddButton text="ADD CARER"/>
         </Link>

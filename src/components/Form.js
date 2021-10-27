@@ -9,14 +9,6 @@ function Form(props) {
     <Container {...props}>
       {props.children}
       <Spacer small/>
-      {(props.onSubmit || props.onClick) &&
-        <Button  
-          type="submit" 
-          onClick={props.onClick} 
-          text={props.btnText || "Submit"}
-        />
-      }
-      
     </Container>
   )
 }

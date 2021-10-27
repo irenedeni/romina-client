@@ -74,7 +74,7 @@ const AddSlot = (props) => {
     {!submitted ? 
       <div>
         <h1>Add new slot</h1>
-        <Form onClick={saveSlot}>
+        <Form>
           <Dropdown
             id="timeframe" 
             name="timeframe" 
@@ -103,6 +103,10 @@ const AddSlot = (props) => {
             name="notes" 
             value={slot.notes}  
             onChange={handleInputChange}
+          />
+          <Button
+            onClick={saveSlot} 
+            text="Submit"
           />
         </Form>
       </div>

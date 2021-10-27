@@ -6,11 +6,10 @@ import styled from "styled-components"
 import { calendarObject } from "../lib/functionsAndObjects"
 import {
   retrieveTrips,
-  findTripsByName,
   deleteAllTrips,
   deleteTrip
 } from "../actions/trips"
-import { Input, Template, Form, Spacer, Button } from "../components"
+import { Template, Spacer, Button, TripCard } from "../components"
 
 
 const TripsList = () => {
@@ -79,34 +78,7 @@ const TripsList = () => {
           trips.map((trip, index) => {
             const tripRange = findTripRange(trip?.days)
           return (
-            <TripContainer 
-              key={index}
-              className={index === currentIndex ? "active" : ""}
-              style={{marginBottom: '20px'}}
-            >
-              <Link to={"/trips/" + trip.id} style={{textDecoration: "none"}}>
-                <TripName 
-                  // onClick={() => setActiveTrip(trip, index)} 
-                  active={currentTrip && (index === currentIndex)}
-                >
-                  {trip.name.toUpperCase()}
-                </TripName>
-              </Link>
-              <div>
-                From: {`${moment(tripRange[0].date).calendar(null, calendarObject)}`}{", "}
-              </div>
-              <div>
-                Until: {`${moment(tripRange[tripRange?.length - 1].date).calendar(null, calendarObject)}`} 
-              </div>
-              <TripButtonsDiv 
-                // active={currentTrip && (index === currentIndex)}
-              >
-                <Link to={"/edit/trips/" + trip.id}>
-                  <Button small text="edit" style={{margin: "10px 10px 0px 0px"}}/>
-                </Link>
-                <Button small text="delete" style={{margin: "10px 10px 0px 0px"}} onClick={() => removeTrip(trip.id)}/>
-              </TripButtonsDiv>
-            </TripContainer>
+            <TripCard trip={trip} key={index}/>
           )})
           }
         </TripsContainer>
@@ -117,14 +89,6 @@ const TripsList = () => {
   )
 }
 
-const TripName = styled.h4`
-  font-weight: 700;
-  text-decoration: none;
-  margin-bottom: 15px;
-  :hover {
-    cursor: pointer;
-  }
-`
 
 const ListContainer = styled.div`
   display: flex;
@@ -142,35 +106,14 @@ const TripsContainer = styled.div`
   flex-wrap: wrap;
 `
 
-const TripContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 15px 20px;
-  justify-content: center;
-  margin: 10px;
-  color: ${({ theme }) => theme.text};
-  background-color: ${({ theme }) => theme.surface1};
-  border-radius: ${({ theme }) => theme.smallRadius};
-  width: 250px;
-  :hover {
-    box-shadow: ${({ theme }) => theme.shadow1};
-    cursor: pointer;
-  }
-`
-
-const TripButtonsDiv = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  margin-top: 10px;
-`
-
 const AddButton = styled(Button)`
   margin: 15px 15px 15px 30px;
   padding: 8px 14px;
   width: min-content;
   border-radius: ${({ theme }) => theme.largeRadius};
+  :hover {
+    font-weight: 500;
+  }
 `
 
 const H1 = styled.h1``
