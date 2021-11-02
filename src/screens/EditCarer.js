@@ -16,8 +16,6 @@ const EditCarer = (props) => {
   const [currentCarer, setCurrentCarer] = useState(initialCarerState)
   const [message, setMessage] = useState("")
 
-  console.log("currentCarer", currentCarer)
-
   const dispatch = useDispatch()
 
   const getCarer = id => {
@@ -70,34 +68,34 @@ const EditCarer = (props) => {
         <div>
           <h2>UPDATE Carer</h2>
           <Form>
-              <Input
-                type="text"
-                id="name"
-                name="name"
-                value={currentCarer.name}
-                onChange={handleInputChange}
-              />
-              <Input
-                type="text"
-                id="email"
-                name="email"
-                value={currentCarer.email}
-                onChange={handleInputChange}
-              />
-              <Input
-                type="text"
-                id="phone"
-                name="phone"
-                value={currentCarer.phone}
-                onChange={handleInputChange}
-              />
-              
-              <Toggle 
-                id="professional" 
-                name="professional" 
-                value={currentCarer.professional} 
-                onChange={handleInputChange}
-              />
+            <Input
+              type="text"
+              id="name"
+              name="name"
+              value={currentCarer.name}
+              onChange={handleInputChange}
+            />
+            <Input
+              type="text"
+              id="email"
+              name="email"
+              value={currentCarer.email}
+              onChange={handleInputChange}
+            />
+            <Input
+              type="text"
+              id="phone"
+              name="phone"
+              value={currentCarer.phone}
+              onChange={handleInputChange}
+            />
+            
+            <Toggle 
+              id="professional" 
+              name="professional" 
+              value={currentCarer.professional} 
+              onChange={handleInputChange}
+            />
           </Form>
           <Button
             type="submit"

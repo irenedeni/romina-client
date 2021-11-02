@@ -1,12 +1,11 @@
 import React from "react"
 import styled from "styled-components"
-import Button from "./Button"
 import Spacer from "../components/Spacer"
 
 function Form(props) {
 
   return (
-    <Container {...props}>
+    <Container {...props} onSubmit={props.onSubmit}>
       {props.children}
       <Spacer small/>
     </Container>

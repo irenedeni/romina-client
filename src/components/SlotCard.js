@@ -2,13 +2,8 @@ import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-import moment from "moment"
-
-import { calendarObject, orderSlotsByTimeframe } from "../lib/functionsAndObjects"
-import { deleteTrip } from "../actions/trips"
 import { retrieveTasks } from "../actions/tasks"
 import { deleteSlot, addTaskToSlot } from "../actions/slots"
-import TripDataService from "../services/TripService"
 import { Button as StyledButton, Dropdown, Form } from "../components"
 
 
@@ -53,8 +48,24 @@ const SlotCard = (props) => {
     setTaskToAdd(initialTaskState)
   }
 
+  const handleInputChange = event => {
+    const { name, value } = event.target
+    tasks.find(task => {
+      if(task.type == value){
+        const id = task.id
+        taskToAdd.id = id
+        return (
+          setTaskToAdd({ ...taskToAdd, [name]: value })
+        )
+      }
+      
+    })
+  }
+
   const updateContent = (id) => {
     const slotId = id
+    console.log("taskToAdd ID", taskToAdd.id)
+    console.log("slot ID", slotId)
     dispatch(addTaskToSlot(taskToAdd.id, slotId))
     .then(res => {
       console.log(res)
@@ -66,19 +77,6 @@ const SlotCard = (props) => {
   }
 
 
-  const handleInputChange = event => {
-    const { name, value } = event.target
-    tasks.find(task => {
-      if(task.type === value){
-        const id = task.id
-        taskToAdd.id = id
-        return (
-          setTaskToAdd({ ...taskToAdd, [name]: value })
-        )
-      }
-      
-    })
-  }
 
   const openTaskForm = (id) => {
     !taskToAdd.slotId ?
@@ -88,6 +86,8 @@ const SlotCard = (props) => {
   }
 
   const { slot } = props
+
+  console.log("taskToAdd", taskToAdd)
   
   return (
     <SlotContainer>
@@ -121,6 +121,7 @@ const SlotCard = (props) => {
         }
         <Button small text="Add task" color={({theme}) => theme.secondary} onClick={()=>openTaskForm(slot.id)}/>
         {(taskToAdd.slotId === slot.id) &&
+        <>
           <Form>
             <Dropdown
               id="taskToAdd"
@@ -129,11 +130,14 @@ const SlotCard = (props) => {
               data={tasks}
               onChange={handleInputChange}
             />
-              <Button
-              onClick={updateContent(slot.id)} 
-              text="Submit"
-            />
+            <Button
+            onClick={updateContent(slot.id)} 
+            text="Submit"
+            type="submit"
+          />
           </Form>
+          
+        </>
         }
       </TasksAndBtnContainer>
       <SlotButtonsContainer>

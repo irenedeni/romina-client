@@ -40,6 +40,10 @@ const AddSlot = (props) => {
     const carerObj = fromCarerNameToId(carer, carers)
     const carerId = carerObj?.id
 
+    console.log("carerId", carerId)
+    console.log("carerObj", carerObj)
+    
+
     const data = {
       timeframe: timeframe,
       stayType: stayType,

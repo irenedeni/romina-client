@@ -22,7 +22,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
-  background-color: #e9e6e6;
+  background-color: ${({theme})=> theme.surface2};
   position: absolute;
   z-index: 2;
   padding: 20px;
