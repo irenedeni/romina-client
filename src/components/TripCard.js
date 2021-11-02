@@ -46,6 +46,7 @@ function TripCard(props) {
       style={{marginBottom: '20px'}}
     >
       <Link to={"/trips/" + trip.id} style={{textDecoration: "none"}}>
+        <img />
         <TripName>
           {trip.name.toUpperCase()}
         </TripName>
@@ -64,6 +65,8 @@ function TripCard(props) {
     </TripContainer>
   )
 }
+
+
 
 const TripName = styled.h3`
   font-weight: 700;

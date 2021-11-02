@@ -89,6 +89,14 @@ const TripsList = () => {
   )
 }
 
+const TripName = styled.h3`
+  font-weight: 700;
+  text-decoration: none;
+  margin-bottom: 15px;
+  :hover {
+    cursor: pointer;
+  }
+`
 
 const ListContainer = styled.div`
   display: flex;

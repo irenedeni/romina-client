@@ -9,6 +9,7 @@ import Form from "./Form"
 import Modal from "./Modal"
 import Search from "./Search"
 import TripCard from "./TripCard"
+import SlotCard from "./SlotCard"
 
 export { 
   Toggle, 
@@ -21,6 +22,7 @@ export {
   Form,
   Modal,
   Search,
-  TripCard
+  TripCard,
+  SlotCard
 }
   

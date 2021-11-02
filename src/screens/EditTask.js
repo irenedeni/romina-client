@@ -68,7 +68,7 @@ const EditTask = (props) => {
     <Template>
       {currentTask ? (
         <div>
-          <h2>UPDATE Task</h2>
+          <h1>UPDATE Task</h1>
           <Form>
             <Input
               type="text"

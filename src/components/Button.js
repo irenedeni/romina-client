@@ -22,6 +22,7 @@ const StyledButton = styled.button`
   `};
   font-size: ${props => props.small ? "13px" : "15px"};
   width: ${props => props.maxWidth ? "100%": "max-content"};
+  box-shadow: ${({ theme }) => theme.shadow2};
   cursor: pointer;
   :hover {
     box-shadow: ${({ theme }) => theme.shadow1};

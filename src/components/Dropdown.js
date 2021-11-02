@@ -45,8 +45,9 @@ const Select = styled.select`
   flex-direction: column;
   padding: 10px 15px;
   border-radius: 5px;
-  border: none; 
-  background-color: #e9e6e6;
+  border: 1px solid ${({theme}) => theme.textOverlay};
+  color: ${({ theme }) => theme.textOverlay};
+  background-color: ${({theme}) => theme.surface1};
   background-image:
     linear-gradient(45deg, transparent 50%, gray 50%),
     linear-gradient(135deg, gray 50%, transparent 50%),

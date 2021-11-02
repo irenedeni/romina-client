@@ -73,7 +73,6 @@ export const deleteAllTrips = () => async (dispatch) => {
 }
 
 export const findTripsByName = (name) => async (dispatch) => {
-  console.log("name", name)
   try {
     const res = await TripDataService.findByName(name)
     dispatch({

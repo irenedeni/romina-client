@@ -6,10 +6,8 @@ import moment from "moment"
 
 import { calendarObject, orderSlotsByTimeframe } from "../lib/functionsAndObjects"
 import { deleteTrip } from "../actions/trips"
-import { retrieveTasks } from "../actions/tasks"
-import { deleteSlot, addTaskToSlot } from "../actions/slots"
 import TripDataService from "../services/TripService"
-import { Template, Button as StyledButton, Dropdown, Form } from "../components"
+import { Template, Button as StyledButton, Dropdown, Form, SlotCard } from "../components"
 
 
 const Trip = (props) => {
@@ -19,30 +17,9 @@ const Trip = (props) => {
     confirmed: false
   }
 
-  const initialTaskState = {
-    id: null,
-    type: "",
-    slotId: null,
-  }
-
   const [currentTrip, setCurrentTrip] = useState(initialTripState)
-  const [taskToAdd, setTaskToAdd] = useState(initialTaskState)
-
-  const tasks = useSelector(state => state.tasks)
 
   const dispatch = useDispatch()
-
-  const removeSlot = (id) => {
-    dispatch(deleteSlot(id))
-    .then((res)=> {
-      console.log("res", res)
-      setCurrentTrip(currentTrip)
-      console.log("slot deleted successfully")
-    })
-    .catch(e => {
-      console.log(e)
-    })
-  }
 
   const getTrip = id => {
     TripDataService.get(id)
@@ -58,10 +35,6 @@ const Trip = (props) => {
     getTrip(props.match.params.id)
   }, [props.match.params.id])
 
-  useEffect(()=> {
-    dispatch(retrieveTasks())
-  }, [dispatch])
-
 
   const removeTrip = () => {
     dispatch(deleteTrip(currentTrip.id))
@@ -73,49 +46,7 @@ const Trip = (props) => {
     })
   }
 
-  const refreshData = () => {
-    setTaskToAdd(initialTaskState)
-  }
 
-  const updateContent = (id) => {
-    const slotId = id
-    console.log("taskToAdd ID", taskToAdd.id)
-    console.log("slot ID", slotId)
-    dispatch(addTaskToSlot(taskToAdd.id, slotId))
-    .then(res => {
-      console.log(res)
-      refreshData()
-      
-    })
-    .catch(e => {
-      console.log(e)
-    })
-  }
-
-
-  const handleInputChange = event => {
-    const { name, value } = event.target
-    tasks.find(task => {
-      if(task.type === value){
-        const id = task.id
-        taskToAdd.id = id
-        return (
-          setTaskToAdd({ ...taskToAdd, [name]: value })
-        )
-      }
-      
-    })
-  }
-
-  const openTaskForm = (id) => {
-    !taskToAdd.slotId ?
-    setTaskToAdd({ ...taskToAdd, slotId: id })
-    :
-    setTaskToAdd({ ...taskToAdd, slotId: null })
-  }
-  
-  console.log("currentTrip", currentTrip)
-  console.log("taskToAdd", taskToAdd)
   return (
     <Template>
       {currentTrip?.id ? (
@@ -127,63 +58,11 @@ const Trip = (props) => {
           <DayContainer key={index}>
             <h3>Day {`${index + 1}:`} {moment(day.date).calendar(calendarObject)}</h3>  
             <Link to={`/days/${day.id}/slots`}>
-              <Button text="Add slot"/>
+              <AddButton text="+"/>
             </Link>
             {day.slots?.length > 0 && orderSlotsByTimeframe(day.slots).map((slot, index) => {
               return (
-                <SlotContainer key={index}>
-                  <b>SLOT</b>
-                  <p>TIMEFRAME: <b>{slot.timeframe}</b></p>
-                  <p>LENGTH: <b>{slot.stayType}</b></p>
-                  <p>CARER: 
-                  {!slot.carer?.name ?
-                    <span> <Link to={`/edit/slots/${slot.id}`}>
-                      <Button outlined small text="Add carer" />
-                    </Link>
-                    </span>
-                    : <span><b> {slot.carer.name}</b></span>
-                  }
-                  </p>
-                  {slot.notes &&
-                   <p>NOTES: <b>{slot.notes}</b></p>
-                  }
-                  TASKS:
-                  <TasksAndBtnContainer>
-                    {slot.tasks?.length > 0 &&
-                      <TasksContainer>
-                      {slot.tasks?.map((task, index) => {
-                        return (
-                          <Task key={index}>
-                            {index + 1}) {task.type}
-                          </Task>
-                        )
-                      })}
-                    </TasksContainer>
-                    }
-                    <Button small text="Add task" onClick={()=>openTaskForm(slot.id)}/>
-                    {(taskToAdd.slotId === slot.id) &&
-                      <Form>
-                        <Dropdown
-                          id="taskToAdd"
-                          name="type" 
-                          value={taskToAdd.type} 
-                          data={tasks}
-                          onChange={handleInputChange}
-                        />
-                         <Button
-                          onClick={updateContent(slot.id)} 
-                          text="Submit"
-                        />
-                      </Form>
-                    }
-                  </TasksAndBtnContainer>
-                  <SlotButtonsContainer>
-                    <Link to={`/edit/slots/${slot.id}`}>
-                      <Button text="Edit slot" small/>
-                    </Link>
-                    <Button text="Delete slot" color="#6c6c6c" outlined small onClick={()=>removeSlot(slot.id)}/>
-                  </SlotButtonsContainer>
-                </SlotContainer>
+                <SlotCard slot={slot} key={index}/>
               )
             })}
           </DayContainer>
@@ -216,9 +95,19 @@ const TripContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   padding: 10px;
-  background-color: #EAEAEA;
+  background-color: ${({ theme }) => theme.bg};
   margin: 20px 0px;
   justify-content: center;
+`
+
+const AddButton = styled(StyledButton)`
+  margin: 15px 15px 15px 30px;
+  padding: 8px 14px;
+  width: min-content;
+  border-radius: ${({ theme }) => theme.largeRadius};
+  :hover {
+    font-weight: 500;
+  }
 `
 
 const DayContainer = styled.div`
@@ -227,55 +116,21 @@ const DayContainer = styled.div`
   align-items: center;
   margin: 10px;
   padding: 20px;
-  background-color: #D8D8D8;
+  background-color: ${({ theme }) => theme.surface1};
   width: 250px;
   max-width: 250px;
+  box-shadow: ${({ theme }) => theme.shadow1};
 `
 
 const Button = styled(StyledButton)`
   margin: ${props => props.small ? "5px 5px 5px 0px" : "10px 10px 10px 0px"};
 `
 
-const SlotContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 15px;
-  background-color: #e9e6e6;
-  width: 200px;
-  margin: 10px 0px;
-`
-
-const SlotButtonsContainer = styled.div`
-  display: flex;
-  width: 100%;
-`
-
-const TasksAndBtnContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  background-color: #D8D8D8;
-  margin: 10px 0px;
-`
-
-const TasksContainer = styled.div`
-  display: flex;
-  color: #fff;
-`
 
 const NotFoundContainer = styled.div`
   display: flex;
   justify-content: center;
   font-weight: 700;
-`
-
-const Task = styled.div`
-  background-color: #fff;
-  border-radius: 2px;
-  color: #333;
-  font-size: 10px;
-  line-height: 11px;
-  padding: 3px 5px;
 `
 
 export default Trip
