@@ -87,7 +87,7 @@ const EditTrip = (props) => {
             text="Update"
             onClick={updateContent}
           />
-          <Button text="Delete" onClick={removeTrip}/>
+          <Button text="Delete" onClick={removeTrip} outlined/>
           <p>{message}</p>
         </div>
       ) : (

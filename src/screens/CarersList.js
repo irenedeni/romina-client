@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
+import useModal from "../hooks/useModal"
 import {
   retrieveCarers,
   findCarersByName,
   deleteAllCarers,
   deleteCarer
 } from "../actions/carers"
-import { Input, Template, Form, Spacer, Button } from "../components"
+import { Input, Template, Form, Spacer, Button, Modal } from "../components"
 
 
 const CarersList = (props) => {
@@ -16,6 +17,8 @@ const CarersList = (props) => {
   const [currentCarer, setCurrentCarer] = useState(null)
   const [currentIndex, setCurrentIndex] = useState(null)
   const [searchName, setSearchName] = useState("")
+
+  const { show, toggleVisibility } = useModal()
 
   const carers = useSelector(state => state.carers)
 
@@ -75,16 +78,18 @@ const CarersList = (props) => {
   return (
     <Template direction="vertical">
       <ListContainer>
-        <h1>Carers list</h1>
-        <Link to="/add_carer">
-          <AddButton text="ADD CARER"/>
-        </Link>
+        <TitleContainer>
+          <h1>Carers list</h1>
+          <Link to="/add_carer">
+            <AddButton text="+"/>
+          </Link>
+        </TitleContainer>
         <CarersContainer>
           {carers &&
           carers.map((carer, index) => {
           return (
             <CarerContainer 
-            key={index}
+              key={index}
               className={index === currentIndex ? "active" : ""}
               style={{marginBottom: '20px'}}
             >
@@ -117,11 +122,24 @@ const CarersList = (props) => {
           }
         </CarersContainer>
         <Spacer medium />
-        <Button onClick={removeAllCarers} text="REMOVE ALL"/>
+        <Button onClick={toggleVisibility} outlined text="REMOVE ALL"/>
+        <Modal display={show} hide={toggleVisibility}>
+          <p>Are you sure you want to remove ALL trips?</p>
+          <Button text="YES" onClick={removeAllCarers} color={({theme}) => `${theme.alert}`}/>
+        </Modal>
       </ListContainer>
     </Template>
   )
 }
+
+const TitleContainer = styled.div`
+  display: flex;
+  width: 300px;
+  max-width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+`
 
 const CarerName = styled.h4`
   font-weight: ${props => props.active && '700'};
@@ -154,11 +172,12 @@ const CarersContainer = styled.div`
 const CarerContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 10px 20px 15px 20px;
+  padding: 20px 20px 30px 20px;
   margin: 10px;
   justify-content: space-between;
   background-color: ${({ theme }) => theme.surface1};
   width: 250px;
+  border-radius: ${({ theme }) => theme.mediumRadius};
 `
 
 const CarerButtonsDiv = styled.div`
@@ -166,7 +185,10 @@ const CarerButtonsDiv = styled.div`
   width: 100%;
 `
 const AddButton = styled(Button)`
-  margin: 15px;
+  margin: 15px 15px 15px 25px;
+  padding: 8px 14px;
+  width: min-content;
+  border-radius: ${({ theme }) => theme.largeRadius};
 `
 
 export default CarersList

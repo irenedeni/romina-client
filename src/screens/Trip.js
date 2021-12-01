@@ -58,7 +58,7 @@ const Trip = (props) => {
           <DayContainer key={index}>
             <h3>Day {`${index + 1}:`} {moment(day.date).calendar(calendarObject)}</h3>  
             <Link to={`/days/${day.id}/slots`}>
-              <AddButton text="+"/>
+              <AddButton text="+ SLOT"/>
             </Link>
             {day.slots?.length > 0 && orderSlotsByTimeframe(day.slots).map((slot, index) => {
               return (
@@ -71,9 +71,9 @@ const Trip = (props) => {
           </TripContainer>
             <Link
               to={`/edit/trips/${currentTrip.id}`}>
-              <Button text="Edit trip" />
+              <Button text="Edit trip" color={({theme}) => `${theme.secondary}`}/>
             </Link>
-              <Button text="Delete trip" onClick={removeTrip}/>
+              <Button text="Delete trip" onClick={removeTrip} outlined color={({theme}) => `${theme.secondary}`}/>
         </PageContainer>
       ) : (
         <NotFoundContainer>
@@ -102,14 +102,11 @@ const TripContainer = styled.div`
 `
 
 const AddButton = styled(StyledButton)`
-  margin: 15px 15px 15px 30px;
+  margin: 35px 15px 15px 15px;
   padding: 8px 14px;
-  width: min-content;
-  border-radius: ${({ theme }) => theme.largeRadius};
-  :hover {
-    font-weight: 500;
-  }
 `
+
+
 
 const DayContainer = styled.div`
   display: flex;
@@ -124,7 +121,7 @@ const DayContainer = styled.div`
 `
 
 const Button = styled(StyledButton)`
-  margin: ${props => props.small ? "5px 5px 5px 0px" : "10px 10px 10px 0px"};
+  margin-bottom: ${props => props.small ? "5px" : "20px"};
 `
 
 

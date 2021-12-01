@@ -1,9 +1,5 @@
 export const navElements = [
   {
-    href: "/",
-    name: "Home"
-  },
-  {
     href: "/trips",
     name: "Trips"
   },

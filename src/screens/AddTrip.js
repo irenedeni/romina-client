@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import { Link } from 'react-router-dom'
+import styled from "styled-components"
 import { createTrip } from "../actions/trips"
 import { Toggle, Input, Template, Form, Button } from "../components"
 
@@ -96,15 +97,24 @@ const AddTrip = () => {
       </div>
     : 
       <div>
-        <h4>New trip submitted successfully</h4>
-        <Button onClick={newTrip} text="Add more" />
-        <Link to={`/trips`}>
-          <Button text="All trips"/>
-        </Link>
+        <h4>New trip submitted successfully!</h4>
+        <NewTripDiv>
+          <Button onClick={newTrip} text="Add more" style={{marginRight: '20px'}}/>
+          <Link to={`/trips`}>
+            <Button text="All trips"/>
+          </Link>
+        </NewTripDiv>
       </div>
   }
   </Template>
   )
 }
+
+const NewTripDiv = styled.div`
+  display: flex;
+  width: 100%;
+  margin-top: 30px;
+  justify-content: center;
+`
 
 export default AddTrip

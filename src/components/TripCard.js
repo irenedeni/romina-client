@@ -60,7 +60,7 @@ function TripCard(props) {
         <Link to={"/edit/trips/" + trip.id}>
           <Button small text="edit" style={{margin: "10px 10px 0px 0px"}}/>
         </Link>
-        <Button small text="delete" style={{margin: "10px 0px 0px 0px"}} onClick={() => removeTrip(trip.id)}/>
+        <Button small text="delete" outlined style={{margin: "10px 0px 0px 0px"}} onClick={() => removeTrip(trip.id)}/>
       </TripButtonsDiv>
     </TripContainer>
   )
@@ -81,7 +81,7 @@ const TripContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 15px;
+  padding: 0px 15px 25px 15px;
   justify-content: center;
   margin: 10px;
   color: ${({ theme }) => theme.text};

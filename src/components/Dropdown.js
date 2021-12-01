@@ -1,5 +1,5 @@
 import React from "react"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 
 function Dropdown(props) {
   const label = props.name?.split(/(?=[A-Z])/).join(" ")
@@ -11,6 +11,7 @@ function Dropdown(props) {
     </option>
     )
   })
+  
   return (
     <Container>
       <Label>{label[0].toUpperCase() + label.substring(1)}</Label>
@@ -52,6 +53,14 @@ const Select = styled.select`
     linear-gradient(45deg, transparent 50%, gray 50%),
     linear-gradient(135deg, gray 50%, transparent 50%),
     linear-gradient(to right, #ccc, #ccc);
+  ${props => props.noDivider && css`
+    background-image:
+      linear-gradient(45deg, transparent 50%, gray 50%),
+      linear-gradient(135deg, gray 50%, transparent 50%),
+      linear-gradient(to right, #292929, #292929);
+    font-size: 12px;
+    `
+  }
   background-position:
     calc(100% - 20px) calc(1em + 2px),
     calc(100% - 15px) calc(1em + 2px),

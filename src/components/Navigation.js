@@ -41,6 +41,10 @@ const NavContainer = styled.nav`
 const ElementsContainer = styled.div`
   display: flex;
   width: 100%;
+  padding-left: 15px;
+  @media(max-width: 600px){
+    overflow-x: scroll;
+  };
   justify-content: space-between;
 `
 

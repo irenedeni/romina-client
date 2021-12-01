@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { retrieveTasks } from "../actions/tasks"
-import { deleteSlot, addTaskToSlot } from "../actions/slots"
+import { deleteSlot, addTaskToSlot, removeTaskToSlot } from "../actions/slots"
 import { Button as StyledButton, Dropdown, Form } from "../components"
 
 
@@ -20,8 +20,15 @@ const SlotCard = (props) => {
     slotId: null,
   }
 
+  const initialTaskToDeleteState = {
+    id: null,
+    type: "",
+    slotId: null,
+  }
+
   const [currentTrip, setCurrentTrip] = useState(initialTripState)
   const [taskToAdd, setTaskToAdd] = useState(initialTaskState)
+  const [taskToRemove, setTaskToRemove] = useState(initialTaskToDeleteState)
 
   const tasks = useSelector(state => state.tasks)
 
@@ -46,6 +53,7 @@ const SlotCard = (props) => {
 
   const refreshData = () => {
     setTaskToAdd(initialTaskState)
+    setTaskToRemove(initialTaskToDeleteState)
   }
 
   const handleInputChange = event => {
@@ -58,14 +66,12 @@ const SlotCard = (props) => {
           setTaskToAdd({ ...taskToAdd, [name]: value })
         )
       }
-      
     })
   }
 
   const updateContent = (id) => {
     const slotId = id
-    console.log("taskToAdd ID", taskToAdd.id)
-    console.log("slot ID", slotId)
+
     dispatch(addTaskToSlot(taskToAdd.id, slotId))
     .then(res => {
       console.log(res)
@@ -77,6 +83,30 @@ const SlotCard = (props) => {
   }
 
 
+  const removeTaskFromSlot = (task, slot) => {
+    const taskId = task.tasksSlots.taskId
+    const slotId = task.tasksSlots.slotId
+    const taskType = task.type
+    tasks.find(task => {
+      if(task.id == taskId){
+        taskToRemove.id = taskId
+        taskToRemove.slotId = slotId
+        taskToRemove.type = taskType
+        return (
+          setTaskToRemove({ ...taskToRemove })
+        )
+      }
+    })
+    dispatch(removeTaskToSlot(taskToRemove.id, taskToRemove.slotId))
+    .then(res => {
+      console.log(res)
+      refreshData()
+    })
+    .catch(e => {
+      console.log(e)
+    })
+  }
+
 
   const openTaskForm = (id) => {
     !taskToAdd.slotId ?
@@ -87,17 +117,17 @@ const SlotCard = (props) => {
 
   const { slot } = props
 
+  console.log("taskToRemove", taskToRemove)
   console.log("taskToAdd", taskToAdd)
-  
+
   return (
     <SlotContainer>
-      <b>SLOT</b>
       <p>TIMEFRAME: <b>{slot.timeframe}</b></p>
       <p>LENGTH: <b>{slot.stayType}</b></p>
       <p>CARER: 
       {!slot.carer?.name ?
         <span> <Link to={`/edit/slots/${slot.id}`}>
-          <Button outlined small text="Add carer" />
+          <Button outlined small text="+ Carer" />
         </Link>
         </span>
         : <span><b> {slot.carer.name}</b></span>
@@ -114,29 +144,30 @@ const SlotCard = (props) => {
             return (
               <Task key={index}>
                 {task.type}
+                <Button small text="X" onClick={() => removeTaskFromSlot(task, slot)} />
               </Task>
             )
           })}
         </TasksContainer>
         }
-        <Button small text="Add task" color={({theme}) => theme.secondary} onClick={()=>openTaskForm(slot.id)}/>
+        <Button small text="+ Task" color={({theme}) => theme.secondary} onClick={()=>openTaskForm(slot.id)}/>
         {(taskToAdd.slotId === slot.id) &&
         <>
           <Form>
             <Dropdown
               id="taskToAdd"
               name="type" 
+              noDivider
               value={taskToAdd.type} 
               data={tasks}
               onChange={handleInputChange}
             />
             <Button
-            onClick={updateContent(slot.id)} 
-            text="Submit"
-            type="submit"
-          />
+              onClick={updateContent(slot.id)} 
+              text="Submit"
+              type="submit"
+            />
           </Form>
-          
         </>
         }
       </TasksAndBtnContainer>
@@ -152,13 +183,13 @@ const SlotCard = (props) => {
 
 
 const Button = styled(StyledButton)`
-  margin: ${props => props.small ? "5px 5px 5px 0px" : "10px 10px 10px 0px"};
+  margin: ${props => props.small ? "10px 0px" : "15px 0px"};
 `
 
 const SlotContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 15px;
+  padding: 10px 15px 20px 15px;
   background-color: ${({ theme }) => theme.surface2};
   width: 200px;
   margin: 10px 0px;
@@ -169,6 +200,7 @@ const SlotContainer = styled.div`
 const SlotButtonsContainer = styled.div`
   display: flex;
   width: 100%;
+  justify-content: space-between;
 `
 
 const TasksAndBtnContainer = styled.div`
@@ -188,11 +220,11 @@ const TasksContainer = styled.div`
 const Task = styled.div`
   background-color: ${({ theme }) => theme.surface1};
   box-shadow: ${({ theme }) => theme.shadow2};
-  border-radius: 2px;
+  border-radius: ${({ theme }) => theme.largeRadius};
   color: ${({ theme }) => theme.textOverlay};
   font-size: 10px;
   line-height: 11px;
-  padding: 3px 5px;
+  padding: 4px 6px;
   margin: 5px;
 `
 

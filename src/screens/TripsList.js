@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-import moment from "moment"
+import useModal from "../hooks/useModal"
 import styled from "styled-components"
-import { calendarObject } from "../lib/functionsAndObjects"
 import {
   retrieveTrips,
   deleteAllTrips,
   deleteTrip
 } from "../actions/trips"
-import { Template, Spacer, Button, TripCard } from "../components"
+import { Template, Spacer, Button, TripCard, Modal } from "../components"
 
 
 const TripsList = () => {
 
   const [currentTrip, setCurrentTrip] = useState(null)
   const [currentIndex, setCurrentIndex] = useState(null)
+
+  const { show, toggleVisibility } = useModal()
+
 
   const trips = useSelector(state => state.trips)
 
@@ -83,7 +85,11 @@ const TripsList = () => {
           }
         </TripsContainer>
         <Spacer medium />
-        <Button onClick={removeAllTrips} text="REMOVE ALL"/>
+        <Button onClick={toggleVisibility} outlined text="REMOVE ALL" />
+        <Modal display={show} hide={toggleVisibility}>
+          <p>Are you sure you want to remove ALL trips?</p>
+          <Button text="YES" onClick={removeAllTrips} color={({theme}) => `${theme.alert}`}/>
+        </Modal>
       </ListContainer>
     </Template>
   )
@@ -119,9 +125,6 @@ const AddButton = styled(Button)`
   padding: 8px 14px;
   width: min-content;
   border-radius: ${({ theme }) => theme.largeRadius};
-  :hover {
-    font-weight: 500;
-  }
 `
 
 const H1 = styled.h1``
@@ -132,6 +135,7 @@ const TitleContainer = styled.div`
   max-width: 100%;
   align-items: center;
   justify-content: center;
+  margin-bottom: 30px;
 `
 
 export default TripsList

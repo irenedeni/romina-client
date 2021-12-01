@@ -13,7 +13,6 @@ const themes = {
 const theme = themes["dark"]
 
 export const ThemeProvider = (props) => {
-  console.log("theme in styles", theme)
   return (
     <StyledThemeProvider theme={theme}>
       {props.children}
