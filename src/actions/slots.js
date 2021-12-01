@@ -2,7 +2,8 @@ import {
   CREATE_SLOT,
   UPDATE_SLOT,
   DELETE_SLOT,
-  ADD_TASK_TO_SLOT
+  ADD_TASK_TO_SLOT,
+  REMOVE_TASK_TO_SLOT
 } from "./types"
 
 import SlotDataService from "../services/SlotService"
@@ -53,6 +54,19 @@ export const addTaskToSlot = (slotId, taskId) => async (dispatch) => {
     const res = await SlotDataService.addTaskToSlot(slotId, taskId)
     dispatch({
       type: ADD_TASK_TO_SLOT,
+      payload: { slotId, taskId }
+    })
+    return Promise.resolve(res.data)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
+
+export const removeTaskToSlot = (slotId, taskId) => async (dispatch) => {
+  try {
+    const res = await SlotDataService.removeTaskToSlot(slotId, taskId)
+    dispatch({
+      type: REMOVE_TASK_TO_SLOT,
       payload: { slotId, taskId }
     })
     return Promise.resolve(res.data)

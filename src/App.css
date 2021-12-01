@@ -1,8 +1,9 @@
-body {
+/* body {
   margin: 0px;
   font-family: "Quicksand", sans-serif;
   font-weight: 300;
   font-size: 14px;
+  background-color:  red;
 }
 
 h1,
@@ -15,19 +16,4 @@ h6 {
   margin: 0px;
 }
 
-
-/* .list {
-  text-align: left;
-  max-width: 750px;
-  margin: auto;
-}
-
-.submit-form {
-  max-width: 300px;
-  margin: auto;
-}
-
-.edit-form {
-  max-width: 300px;
-  margin: auto;
-} */
+ */

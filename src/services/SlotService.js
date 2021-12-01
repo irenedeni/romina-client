@@ -18,6 +18,10 @@ const addTaskToSlot = (id, slotId) => {
   return http.put(`/slots/${slotId}/tasks/${id}`)
 }
 
+const removeTaskToSlot = (id, slotId) => {
+  return http.delete(`/slots/${slotId}/tasks/${id}`)
+}
+
 
 const remove = (id, data) => {
   return http.delete(`/slots/${id}`)
@@ -34,8 +38,9 @@ const SlotService = {
   create,
   update,
   remove,
+  get,
+  removeTaskToSlot
   // removeAll,
-  get
 }
 
 export default SlotService

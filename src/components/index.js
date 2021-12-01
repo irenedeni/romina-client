@@ -7,7 +7,9 @@ import Spacer from "./Spacer"
 import Template from "./Template"
 import Form from "./Form"
 import Modal from "./Modal"
-
+import Search from "./Search"
+import TripCard from "./TripCard"
+import SlotCard from "./SlotCard"
 
 export { 
   Toggle, 
@@ -18,6 +20,9 @@ export {
   Spacer,
   Template,
   Form,
-  Modal
+  Modal,
+  Search,
+  TripCard,
+  SlotCard
 }
   

@@ -1,5 +1,5 @@
 import React from "react"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 
 function Dropdown(props) {
   const label = props.name?.split(/(?=[A-Z])/).join(" ")
@@ -11,6 +11,7 @@ function Dropdown(props) {
     </option>
     )
   })
+  
   return (
     <Container>
       <Label>{label[0].toUpperCase() + label.substring(1)}</Label>
@@ -45,12 +46,21 @@ const Select = styled.select`
   flex-direction: column;
   padding: 10px 15px;
   border-radius: 5px;
-  border: none; 
-  background-color: #e9e6e6;
+  border: 1px solid ${({theme}) => theme.textOverlay};
+  color: ${({ theme }) => theme.textOverlay};
+  background-color: ${({theme}) => theme.surface1};
   background-image:
     linear-gradient(45deg, transparent 50%, gray 50%),
     linear-gradient(135deg, gray 50%, transparent 50%),
     linear-gradient(to right, #ccc, #ccc);
+  ${props => props.noDivider && css`
+    background-image:
+      linear-gradient(45deg, transparent 50%, gray 50%),
+      linear-gradient(135deg, gray 50%, transparent 50%),
+      linear-gradient(to right, #292929, #292929);
+    font-size: 12px;
+    `
+  }
   background-position:
     calc(100% - 20px) calc(1em + 2px),
     calc(100% - 15px) calc(1em + 2px),
@@ -66,6 +76,7 @@ const Label = styled.label`
   display: flex;
   margin-bottom: 3px;
   font-weight: 400;
+  color: ${({ theme }) => theme.textOverlay};
 `
 
 const Option = styled.option`

@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
+import styled from "styled-components"
 import { createTask } from "../actions/tasks"
 import { Input, Template, Form, Button } from "../components"
 
@@ -46,7 +47,7 @@ const AddTask = (props) => {
     {!submitted ? 
       <div>
         <h1>Add new task</h1>
-        <Form onClick={saveTask}>
+        <Form>
           <Input 
             type="text" 
             id="type" 
@@ -55,19 +56,28 @@ const AddTask = (props) => {
             required 
             onChange={handleInputChange}
           />
+          <Button
+            onClick={saveTask} 
+            text="Submit"
+          />
         </Form>
       </div>
     : 
-      <div>
+      <ButtonsDiv>
         <h4>New task submitted successfully</h4>
-
-        <Button onClick={newTask} text="Add more" />
+        <Button onClick={newTask} text="Add more" style={{ marginTop: "20px" }}/>
         <p>Add more or wait to be redirected to the general tasks page</p>
-        <Button onClick={() => props.history.goBack()} text="Go back"/>
-      </div>
+        <Button onClick={() => props.history.goBack()} text="Go back" style={{ marginTop: "10px" }} outlined/>
+      </ButtonsDiv>
   }
   </Template>
   )
 }
+
+const ButtonsDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
 
 export default AddTask

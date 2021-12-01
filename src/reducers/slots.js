@@ -2,7 +2,8 @@ import {
   CREATE_SLOT,
   UPDATE_SLOT,
   DELETE_SLOT,
-  ADD_TASK_TO_SLOT
+  ADD_TASK_TO_SLOT,
+  REMOVE_TASK_TO_SLOT
 } from "../actions/types"
 
 const initialState = []
@@ -36,11 +37,14 @@ switch (type) {
         return slot
       }
     })
+
+    case REMOVE_TASK_TO_SLOT:
+    return slots.filter(({ id }) => id !== payload.taskId)
     
     case DELETE_SLOT:
     return slots.filter(({ id }) => id !== payload.id)
 
-  // case DELETE_ALL_TRIPS:
+  // case DELETE_ALL_SLOTS:
   //   return []
   
   default:

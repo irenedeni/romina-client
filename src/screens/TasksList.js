@@ -2,19 +2,21 @@ import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
+import useModal from "../hooks/useModal"
+
 import {
   retrieveTasks,
-  findTasksByName,
   deleteAllTasks,
   deleteTask
 } from "../actions/tasks"
-import { Input, Template, Form, Spacer, Button } from "../components"
+import { Template, Spacer, Button, Modal } from "../components"
 
 
 const TasksList = (props) => {
 
   const [currentTask, setCurrentTask] = useState(null)
   const [currentIndex, setCurrentIndex] = useState(null)
+  const { show, toggleVisibility } = useModal()
 
   const tasks = useSelector(state => state.tasks)
 
@@ -60,10 +62,12 @@ const TasksList = (props) => {
   return (
     <Template direction="vertical">
       <ListContainer>
-        <h2>Tasks list</h2>
-        <Link to="/add_task">
-          <AddButton text="ADD TASK"/>
-        </Link>
+        <TitleContainer>
+          <h2>Tasks list</h2>
+          <Link to="/add_task">
+            <AddButton text="+"/>
+          </Link>
+        </TitleContainer>
         <TasksContainer>
           {tasks &&
           tasks.map((task, index) => {
@@ -78,20 +82,33 @@ const TasksList = (props) => {
               </TaskName>
               <TaskButtonsDiv active={currentTask && (index === currentIndex)}>
                 <Link to={"/edit/tasks/" + task.id}>
-                  <CardButton small text="edit" style={{marginTop: "10px"}}/>
+                  <CardButton small text="edit"/>
                 </Link>
-                <CardButton small text="delete" style={{marginTop: "10px"}} onClick={() => removeTask(task.id)}/>
+                <CardButton small text="delete" outlined onClick={() => removeTask(task.id)}/>
               </TaskButtonsDiv>
             </TaskContainer>
           )})
           }
         </TasksContainer>
         <Spacer medium />
-        <Button onClick={removeAllTasks} text="REMOVE ALL"/>
+        <Button onClick={toggleVisibility} text="REMOVE ALL" outlined/>
+        <Modal display={show} hide={toggleVisibility}>
+          <p>Are you sure you want to remove ALL tasks?</p>
+          <Button text="YES" onClick={removeAllTasks} color={({theme}) => `${theme.alert}`}/>
+        </Modal>
       </ListContainer>
     </Template>
   )
 }
+
+const TitleContainer = styled.div`
+  display: flex;
+  width: 300px;
+  max-width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+`
 
 const TaskName = styled.h4`
   font-weight: ${props => props.active && '700'};
@@ -101,7 +118,7 @@ const TaskName = styled.h4`
   }
 `
 const CardButton = styled(Button)`
-  margin-right: 10px;
+  margin: 10px 0px 0px 0px;
 `
 
 const ListContainer = styled.div`
@@ -123,19 +140,26 @@ const TasksContainer = styled.div`
 const TaskContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 10px 20px 15px 20px;
+  border-radius: ${({ theme }) => theme.largeRadius};
+  padding: 15px 20px 18px 20px;
   margin: 10px;
-  justify-content: space-between;
-  background-color: #e9e6e6;
+  justify-content: center;
+  align-items: center;
+  background-color: ${({ theme }) => theme.surface1 };
   width: 250px;
 `
 
 const TaskButtonsDiv = styled.div`
   display: ${props => props.active ? 'flex' : 'none'};
-  width: 100%;
+  width: 80%;
+  justify-content: space-evenly;
+  margin-top: 10px;
 `
 const AddButton = styled(Button)`
-  margin: 15px;
+  margin: 15px 15px 15px 30px;
+  padding: 8px 14px;
+  width: min-content;
+  border-radius: ${({ theme }) => theme.largeRadius};
 `
 
 export default TasksList

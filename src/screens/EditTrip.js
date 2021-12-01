@@ -66,28 +66,28 @@ const EditTrip = (props) => {
     <Template>
       {currentTrip ? (
         <div>
-          <h2>UPDATE Trip</h2>
+          <h1>UPDATE Trip</h1>
           <Form>
-              <Input
-                type="text"
-                id="name"
-                name="name"
-                value={currentTrip.name}
-                onChange={handleInputChange}
-              />
-              <Toggle 
-                id="confirmed" 
-                name="confirmed" 
-                value={currentTrip.confirmed} 
-                onChange={handleInputChange}
-              />
+            <Input
+              type="text"
+              id="name"
+              name="name"
+              value={currentTrip.name}
+              onChange={handleInputChange}
+            />
+            <Toggle 
+              id="confirmed" 
+              name="confirmed" 
+              value={currentTrip.confirmed} 
+              onChange={handleInputChange}
+            />
           </Form>
           <Button
             type="submit"
             text="Update"
             onClick={updateContent}
           />
-          <Button text="Delete" onClick={removeTrip}/>
+          <Button text="Delete" onClick={removeTrip} outlined/>
           <p>{message}</p>
         </div>
       ) : (

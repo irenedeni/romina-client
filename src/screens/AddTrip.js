@@ -1,11 +1,11 @@
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import { Link } from 'react-router-dom'
+import styled from "styled-components"
 import { createTrip } from "../actions/trips"
 import { Toggle, Input, Template, Form, Button } from "../components"
-import TripDataService from "../services/TripService"
 
-const AddTrip = (props) => {
+const AddTrip = () => {
 
   const initialTripState = {
     id: null,
@@ -30,6 +30,8 @@ const AddTrip = (props) => {
 
   const saveTrip = () => {
     const { name, startDate, endDate, confirmed } = trip
+
+    console.log("TRIP", trip)
     dispatch(createTrip(name, startDate, endDate, confirmed))
     .then(data => {
        setTrip({
@@ -56,7 +58,7 @@ const AddTrip = (props) => {
     {!submitted ? 
       <div>
         <h1>Add new trip</h1>
-        <Form onClick={saveTrip}>
+        <Form >
           <Input 
             type="text" 
             id="name" 
@@ -76,7 +78,7 @@ const AddTrip = (props) => {
           <Input 
             type="date" 
             id="endDate" 
-            name="endDate" 
+            name="endDate"
             value={trip.endDate} 
             required 
             onChange={handleInputChange}
@@ -87,19 +89,32 @@ const AddTrip = (props) => {
             value={trip.confirmed} 
             onChange={handleInputChange}
           />
+          <Button
+            onClick={saveTrip} 
+            text="Submit"
+          />
         </Form>
       </div>
     : 
       <div>
-        <h4>New trip submitted successfully</h4>
-        <Button onClick={newTrip} text="Add more" />
-        <Link to={`/trips`}>
-          <Button text="All trips"/>
-        </Link>
+        <h4>New trip submitted successfully!</h4>
+        <NewTripDiv>
+          <Button onClick={newTrip} text="Add more" style={{marginRight: '20px'}}/>
+          <Link to={`/trips`}>
+            <Button text="All trips"/>
+          </Link>
+        </NewTripDiv>
       </div>
   }
   </Template>
   )
 }
+
+const NewTripDiv = styled.div`
+  display: flex;
+  width: 100%;
+  margin-top: 30px;
+  justify-content: center;
+`
 
 export default AddTrip

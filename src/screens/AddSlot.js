@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import styled from "styled-components"
 import { createSlot } from "../actions/slots"
 import { retrieveCarers } from "../actions/carers"
 import { Input, Template, Form, Button, Dropdown } from "../components"
@@ -40,6 +41,10 @@ const AddSlot = (props) => {
     const carerObj = fromCarerNameToId(carer, carers)
     const carerId = carerObj?.id
 
+    console.log("carerId", carerId)
+    console.log("carerObj", carerObj)
+    
+
     const data = {
       timeframe: timeframe,
       stayType: stayType,
@@ -73,8 +78,8 @@ const AddSlot = (props) => {
     <Template>
     {!submitted ? 
       <div>
-        <h1>Add new slot</h1>
-        <Form onClick={saveSlot}>
+        <h1>+ Slot</h1>
+        <Form>
           <Dropdown
             id="timeframe" 
             name="timeframe" 
@@ -104,17 +109,30 @@ const AddSlot = (props) => {
             value={slot.notes}  
             onChange={handleInputChange}
           />
+          <Button
+            onClick={saveSlot} 
+            text="Submit"
+          />
         </Form>
       </div>
     : 
       <div>
-        <h4>New slot submitted successfully</h4>
-        <Button onClick={newSlot} text="Add more" />
-        <Button onClick={() => props.history.goBack()} text="Go back"/>
+        <h4>New slot submitted successfully!</h4>
+        <ButtonsDiv>
+          <Button onClick={newSlot} text="Add more" />
+          <Button onClick={() => props.history.goBack()} text="Go back" outlined/>
+        </ButtonsDiv>
       </div>
   }
   </Template>
   )
 }
+
+const ButtonsDiv = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  margin-top: 25px;
+`
 
 export default AddSlot

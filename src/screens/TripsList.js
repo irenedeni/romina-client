@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-import moment from "moment"
+import useModal from "../hooks/useModal"
 import styled from "styled-components"
-import { calendarObject } from "../lib/functionsAndObjects"
 import {
   retrieveTrips,
-  findTripsByName,
   deleteAllTrips,
   deleteTrip
 } from "../actions/trips"
-import { Input, Template, Form, Spacer, Button } from "../components"
+import { Template, Spacer, Button, TripCard, Modal } from "../components"
 
 
 const TripsList = () => {
 
   const [currentTrip, setCurrentTrip] = useState(null)
   const [currentIndex, setCurrentIndex] = useState(null)
-  const [searchName, setSearchName] = useState("")
+
+  const { show, toggleVisibility } = useModal()
+
 
   const trips = useSelector(state => state.trips)
 
@@ -27,19 +27,9 @@ const TripsList = () => {
     dispatch(retrieveTrips())
   }, [dispatch])
 
-  const onChangeSearchName = e => {
-    const searchName = e.target.value
-    setSearchName(searchName)
-  }
-
   const refreshData = () => {
     setCurrentTrip(null)
     setCurrentIndex(-1)
-  }
-
-  const setActiveTrip = (trip, index) => {
-    setCurrentTrip(trip)
-    setCurrentIndex(index)
   }
 
   const removeAllTrips = () => {
@@ -50,15 +40,6 @@ const TripsList = () => {
     })
     .catch(e => {
       console.log(e)
-    })
-  }
-
-  const findByName = (e) => {
-    e.preventDefault()
-    refreshData()
-    dispatch(findTripsByName(searchName))
-    .then(res => {
-      console.log("res",res)
     })
   }
 
@@ -87,74 +68,39 @@ const TripsList = () => {
 
   return (
     <Template direction="vertical">
-      <Form>
-        <Input
-          type="text"
-          placeholder="search by trip name"
-          value={searchName}
-          onChange={onChangeSearchName}
-        />
-        <Button
-          onClick={findByName} 
-          text="Search"
-          maxWidth
-        />
-      </Form>
-    <Spacer />
       <ListContainer>
-        <h2>Trips list</h2>
-        <Link to="/add_trip" >
-          <AddButton text="ADD TRIP"/>
-        </Link>
+        <TitleContainer>
+          <H1>Trips list</H1>
+          <Link to="/add_trip" >
+            <AddButton text="+"/>
+          </Link>
+        </TitleContainer>
         <TripsContainer>
           {trips &&
           trips.map((trip, index) => {
             const tripRange = findTripRange(trip?.days)
           return (
-            <TripContainer 
-              key={index}
-              className={index === currentIndex ? "active" : ""}
-              style={{marginBottom: '20px'}}
-            >
-              <Link to={"/trips/" + trip.id} style={{textDecoration: "none"}}>
-                <TripName 
-                  // onClick={() => setActiveTrip(trip, index)} 
-                  active={currentTrip && (index === currentIndex)}
-                >
-                  {trip.name.toUpperCase()}
-                </TripName>
-              </Link>
-              <div>
-                From: {`${moment(tripRange[0].date).calendar(null, calendarObject)}`}{", "}
-              </div>
-              <div>
-                Until: {`${moment(tripRange[tripRange?.length - 1].date).calendar(null, calendarObject)}`} 
-              </div>
-              <TripButtonsDiv 
-                // active={currentTrip && (index === currentIndex)}
-              >
-                <Link to={"/edit/trips/" + trip.id}>
-                  <Button small text="edit" style={{margin: "10px 10px 0px 0px"}}/>
-                </Link>
-                <Button small text="delete" style={{margin: "10px 10px 0px 0px"}} onClick={() => removeTrip(trip.id)}/>
-              </TripButtonsDiv>
-            </TripContainer>
+            <TripCard trip={trip} key={index}/>
           )})
           }
         </TripsContainer>
         <Spacer medium />
-        <Button onClick={removeAllTrips} text="REMOVE ALL"/>
+        <Button onClick={toggleVisibility} outlined text="REMOVE ALL" />
+        <Modal display={show} hide={toggleVisibility}>
+          <p>Are you sure you want to remove ALL trips?</p>
+          <Button text="YES" onClick={removeAllTrips} color={({theme}) => `${theme.alert}`}/>
+        </Modal>
       </ListContainer>
     </Template>
   )
 }
 
-const TripName = styled.h4`
-  font-weight: ${props => !props.active && '500'};
+const TripName = styled.h3`
+  font-weight: 700;
   text-decoration: none;
+  margin-bottom: 15px;
   :hover {
     cursor: pointer;
-    font-weight: 700;
   }
 `
 
@@ -174,22 +120,22 @@ const TripsContainer = styled.div`
   flex-wrap: wrap;
 `
 
-const TripContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 10px 20px;
-  margin: 10px;
-  background-color: #e9e6e6;
-  width: 250px;
-`
-
-const TripButtonsDiv = styled.div`
-  display: flex;
-  width: 100%;
-`
-
 const AddButton = styled(Button)`
-  margin: 15px;
+  margin: 15px 15px 15px 30px;
+  padding: 8px 14px;
+  width: min-content;
+  border-radius: ${({ theme }) => theme.largeRadius};
+`
+
+const H1 = styled.h1``
+
+const TitleContainer = styled.div`
+  display: flex;
+  width: 300px;
+  max-width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
 `
 
 export default TripsList
