@@ -65,15 +65,8 @@ const SlotCard = (props) => {
 
   const updateContent = (id) => {
     const slotId = id
-
     dispatch(addTaskToSlot(taskToAdd.id, slotId))
-    .then(res => {
-      console.log(res)
-      refreshData()
-    })
-    .catch(e => {
-      console.log(e)
-    })
+    refreshData()
   }
 
 
@@ -129,7 +122,7 @@ const SlotCard = (props) => {
             return (
               <Task key={index}>
                 {task.type}
-                <Button small text="X" onClick={() => removeTaskFromSlot(task, slot)} />
+                <RemoveTask onClick={() => removeTaskFromSlot(task, slot)}>X</RemoveTask>
               </Task>
             )
           })}
@@ -148,7 +141,7 @@ const SlotCard = (props) => {
               onChange={handleInputChange}
             />
             <Button
-              onClick={updateContent(slot.id)} 
+              onClick={() => updateContent(slot.id)} 
               text="Submit"
               type="submit"
             />
@@ -208,9 +201,28 @@ const Task = styled.div`
   border-radius: ${({ theme }) => theme.largeRadius};
   color: ${({ theme }) => theme.textOverlay};
   font-size: 10px;
+  letter-spacing: 0.05rem;
   line-height: 11px;
-  padding: 4px 6px;
-  margin: 5px;
+  padding: 5px 10px;
+  margin: 8px 5px;
+  position: relative;
+`
+
+const RemoveTask = styled.div`
+  background-color: ${({ theme }) => theme.bg};
+  font-weight: 700;
+  border-radius: ${({ theme }) => theme.largeRadius};
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  :hover{
+    cursor: pointer;
+  }
 `
 
 export default SlotCard
