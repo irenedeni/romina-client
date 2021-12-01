@@ -3,7 +3,6 @@ import styled from "styled-components"
 
 
 function Template(props) {
-console.log("props.theme",   ({ theme }) => theme.bg)
   return (
     <TemplateContainer direction={props.direction}>
       {props.children}

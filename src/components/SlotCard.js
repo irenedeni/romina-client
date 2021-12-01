@@ -41,19 +41,13 @@ const SlotCard = (props) => {
 
   const removeSlot = (id) => {
     dispatch(deleteSlot(id))
-    .then((res)=> {
-      console.log("res", res)
-      setCurrentTrip(currentTrip)
-      console.log("slot deleted successfully")
-    })
-    .catch(e => {
-      console.log(e)
-    })
+    refreshData()
   }
 
   const refreshData = () => {
     setTaskToAdd(initialTaskState)
     setTaskToRemove(initialTaskToDeleteState)
+    window.location.reload(true)
   }
 
   const handleInputChange = event => {
@@ -98,13 +92,7 @@ const SlotCard = (props) => {
       }
     })
     dispatch(removeTaskToSlot(taskToRemove.id, taskToRemove.slotId))
-    .then(res => {
-      console.log(res)
-      refreshData()
-    })
-    .catch(e => {
-      console.log(e)
-    })
+    refreshData()
   }
 
 
@@ -116,9 +104,6 @@ const SlotCard = (props) => {
   }
 
   const { slot } = props
-
-  console.log("taskToRemove", taskToRemove)
-  console.log("taskToAdd", taskToAdd)
 
   return (
     <SlotContainer>
