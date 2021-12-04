@@ -4,7 +4,7 @@ import styled, { css } from "styled-components"
 function Button(props) {
 
   return (
-    <StyledButton color={props.color} {...props}>{props.text}</StyledButton>
+    <StyledButton {...props}>{props.text}</StyledButton>
   )
 }
 const StyledButton = styled.button`

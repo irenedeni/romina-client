@@ -11,6 +11,7 @@ import { Template, Button as StyledButton, Dropdown, Form, SlotCard } from "../c
 
 
 const Trip = (props) => {
+  
   const initialTripState = {
     id: null,
     name: "",
@@ -21,8 +22,8 @@ const Trip = (props) => {
 
   const dispatch = useDispatch()
 
-  const getTrip = id => {
-    TripDataService.get(id)
+  const getTrip = () => {
+     TripDataService.get(props.match.params.id)
     .then(res => {
       setCurrentTrip(res.data)
     })
@@ -32,7 +33,7 @@ const Trip = (props) => {
   }
 
   useEffect(() => {
-    getTrip(props.match.params.id)
+    getTrip()
   }, [props.match.params.id])
 
 
@@ -61,8 +62,9 @@ const Trip = (props) => {
               <AddButton text="+ SLOT"/>
             </Link>
             {day.slots?.length > 0 && orderSlotsByTimeframe(day.slots).map((slot, index) => {
+              
               return (
-                <SlotCard slot={slot} key={index}/>
+                <SlotCard slot={slot} getTrip={getTrip} key={index}/>
               )
             })}
           </DayContainer>

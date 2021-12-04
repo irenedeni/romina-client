@@ -8,11 +8,6 @@ import { Button as StyledButton, Dropdown, Form } from "../components"
 
 
 const SlotCard = (props) => {
-  const initialTripState = {
-    id: null,
-    name: "",
-    confirmed: false
-  }
 
   const initialTaskState = {
     id: null,
@@ -26,18 +21,14 @@ const SlotCard = (props) => {
     slotId: null,
   }
 
-  const [currentTrip, setCurrentTrip] = useState(initialTripState)
+  const { getTrip } = props
+
   const [taskToAdd, setTaskToAdd] = useState(initialTaskState)
   const [taskToRemove, setTaskToRemove] = useState(initialTaskToDeleteState)
-
-  const tasks = useSelector(state => state.tasks)
+  const [taskForm, setTaskForm] = useState(false)
+  const allTasks = useSelector(state => state.tasks)
 
   const dispatch = useDispatch()
-
-  useEffect(()=> {
-    dispatch(retrieveTasks())
-  }, [dispatch])
-
 
   const removeSlot = (id) => {
     dispatch(deleteSlot(id))
@@ -45,55 +36,58 @@ const SlotCard = (props) => {
   }
 
   const refreshData = () => {
+    getTrip()
     setTaskToAdd(initialTaskState)
     setTaskToRemove(initialTaskToDeleteState)
-    window.location.reload(true)
+    dispatch(retrieveTasks())
   }
 
   const handleInputChange = event => {
+    event.preventDefault()
     const { name, value } = event.target
-    tasks.find(task => {
+    allTasks.find(task => {
       if(task.type == value){
-        const id = task.id
-        taskToAdd.id = id
-        return (
-          setTaskToAdd({ ...taskToAdd, [name]: value })
-        )
+        taskToAdd.id = task.id
+        setTaskToAdd({ ...taskToAdd, [name]: value })
       }
     })
   }
 
   const updateContent = (id) => {
     const slotId = id
-    dispatch(addTaskToSlot(taskToAdd.id, slotId))
+    dispatch(addTaskToSlot(taskToAdd.id, slotId, refreshData))
     refreshData()
   }
 
 
-  const removeTaskFromSlot = (task, slot) => {
-    const taskId = task.tasksSlots.taskId
-    const slotId = task.tasksSlots.slotId
-    const taskType = task.type
-    tasks.find(task => {
+  const removeTaskFromSlot = (tasksSlots) => {
+    const taskId = tasksSlots.taskId
+    const slotId = tasksSlots.slotId
+    allTasks.find(task => {
       if(task.id == taskId){
+        const taskType = task.type
         taskToRemove.id = taskId
         taskToRemove.slotId = slotId
         taskToRemove.type = taskType
-        return (
-          setTaskToRemove({ ...taskToRemove })
-        )
+        setTaskToRemove({ ...taskToRemove })
       }
     })
-    dispatch(removeTaskToSlot(taskToRemove.id, taskToRemove.slotId))
+    dispatch(removeTaskToSlot(taskToRemove.id, taskToRemove.slotId, refreshData))
     refreshData()
   }
 
 
-  const openTaskForm = (id) => {
-    !taskToAdd.slotId ?
-    setTaskToAdd({ ...taskToAdd, slotId: id })
-    :
-    setTaskToAdd({ ...taskToAdd, slotId: null })
+  useEffect(()=> {
+    getTrip()
+    dispatch(retrieveTasks())
+  }, [taskToRemove, taskToAdd])
+
+
+  const openTaskForm = () => {
+    !taskForm ?
+    (dispatch(retrieveTasks()) &&
+    setTaskForm(true))
+    : setTaskForm(false)
   }
 
   const { slot } = props
@@ -122,14 +116,15 @@ const SlotCard = (props) => {
             return (
               <Task key={index}>
                 {task.type}
-                <RemoveTask onClick={() => removeTaskFromSlot(task, slot)}>X</RemoveTask>
+                <RemoveTask onClick={() => removeTaskFromSlot(task.tasksSlots)}>X</RemoveTask>
               </Task>
             )
           })}
         </TasksContainer>
         }
-        <Button small text="+ Task" color={({theme}) => theme.secondary} onClick={()=>openTaskForm(slot.id)}/>
-        {(taskToAdd.slotId === slot.id) &&
+        <Button small text="+ Task" color={({theme}) => theme.secondary} onClick={openTaskForm}/>
+        {
+        taskForm &&
         <>
           <Form>
             <Dropdown
@@ -137,7 +132,7 @@ const SlotCard = (props) => {
               name="type" 
               noDivider
               value={taskToAdd.type} 
-              data={tasks}
+              data={allTasks}
               onChange={handleInputChange}
             />
             <Button

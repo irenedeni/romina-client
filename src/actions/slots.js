@@ -9,7 +9,6 @@ import {
 import SlotDataService from "../services/SlotService"
 
 export const createSlot = (dayId, data) => async (dispatch) => {
-
 const { timeframe, stayType, notes, carerId } = data
 
   try {
@@ -49,26 +48,28 @@ export const deleteSlot = (id) => async (dispatch) => {
   }
 }
 
-export const addTaskToSlot = (slotId, taskId) => async (dispatch) => {
+export const addTaskToSlot = (slotId, taskId, refresh) => async (dispatch) => {
   try {
     const res = await SlotDataService.addTaskToSlot(slotId, taskId)
     dispatch({
       type: ADD_TASK_TO_SLOT,
       payload: { slotId, taskId }
     })
+    refresh()
     return Promise.resolve(res.data)
   } catch (err) {
     return Promise.reject(err)
   }
 }
 
-export const removeTaskToSlot = (slotId, taskId) => async (dispatch) => {
+export const removeTaskToSlot = (taskId, slotId, refresh) => async (dispatch) => {
   try {
-    const res = await SlotDataService.removeTaskToSlot(slotId, taskId)
+    const res = await SlotDataService.removeTaskToSlot(taskId, slotId)
     dispatch({
       type: REMOVE_TASK_TO_SLOT,
       payload: { slotId, taskId }
     })
+    refresh()
     return Promise.resolve(res.data)
   } catch (err) {
     return Promise.reject(err)

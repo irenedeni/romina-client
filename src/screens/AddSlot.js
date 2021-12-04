@@ -41,10 +41,6 @@ const AddSlot = (props) => {
     const carerObj = fromCarerNameToId(carer, carers)
     const carerId = carerObj?.id
 
-    console.log("carerId", carerId)
-    console.log("carerObj", carerObj)
-    
-
     const data = {
       timeframe: timeframe,
       stayType: stayType,
@@ -73,12 +69,12 @@ const AddSlot = (props) => {
     setSlot(initialSlotState)
     setSubmitted(false)
   }
-  console.log("slot", slot)
+
   return (
     <Template>
     {!submitted ? 
       <div>
-        <h1>+ Slot</h1>
+        <h1>Add Slot</h1>
         <Form>
           <Dropdown
             id="timeframe" 

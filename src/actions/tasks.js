@@ -12,6 +12,7 @@ export const createTask = (type) => async (dispatch) => {
 
   try {
     const res = await TaskDataService.create({ type })
+
     dispatch({
       type: CREATE_TASK,
       payload: res.data
@@ -23,8 +24,10 @@ export const createTask = (type) => async (dispatch) => {
 }
 
 export const retrieveTasks = () => async (dispatch) => {
+
   try {
     const res = await TaskDataService.getAll()
+
     dispatch({
       type: RETRIEVE_TASKS,
       payload: res.data
