@@ -41,14 +41,13 @@ const AddSlot = (props) => {
     const carerObj = fromCarerNameToId(carer, carers)
     const carerId = carerObj?.id
 
-    const data = {
+    const slotData = {
       timeframe: timeframe,
       stayType: stayType,
       notes: notes,
       carerId: carer ? carerId : null,
     }
-
-    dispatch(createSlot(dayId, data))
+    dispatch(createSlot(dayId, slotData))
     .then(data => {
       setSlot({
         id: data.id,
@@ -69,6 +68,7 @@ const AddSlot = (props) => {
     setSlot(initialSlotState)
     setSubmitted(false)
   }
+
 
   return (
     <Template>

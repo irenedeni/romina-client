@@ -10,7 +10,6 @@ import SlotDataService from "../services/SlotService"
 
 export const createSlot = (dayId, data) => async (dispatch) => {
 const { timeframe, stayType, notes, carerId } = data
-
   try {
     const res = await SlotDataService.create({ dayId, timeframe, stayType, notes, carerId })
     dispatch({

@@ -73,9 +73,9 @@ const Trip = (props) => {
           </TripContainer>
             <Link
               to={`/edit/trips/${currentTrip.id}`}>
-              <Button text="Edit trip" color={({theme}) => `${theme.secondary}`}/>
+              <Button text="Edit trip" colour={({theme}) => `${theme.secondary}`}/>
             </Link>
-              <Button text="Delete trip" onClick={removeTrip} outlined color={({theme}) => `${theme.secondary}`}/>
+              <Button text="Delete trip" onClick={removeTrip} outlined colour={({theme}) => theme.secondary}/>
         </PageContainer>
       ) : (
         <NotFoundContainer>

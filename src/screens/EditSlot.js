@@ -118,7 +118,7 @@ const EditSlot = (props) => {
           <Button text="Delete" onClick={toggleVisibility}/>
           <Modal display={show} hide={toggleVisibility}>
             <p>Are you sure you want to remove this slot?</p>
-            <StyledButton text="YES" onClick={removeSlot} color={({theme}) => `${theme.alert}`}/>
+            <StyledButton text="YES" onClick={removeSlot} colour={({theme}) => theme.alert}/>
           </Modal>
           <p>{message}</p>
         </div>

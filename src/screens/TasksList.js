@@ -94,7 +94,7 @@ const TasksList = (props) => {
         <Button onClick={toggleVisibility} text="REMOVE ALL" outlined/>
         <Modal display={show} hide={toggleVisibility}>
           <p>Are you sure you want to remove ALL tasks?</p>
-          <Button text="YES" onClick={removeAllTasks} color={({theme}) => `${theme.alert}`}/>
+          <Button text="YES" onClick={removeAllTasks} colour={({theme}) => theme.alert}/>
         </Modal>
       </ListContainer>
     </Template>

@@ -125,7 +125,7 @@ const CarersList = (props) => {
         <Button onClick={toggleVisibility} outlined text="REMOVE ALL"/>
         <Modal display={show} hide={toggleVisibility}>
           <p>Are you sure you want to remove ALL trips?</p>
-          <Button text="YES" onClick={removeAllCarers} color={({theme}) => `${theme.alert}`}/>
+          <Button text="YES" onClick={removeAllCarers} colour={({theme}) => theme.alert}/>
         </Modal>
       </ListContainer>
     </Template>

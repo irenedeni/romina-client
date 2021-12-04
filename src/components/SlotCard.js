@@ -26,11 +26,14 @@ const SlotCard = (props) => {
   const [taskToAdd, setTaskToAdd] = useState(initialTaskState)
   const [taskToRemove, setTaskToRemove] = useState(initialTaskToDeleteState)
   const [taskForm, setTaskForm] = useState(false)
+  const [slotToDelete, setSlotToDelete] = useState({})
+
   const allTasks = useSelector(state => state.tasks)
 
   const dispatch = useDispatch()
 
   const removeSlot = (id) => {
+    setSlotToDelete({ ...id })
     dispatch(deleteSlot(id))
     refreshData()
   }
@@ -80,7 +83,7 @@ const SlotCard = (props) => {
   useEffect(()=> {
     getTrip()
     dispatch(retrieveTasks())
-  }, [taskToRemove, taskToAdd])
+  }, [taskToRemove, taskToAdd, slotToDelete])
 
 
   const openTaskForm = () => {
@@ -122,7 +125,7 @@ const SlotCard = (props) => {
           })}
         </TasksContainer>
         }
-        <Button small text="+ Task" color={({theme}) => theme.secondary} onClick={openTaskForm}/>
+        <Button small text="+ Task" colour={({theme}) => theme.secondary} onClick={openTaskForm}/>
         {
         taskForm &&
         <>

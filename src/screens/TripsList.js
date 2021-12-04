@@ -88,7 +88,7 @@ const TripsList = () => {
         <Button onClick={toggleVisibility} outlined text="REMOVE ALL" />
         <Modal display={show} hide={toggleVisibility}>
           <p>Are you sure you want to remove ALL trips?</p>
-          <Button text="YES" onClick={removeAllTrips} color={({theme}) => `${theme.alert}`}/>
+          <Button text="YES" onClick={removeAllTrips} colour={({theme}) => theme.alert}/>
         </Modal>
       </ListContainer>
     </Template>
