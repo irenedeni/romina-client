@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import { useDispatch } from "react-redux"
-import { updateTrip, deleteTrip } from "../actions/trips"
-import TripDataService from "../services/TripService"
+import TripService from "../services/TripService"
 import { Toggle, Input, Template, Form, Button as StyledButton } from "../components"
 
 
@@ -16,10 +15,8 @@ const EditTrip = (props) => {
   const [currentTrip, setCurrentTrip] = useState(initialTripState)
   const [message, setMessage] = useState("")
 
-  const dispatch = useDispatch()
-
   const getTrip = id => {
-    TripDataService.get(id)
+    TripService.get(id)
     .then(res => {
       setCurrentTrip(res.data)
     })
@@ -42,11 +39,11 @@ const EditTrip = (props) => {
 
 
   const updateContent = () => {
-    dispatch(updateTrip(currentTrip.id, currentTrip))
+    TripService.update(currentTrip.id, currentTrip)
     .then(res => {
       console.log(res)
-      setMessage("trip updated successfully")
-      props.history.goBack()
+      setMessage("Trip updated successfully! Wait to be redirected")
+      setTimeout(() => props.history.goBack(), 1500)
     })
     .catch(e => {
       console.log(e)
@@ -54,7 +51,7 @@ const EditTrip = (props) => {
   }
 
   const removeTrip = () => {
-    dispatch(deleteTrip(currentTrip.id))
+    TripService.remove(currentTrip.id)
     .then(()=> {
       props.history.push("/trips")
     })
@@ -62,6 +59,7 @@ const EditTrip = (props) => {
       console.log(e)
     })
   }
+  
   return (
     <Template>
       {currentTrip ? (

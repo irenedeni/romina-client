@@ -3,16 +3,12 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import useModal from "../hooks/useModal"
 import styled from "styled-components"
-import {
-  retrieveTrips,
-  deleteAllTrips,
-  deleteTrip
-} from "../actions/trips"
+import TripService from "../services/TripService"
+import { retrieveTrips } from "../actions/trips"
 import { Template, Spacer, Button, TripCard, Modal } from "../components"
 
 
 const TripsList = () => {
-
   const [currentTrip, setCurrentTrip] = useState(null)
   const [currentIndex, setCurrentIndex] = useState(null)
 
@@ -25,7 +21,7 @@ const TripsList = () => {
 
   useEffect(() => {
     dispatch(retrieveTrips())
-  }, [dispatch])
+  }, [trips])
 
   const refreshData = () => {
     setCurrentTrip(null)
@@ -33,9 +29,9 @@ const TripsList = () => {
   }
 
   const removeAllTrips = () => {
-    dispatch(deleteAllTrips())
+    TripService.removeAll()
     .then(res => {
-      console.log(res)
+      console.log("res", res)
       refreshData()
     })
     .catch(e => {
@@ -43,28 +39,6 @@ const TripsList = () => {
     })
   }
 
-  const findTripRange = (daysArray) => {
-    for (let i = 0; i < daysArray?.length; i++){
-      daysArray[i].date = new Date(daysArray[i].date)
-    }
-    const sortedArray = daysArray?.sort((a, b) => a.date - b.date)
-    let tripRange = []
-    tripRange.push(sortedArray && sortedArray[0])
-    tripRange.push(sortedArray && sortedArray[sortedArray.length -1])
-    return tripRange
-  }
-
-
-  const removeTrip = (id) => {
-    dispatch(deleteTrip(id))
-    .then(res => {
-      console.log(res)
-      refreshData()
-    })
-    .catch(e => {
-      console.log(e)
-    })
-  }
 
   return (
     <Template direction="vertical">
@@ -78,7 +52,6 @@ const TripsList = () => {
         <TripsContainer>
           {trips &&
           trips.map((trip, index) => {
-            const tripRange = findTripRange(trip?.days)
           return (
             <TripCard trip={trip} key={index}/>
           )})

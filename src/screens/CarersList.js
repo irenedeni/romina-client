@@ -3,20 +3,16 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 import useModal from "../hooks/useModal"
-import {
-  retrieveCarers,
-  findCarersByName,
-  deleteAllCarers,
-  deleteCarer
-} from "../actions/carers"
-import { Input, Template, Form, Spacer, Button, Modal } from "../components"
+import { retrieveCarers } from "../actions/carers"
+import CarerService from "../services/CarerService"
+import { Template, Spacer, Button, Modal } from "../components"
 
 
-const CarersList = (props) => {
+const CarersList = () => {
 
-  const [currentCarer, setCurrentCarer] = useState(null)
+  const [currentCarer, setCurrentCarer] = useState({})
+  const [carerToDelete, setCarerToDelete] = useState({})
   const [currentIndex, setCurrentIndex] = useState(null)
-  const [searchName, setSearchName] = useState("")
 
   const { show, toggleVisibility } = useModal()
 
@@ -26,16 +22,13 @@ const CarersList = (props) => {
 
   useEffect(() => {
     dispatch(retrieveCarers())
-  }, [dispatch])
+  }, [carerToDelete])
 
-  const onChangeSearchName = e => {
-    const searchName = e.target.value
-    setSearchName(searchName)
-  }
 
   const refreshData = () => {
-    setCurrentCarer(null)
+    setCurrentCarer({})
     setCurrentIndex(-1)
+    setCarerToDelete({})
   }
 
   const setActiveCarer = (carer, index) => {
@@ -44,34 +37,14 @@ const CarersList = (props) => {
   }
 
   const removeAllCarers = () => {
-    dispatch(deleteAllCarers())
-    .then(res => {
-      console.log(res)
-      refreshData()
-    })
-    .catch(e => {
-      console.log(e)
-    })
+    CarerService.removeAll()
+    refreshData()
   }
 
-  const findByName = (e) => {
-    e.preventDefault()
-    refreshData()
-    dispatch(findCarersByName(searchName))
-    .then(res => {
-      console.log("res",res)
-    })
-  }
 
   const removeCarer = (id) => {
-    dispatch(deleteCarer(id))
-    .then(res => {
-      console.log(res)
-      refreshData()
-    })
-    .catch(e => {
-      console.log(e)
-    })
+    CarerService.remove(id)
+    refreshData()
   }
 
 

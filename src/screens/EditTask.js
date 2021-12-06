@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import { useDispatch } from "react-redux"
-import { updateTask, deleteTask } from "../actions/tasks"
-import TaskDataService from "../services/TaskService"
+import TaskService from "../services/TaskService"
 import { Input, Template, Form, Button as StyledButton } from "../components"
 
 
@@ -16,12 +15,8 @@ const EditTask = (props) => {
   const [currentTask, setCurrentTask] = useState(initialTaskState)
   const [message, setMessage] = useState("")
 
-  console.log("currentTask", currentTask)
-
-  const dispatch = useDispatch()
-
   const getTask = id => {
-    TaskDataService.get(id)
+    TaskService.get(id)
     .then(res => {
       setCurrentTask(res.data)
     })
@@ -34,7 +29,6 @@ const EditTask = (props) => {
     getTask(props.match.params.id)
   }, [props.match.params.id])
 
-
   const handleInputChange = event => {
     const { name, value, checked } = event.target
     if(event.target.type !== "checkbox"){
@@ -42,13 +36,12 @@ const EditTask = (props) => {
     } else setCurrentTask({ ...currentTask, [name]: checked })
   }
 
-
   const updateContent = () => {
-    dispatch(updateTask(currentTask.id, currentTask))
+    TaskService.update(currentTask.id, currentTask)
     .then(res => {
       console.log(res)
-      setMessage("task updated successfully")
-      props.history.goBack()
+      setMessage("Task updated successfully! Wait to be redirected")
+      setTimeout(() => props.history.goBack(), 1500)
     })
     .catch(e => {
       console.log(e)
@@ -56,7 +49,7 @@ const EditTask = (props) => {
   }
 
   const removeTask = () => {
-    dispatch(deleteTask(currentTask.id))
+    TaskService.remove(currentTask.id)
     .then(()=> {
       props.history.push("/tasks")
     })
@@ -64,6 +57,7 @@ const EditTask = (props) => {
       console.log(e)
     })
   }
+
   return (
     <Template>
       {currentTask ? (

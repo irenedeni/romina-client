@@ -1,4 +1,3 @@
-import Day from "./Day"
 import AddCarer from "./AddCarer"
 import AddTrip from "./AddTrip"
 import EditTrip from "./EditTrip"
@@ -13,7 +12,6 @@ import TasksList from "./TasksList"
 import EditTask from "./EditTask"
 
 export {
-  Day,
   AddTrip,
   EditTrip,
   Trip,

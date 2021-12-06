@@ -1,13 +1,12 @@
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import styled from "styled-components"
-import { createTask } from "../actions/tasks"
 import { Input, Template, Form, Button } from "../components"
+import TaskService from "../services/TaskService"
 
 const AddTask = (props) => {
 
   const initialTaskState = {
-    id: null,
     type: ""
   }
   const [task, setTask] = useState(initialTaskState)
@@ -22,19 +21,9 @@ const AddTask = (props) => {
   }
 
   const saveTask = () => {
-    const { type } = task
-    dispatch(createTask(type))
-    .then(data => {
-      setTask({
-        id: data.id,
-        type: data.type
-      })
-    })
-    .catch(e => {
-      console.log(e)
-    })
+    TaskService.create(task)
     setSubmitted(true)
-    setTimeout(()=>props.history.push("/tasks"), 3000)
+    setTimeout(() => props.history.push("/tasks"), 3000)
   }
 
   const newTask = () => {

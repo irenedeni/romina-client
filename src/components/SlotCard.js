@@ -3,12 +3,11 @@ import styled from "styled-components"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { retrieveTasks } from "../actions/tasks"
-import { deleteSlot, addTaskToSlot, removeTaskToSlot } from "../actions/slots"
+import SlotService from "../services/SlotService"
 import { Button as StyledButton, Dropdown, Form } from "../components"
 
 
 const SlotCard = (props) => {
-
   const initialTaskState = {
     id: null,
     type: "",
@@ -19,7 +18,7 @@ const SlotCard = (props) => {
     id: null,
     type: "",
     slotId: null,
-  }
+  }  
 
   const { getTrip } = props
 
@@ -34,15 +33,14 @@ const SlotCard = (props) => {
 
   const removeSlot = (id) => {
     setSlotToDelete({ ...id })
-    dispatch(deleteSlot(id))
+    SlotService.remove(id)
     refreshData()
   }
 
   const refreshData = () => {
     getTrip()
-    setTaskToAdd(initialTaskState)
-    setTaskToRemove(initialTaskToDeleteState)
-    dispatch(retrieveTasks())
+    setTaskToAdd({})
+    setTaskToRemove({})
   }
 
   const handleInputChange = event => {
@@ -58,7 +56,7 @@ const SlotCard = (props) => {
 
   const updateContent = (id) => {
     const slotId = id
-    dispatch(addTaskToSlot(taskToAdd.id, slotId, refreshData))
+    SlotService.addTaskToSlot(taskToAdd.id, slotId)
     refreshData()
   }
 
@@ -75,7 +73,7 @@ const SlotCard = (props) => {
         setTaskToRemove({ ...taskToRemove })
       }
     })
-    dispatch(removeTaskToSlot(taskToRemove.id, taskToRemove.slotId, refreshData))
+    SlotService.removeTaskToSlot(taskToRemove.id, taskToRemove.slotId)
     refreshData()
   }
 

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import { useDispatch, useSelector } from "react-redux"
-import { updateSlot, deleteSlot } from "../actions/slots"
 import { retrieveCarers } from "../actions/carers"
-import SlotDataService from "../services/SlotService"
+import SlotService from "../services/SlotService"
 import { Input, Template, Form, Dropdown, Button as StyledButton, Modal } from "../components"
 import { fromCarerNameToId, timeframes, stayTypes } from "../lib/functionsAndObjects"
 import useModal from "../hooks/useModal"
@@ -16,6 +15,7 @@ const EditSlot = (props) => {
     stayType: "",
     notes: "",
     carer: "",
+    carerId: null
   }
 
   const [currentSlot, setCurrentSlot] = useState(initialSlotState)
@@ -24,11 +24,10 @@ const EditSlot = (props) => {
 
   const carers = useSelector(state => state.carers)
 
-
   const dispatch = useDispatch()
 
   const getSlot = id => {
-    SlotDataService.get(id)
+    SlotService.get(id)
     .then(res => {
       setCurrentSlot(res.data)
     })
@@ -39,25 +38,23 @@ const EditSlot = (props) => {
 
   useEffect(() => {
     getSlot(props.match.params.id)
+    dispatch(retrieveCarers())
   }, [props.match.params.id])
 
-  useEffect(()=> {
-    dispatch(retrieveCarers())
-  }, [dispatch])
 
   const handleInputChange = event => {
     const { name, value } = event.target
-      setCurrentSlot({ ...currentSlot, [name]: value })
+    setCurrentSlot({ ...currentSlot, [name]: value })
   }
+
   const updateContent = () => {
     const carerName = currentSlot.carer?.name || currentSlot.carer
     const updatedCarer = fromCarerNameToId(carerName, carers)
     currentSlot.carerId = updatedCarer.id
-    dispatch(updateSlot(currentSlot.id, currentSlot))
-    .then(res => {
-      console.log(res)
-      setMessage("slot updated successfully")
-      props.history.goBack()
+    SlotService.update(currentSlot.id, currentSlot)
+    .then(() => {
+      setMessage("Slot updated successfully! Wait to be redirected")
+      setTimeout(() => props.history.goBack(), 1500)
     })
     .catch(e => {
       console.log(e)
@@ -65,7 +62,7 @@ const EditSlot = (props) => {
   }
 
   const removeSlot = () => {
-    dispatch(deleteSlot(currentSlot.id))
+    SlotService.remove(currentSlot.id)
     .then(()=> {
       props.history.goBack()
     })

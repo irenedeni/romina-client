@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
-import { createSlot } from "../actions/slots"
 import { retrieveCarers } from "../actions/carers"
 import { Input, Template, Form, Button, Dropdown } from "../components"
 import { fromCarerNameToId, timeframes, stayTypes } from "../lib/functionsAndObjects"
+import SlotService from "../services/SlotService"
+
 
 const AddSlot = (props) => {
 
   const initialSlotState = {
-    id: null,
     timeframe: "",
     stayType: "",
     notes: "",
@@ -46,21 +46,10 @@ const AddSlot = (props) => {
       stayType: stayType,
       notes: notes,
       carerId: carer ? carerId : null,
+      dayId: dayId
     }
-    dispatch(createSlot(dayId, slotData))
-    .then(data => {
-      setSlot({
-        id: data.id,
-        timeframe: data.timeframe,
-        stayType: data.stayType,
-        notes: data.notes,
-        carerId: data.carerId ? data.carerId : null,
-        dayId: data.dayId
-      })
-    })
-    .catch(e => {
-      console.log(e)
-    })
+    
+    SlotService.create(slotData)
     setSubmitted(true)
   }
 

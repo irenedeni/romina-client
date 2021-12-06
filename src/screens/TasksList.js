@@ -3,18 +3,14 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 import useModal from "../hooks/useModal"
-
-import {
-  retrieveTasks,
-  deleteAllTasks,
-  deleteTask
-} from "../actions/tasks"
+import TaskService from "../services/TaskService"
+import { retrieveTasks } from "../actions/tasks"
 import { Template, Spacer, Button, Modal } from "../components"
 
 
-const TasksList = (props) => {
+const TasksList = () => {
 
-  const [currentTask, setCurrentTask] = useState(null)
+  const [currentTask, setCurrentTask] = useState({})
   const [currentIndex, setCurrentIndex] = useState(null)
   const { show, toggleVisibility } = useModal()
 
@@ -24,10 +20,10 @@ const TasksList = (props) => {
 
   useEffect(() => {
     dispatch(retrieveTasks())
-  }, [dispatch])
+  }, [currentTask])
 
   const refreshData = () => {
-    setCurrentTask(null)
+    setCurrentTask({})
     setCurrentIndex(-1)
   }
 
@@ -37,25 +33,13 @@ const TasksList = (props) => {
   }
 
   const removeAllTasks = () => {
-    dispatch(deleteAllTasks())
-    .then(res => {
-      console.log(res)
-      refreshData()
-    })
-    .catch(e => {
-      console.log(e)
-    })
+    TaskService.removeAll()
+    refreshData()
   }
 
   const removeTask = (id) => {
-    dispatch(deleteTask(id))
-    .then(res => {
-      console.log(res)
-      refreshData()
-    })
-    .catch(e => {
-      console.log(e)
-    })
+    TaskService.remove(id)
+    refreshData()
   }
 
 

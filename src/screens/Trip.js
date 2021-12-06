@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react"
 import styled from "styled-components"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { Link } from "react-router-dom"
 import moment from "moment"
-
 import { calendarObject, orderSlotsByTimeframe } from "../lib/functionsAndObjects"
 import { deleteTrip } from "../actions/trips"
-import TripDataService from "../services/TripService"
+import TripService from "../services/TripService"
 import { Template, Button as StyledButton, Dropdown, Form, SlotCard } from "../components"
 
 
@@ -20,10 +19,8 @@ const Trip = (props) => {
 
   const [currentTrip, setCurrentTrip] = useState(initialTripState)
 
-  const dispatch = useDispatch()
-
   const getTrip = () => {
-     TripDataService.get(props.match.params.id)
+    TripService.get(props.match.params.id)
     .then(res => {
       setCurrentTrip(res.data)
     })
@@ -38,7 +35,7 @@ const Trip = (props) => {
 
 
   const removeTrip = () => {
-    dispatch(deleteTrip(currentTrip.id))
+    TripService.remove(currentTrip.id)
     .then(()=> {
       props.history.push("/trips")
     })

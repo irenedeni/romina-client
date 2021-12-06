@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react"
 import styled from "styled-components"
-import { useDispatch } from "react-redux"
-import { updateCarer, deleteCarer } from "../actions/carers"
-import CarerDataService from "../services/CarerService"
+import CarerService from "../services/CarerService"
 import { Toggle, Input, Template, Form, Button as StyledButton } from "../components"
 
 
@@ -10,18 +8,26 @@ const EditCarer = (props) => {
   const initialCarerState = {
     id: null,
     name: "",
-    confirmed: false
+    email: "",
+    phone: "",
+    professional: false
   }
 
   const [currentCarer, setCurrentCarer] = useState(initialCarerState)
   const [message, setMessage] = useState("")
 
-  const dispatch = useDispatch()
-
   const getCarer = id => {
-    CarerDataService.get(id)
+    CarerService.get(id)
     .then(res => {
-      setCurrentCarer(res.data)
+      const carerToEdit = {
+        id: res.data.id,
+        name: res.data.name,
+        email: res.data.email,
+        phone: res.data.phone,
+        professional: res.data.professional,
+      }
+      setCurrentCarer(carerToEdit)
+      console.log("currentCarer", carerToEdit)
     })
     .catch(e => {
       console.log(e)
@@ -42,11 +48,11 @@ const EditCarer = (props) => {
 
 
   const updateContent = () => {
-    dispatch(updateCarer(currentCarer.id, currentCarer))
+    CarerService.update(currentCarer.id, currentCarer)
     .then(res => {
       console.log(res)
-      setMessage("carer updated successfully")
-      props.history.goBack()
+      setMessage("Carer updated successfully! Wait to be redirected")
+      setTimeout(() => props.history.goBack(), 1500)
     })
     .catch(e => {
       console.log(e)
@@ -54,7 +60,7 @@ const EditCarer = (props) => {
   }
 
   const removeCarer = () => {
-    dispatch(deleteCarer(currentCarer.id))
+    CarerService.remove(currentCarer.id)
     .then(()=> {
       props.history.push("/carers")
     })
