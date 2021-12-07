@@ -26,7 +26,6 @@ const SlotCard = (props) => {
   const [taskToRemove, setTaskToRemove] = useState(initialTaskToDeleteState)
   const [taskForm, setTaskForm] = useState(false)
   const [slotToDelete, setSlotToDelete] = useState({})
-
   const allTasks = useSelector(state => state.tasks)
 
   const dispatch = useDispatch()
@@ -39,8 +38,8 @@ const SlotCard = (props) => {
 
   const refreshData = () => {
     getTrip()
-    setTaskToAdd({})
-    setTaskToRemove({})
+    setTaskToAdd(initialTaskState)
+    setTaskToRemove(initialTaskToDeleteState)
   }
 
   const handleInputChange = event => {
@@ -49,9 +48,9 @@ const SlotCard = (props) => {
     allTasks.find(task => {
       if(task.type == value){
         taskToAdd.id = task.id
-        setTaskToAdd({ ...taskToAdd, [name]: value })
       }
     })
+    setTaskToAdd({ ...taskToAdd, [name]: value })
   }
 
   const updateContent = (id) => {
@@ -62,6 +61,7 @@ const SlotCard = (props) => {
 
 
   const removeTaskFromSlot = (tasksSlots) => {
+    refreshData()
     const taskId = tasksSlots.taskId
     const slotId = tasksSlots.slotId
     allTasks.find(task => {
@@ -70,9 +70,9 @@ const SlotCard = (props) => {
         taskToRemove.id = taskId
         taskToRemove.slotId = slotId
         taskToRemove.type = taskType
-        setTaskToRemove({ ...taskToRemove })
       }
     })
+    setTaskToRemove({ ...taskToRemove })
     SlotService.removeTaskToSlot(taskToRemove.id, taskToRemove.slotId)
     refreshData()
   }

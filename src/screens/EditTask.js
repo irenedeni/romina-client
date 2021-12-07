@@ -8,8 +8,7 @@ import { Input, Template, Form, Button as StyledButton } from "../components"
 const EditTask = (props) => {
   const initialTaskState = {
     id: null,
-    name: "",
-    confirmed: false
+    type: "",
   }
 
   const [currentTask, setCurrentTask] = useState(initialTaskState)
