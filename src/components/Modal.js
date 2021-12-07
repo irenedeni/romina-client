@@ -9,7 +9,7 @@ const Modal = ({ display, hide, children }, props) =>
       <Content>
         {children}
         <div>
-          <Button small {...props} onClick={hide} text="close" color={({theme}) => theme.surface3} style={{margin: "30px 0px 0px 0px"}}/>
+          <Button small {...props} onClick={hide} text="close" colour={({theme}) => theme.surface3} style={{margin: "30px 0px 0px 0px"}}/>
         </div>
       </Content>
     </Container>

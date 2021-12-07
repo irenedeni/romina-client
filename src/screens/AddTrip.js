@@ -1,14 +1,12 @@
 import React, { useState } from "react"
-import { useDispatch } from "react-redux"
 import { Link } from 'react-router-dom'
 import styled from "styled-components"
-import { createTrip } from "../actions/trips"
 import { Toggle, Input, Template, Form, Button } from "../components"
+import TripService from "../services/TripService"
 
 const AddTrip = () => {
 
   const initialTripState = {
-    id: null,
     name: "",
     startDate: new Date(),
     endDate: new Date(),
@@ -16,10 +14,7 @@ const AddTrip = () => {
   }
   const [trip, setTrip] = useState(initialTripState)
 
-
   const [submitted, setSubmitted] = useState()
-
-  const dispatch = useDispatch()
 
   const handleInputChange = event => {
     const { name, value, checked } = event.target
@@ -30,23 +25,10 @@ const AddTrip = () => {
 
   const saveTrip = () => {
     const { name, startDate, endDate, confirmed } = trip
-
-    console.log("TRIP", trip)
-    dispatch(createTrip(name, startDate, endDate, confirmed))
-    .then(data => {
-       setTrip({
-        id: data.id,
-        name: data.name,
-        startDate: data.startDate,
-        endDate: data.endDate,
-        confirmed: data.confirmed ? data.confirmed : false
-      })
-    })
-    .catch(e => {
-      console.log(e)
-    })
+    TripService.create({ name, startDate, endDate, confirmed })
     setSubmitted(true)
   }
+    
 
   const newTrip = () => {
     setTrip(initialTripState)

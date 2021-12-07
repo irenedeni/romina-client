@@ -1,13 +1,11 @@
 import React, { useState } from "react"
 import styled from "styled-components"
-import { useDispatch } from "react-redux"
-import { createCarer } from "../actions/carers"
 import { Toggle, Input, Template, Form, Button } from "../components"
+import CarerService from "../services/CarerService"
 
 const AddCarer = (props) => {
 
   const initialCarerState = {
-    id: null,
     name: "",
     phone: "",
     email: "",
@@ -16,8 +14,6 @@ const AddCarer = (props) => {
   const [carer, setCarer] = useState(initialCarerState)
 
   const [submitted, setSubmitted] = useState()
-
-  const dispatch = useDispatch()
 
   const handleInputChange = event => {
     const { name, value, checked } = event.target
@@ -28,20 +24,7 @@ const AddCarer = (props) => {
 
 
   const saveCarer = () => {
-    const { name, email, phone, professional } = carer
-    dispatch(createCarer(name, email, phone, professional))
-    .then(data => {
-      setCarer({
-        id: data.id,
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-        professional: data.professional ? data.professional : false
-      })
-    })
-    .catch(e => {
-      console.log(e)
-    })
+    CarerService.create(carer)
     setSubmitted(true)
     setTimeout(()=>props.history.push("/carers"), 3000)
   }

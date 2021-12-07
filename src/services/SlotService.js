@@ -23,14 +23,9 @@ const removeTaskToSlot = (id, slotId) => {
 }
 
 
-const remove = (id, data) => {
+const remove = (id) => {
   return http.delete(`/slots/${id}`)
 }
-
-
-// const removeAll = (dayId, tripId) => {
-//   return http.delete(`/trips/${tripId}/days/${dayId}/slots`)
-// }
 
 
 const SlotService = {
@@ -40,7 +35,6 @@ const SlotService = {
   remove,
   get,
   removeTaskToSlot
-  // removeAll,
 }
 
 export default SlotService

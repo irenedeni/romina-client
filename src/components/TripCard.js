@@ -2,15 +2,13 @@ import React, { useState } from "react"
 import styled from "styled-components"
 import moment from "moment"
 import { useDispatch } from "react-redux"
-
 import { Button } from "../components"
 import { Link } from "react-router-dom"
 import { calendarObject } from "../lib/functionsAndObjects"
-import { deleteTrip } from "../actions/trips"
+import TripService from "../services/TripService"
 
 function TripCard(props) {
-  const [currentTrip, setCurrentTrip] = useState(null)
-  const dispatch = useDispatch()
+  const [currentTrip, setCurrentTrip] = useState({})
 
   const findTripRange = (daysArray) => {
     for (let i = 0; i < daysArray?.length; i++){
@@ -24,11 +22,11 @@ function TripCard(props) {
   }
 
   const refreshData = () => {
-    setCurrentTrip(null)
+    setCurrentTrip({})
   }
 
   const removeTrip = (id) => {
-    dispatch(deleteTrip(id))
+    TripService.remove(id)
     .then(res => {
       console.log(res)
       refreshData()

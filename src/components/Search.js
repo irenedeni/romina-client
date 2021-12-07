@@ -63,7 +63,7 @@ function Search(props) {
         <Button
           onClick={findByName} 
           text="Search"
-          color={({theme}) => `${theme.secondary}`}
+          colour={({theme}) => theme.secondary}
           style={{marginLeft: "20px"}}
         />
       </Form>

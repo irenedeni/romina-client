@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react"
 import styled from "styled-components"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { Link } from "react-router-dom"
 import moment from "moment"
-
 import { calendarObject, orderSlotsByTimeframe } from "../lib/functionsAndObjects"
 import { deleteTrip } from "../actions/trips"
-import TripDataService from "../services/TripService"
+import TripService from "../services/TripService"
 import { Template, Button as StyledButton, Dropdown, Form, SlotCard } from "../components"
 
 
 const Trip = (props) => {
+  
   const initialTripState = {
     id: null,
     name: "",
@@ -19,10 +19,8 @@ const Trip = (props) => {
 
   const [currentTrip, setCurrentTrip] = useState(initialTripState)
 
-  const dispatch = useDispatch()
-
-  const getTrip = id => {
-    TripDataService.get(id)
+  const getTrip = () => {
+    TripService.get(props.match.params.id)
     .then(res => {
       setCurrentTrip(res.data)
     })
@@ -32,12 +30,12 @@ const Trip = (props) => {
   }
 
   useEffect(() => {
-    getTrip(props.match.params.id)
+    getTrip()
   }, [props.match.params.id])
 
 
   const removeTrip = () => {
-    dispatch(deleteTrip(currentTrip.id))
+    TripService.remove(currentTrip.id)
     .then(()=> {
       props.history.push("/trips")
     })
@@ -61,8 +59,9 @@ const Trip = (props) => {
               <AddButton text="+ SLOT"/>
             </Link>
             {day.slots?.length > 0 && orderSlotsByTimeframe(day.slots).map((slot, index) => {
+              
               return (
-                <SlotCard slot={slot} key={index}/>
+                <SlotCard slot={slot} getTrip={getTrip} key={index}/>
               )
             })}
           </DayContainer>
@@ -71,9 +70,9 @@ const Trip = (props) => {
           </TripContainer>
             <Link
               to={`/edit/trips/${currentTrip.id}`}>
-              <Button text="Edit trip" color={({theme}) => `${theme.secondary}`}/>
+              <Button text="Edit trip" colour={({theme}) => `${theme.secondary}`}/>
             </Link>
-              <Button text="Delete trip" onClick={removeTrip} outlined color={({theme}) => `${theme.secondary}`}/>
+              <Button text="Delete trip" onClick={removeTrip} outlined colour={({theme}) => theme.secondary}/>
         </PageContainer>
       ) : (
         <NotFoundContainer>
