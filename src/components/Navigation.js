@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import styled from "styled-components"
-import { useDispatch, useSelector } from "react-redux"
-import { retrieveTrips } from "../actions/trips"
 import { Link } from 'react-router-dom'
 import { Search } from "./index"
 

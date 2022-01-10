@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 
 const useForm = (callback) => {
   const [inputs, setInputs] = useState({})
@@ -11,7 +11,6 @@ const useForm = (callback) => {
   const handleInputChange = (event) => {
     event.persist()
     setInputs(inputs => {
-      console.log("inputs", inputs)
       return (
         { ...inputs, [event.target.name] : event.target.value }
       )

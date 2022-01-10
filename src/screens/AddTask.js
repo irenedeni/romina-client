@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import { useDispatch } from "react-redux"
 import styled from "styled-components"
 import { Input, Template, Form, Button } from "../components"
 import TaskService from "../services/TaskService"
@@ -12,8 +11,6 @@ const AddTask = (props) => {
   const [task, setTask] = useState(initialTaskState)
 
   const [submitted, setSubmitted] = useState()
-
-  const dispatch = useDispatch()
 
   const handleInputChange = event => {
     const { name, value } = event.target

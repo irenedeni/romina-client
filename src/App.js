@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { GlobalStyles, ThemeProvider } from './styles'
-// import './App.css'
 import { AddTrip, Trip, TripsList, EditTrip, AddSlot, AddCarer, 
   EditSlot, AddTask, CarersList, EditCarer, TasksList, EditTask } from "./screens"
 import { Navigation } from "./components"

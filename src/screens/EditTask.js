@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
 import styled from "styled-components"
-import { useDispatch } from "react-redux"
 import TaskService from "../services/TaskService"
 import { Input, Template, Form, Button as StyledButton } from "../components"
 
