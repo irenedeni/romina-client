@@ -46,7 +46,7 @@ const SlotCard = (props) => {
     event.preventDefault()
     const { name, value } = event.target
     allTasks.find(task => {
-      if(task.type == value){
+      if(task.type === value){
         taskToAdd.id = task.id
       }
     })

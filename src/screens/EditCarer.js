@@ -27,7 +27,6 @@ const EditCarer = (props) => {
         professional: res.data.professional,
       }
       setCurrentCarer(carerToEdit)
-      console.log("currentCarer", carerToEdit)
     })
     .catch(e => {
       console.log(e)

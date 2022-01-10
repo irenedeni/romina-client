@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import styled from "styled-components"
 import moment from "moment"
-import { useDispatch } from "react-redux"
 import { Button } from "../components"
 import { Link } from "react-router-dom"
 import { calendarObject } from "../lib/functionsAndObjects"
@@ -44,7 +43,6 @@ function TripCard(props) {
       style={{marginBottom: '20px'}}
     >
       <Link to={"/trips/" + trip.id} style={{textDecoration: "none"}}>
-        <img />
         <TripName>
           {trip.name.toUpperCase()}
         </TripName>

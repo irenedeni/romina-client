@@ -2,14 +2,14 @@ import { createGlobalStyle  } from "styled-components"
 
 const GlobalStyle = createGlobalStyle`
   body {
-  margin: 0px;
-  font-family: "Quicksand", sans-serif;
-  font-weight: 300;
-  font-size: 14px;
-  line-height: 20px;
-  background-color: ${({ theme }) => theme.bg};
-  color: ${({ theme }) => theme.text};
-}
+    margin: 0px;
+    font-family: "Quicksand", sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 20px;
+    background-color: ${({ theme }) => theme.bg};
+    color: ${({ theme }) => theme.text};
+  }
   h1,
   h2,
   h3,

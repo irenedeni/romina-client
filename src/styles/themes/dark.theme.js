@@ -11,7 +11,7 @@ export const darkTheme = {
     secondary: "#03DAC5",
     error: "#CF6679",
     success: "#6BDE99",
-    alert: "#ff7db3ed",
+    alert: "#ff7db3",
     mediumRadius: "5px",
     smallRadius: "3px",
     largeRadius: "50px",
