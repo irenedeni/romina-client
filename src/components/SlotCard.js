@@ -45,11 +45,7 @@ const SlotCard = (props) => {
   const handleInputChange = event => {
     event.preventDefault()
     const { name, value } = event.target
-    allTasks.find(task => {
-      if(task.type === value){
-        taskToAdd.id = task.id
-      }
-    })
+    allTasks.find(task => task.type === value && (taskToAdd.id = task.id))
     setTaskToAdd({ ...taskToAdd, [name]: value })
   }
 
@@ -65,7 +61,7 @@ const SlotCard = (props) => {
     const taskId = tasksSlots.taskId
     const slotId = tasksSlots.slotId
     allTasks.find(task => {
-      if(task.id == taskId){
+      if(task.id === taskId){
         const taskType = task.type
         taskToRemove.id = taskId
         taskToRemove.slotId = slotId

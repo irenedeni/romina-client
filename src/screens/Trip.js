@@ -63,20 +63,9 @@ const Trip = (props) => {
               )
             })
             :
-            currentTrip?.days?.map((day, index) => {
-              const areThereSlots = () =>
-              day?.slots?.some(slot => 
-                slot
-              )
-              if(areThereSlots() == true){
-                return (
-                  <AlertContainer key={index}>
-                    <AttentionTitle>!</AttentionTitle>
-                    <AttentionText>Pay attention to this day</AttentionText>
-                  </AlertContainer>
-                )
-              } 
-            })       
+              <AlertContainer key={index}>
+                <AttentionText>Pay attention to this day!</AttentionText>
+              </AlertContainer>
             }
           </DayContainer>
           )}
@@ -152,11 +141,6 @@ const AlertContainer = styled.div`
 `
 
 const AttentionText = styled.h6`
-  text-align: center;
-  color: ${({ theme }) => theme.alert};
-`
-
-const AttentionTitle = styled.h1`
   text-align: center;
   color: ${({ theme }) => theme.alert};
 `

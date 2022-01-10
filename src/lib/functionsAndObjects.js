@@ -35,11 +35,7 @@ export const stayTypes = [
 ]
 
 export function fromCarerNameToId(name, carersArray) {
-  const carer = carersArray.find(carer => {
-    if(carer.name === name){
-      return carer.id
-    }
-  })
+  const carer = carersArray.find(carer => (carer.name === name && (carer.id)))
   return carer
 }
 
