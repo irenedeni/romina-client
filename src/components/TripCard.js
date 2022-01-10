@@ -63,7 +63,6 @@ function TripCard(props) {
 }
 
 
-
 const TripName = styled.h3`
   font-weight: 700;
   text-decoration: none;
@@ -77,7 +76,7 @@ const TripContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0px 15px 25px 15px;
+  padding: 10px 15px 25px 15px;
   justify-content: center;
   margin: 10px;
   color: ${({ theme }) => theme.text};
